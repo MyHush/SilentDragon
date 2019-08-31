@@ -31,7 +31,7 @@
     <name>ConnectionDialog</name>
     <message>
         <location filename="../src/connection.ui" line="17"/>
-        <source>ZecWallet</source>
+        <source>SilentDragon</source>
         <translation>SilentDragon</translation>
     </message>
     <message>
@@ -44,7 +44,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="14"/>
-        <source>ZecWallet</source>
+        <source>SilentDragon</source>
         <translation>Silentdragon</translation>
     </message>
     <message>
@@ -60,7 +60,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="62"/>
         <source>Shielded</source>
-        <translation>Sicher</translation>
+        <translation>Verborgen</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="89"/>
@@ -142,12 +142,12 @@
         <location filename="../src/mainwindow.cpp" line="1177"/>
         <location filename="../src/sendtab.cpp" line="266"/>
         <source>Memo</source>
-        <translation>Nachricht</translation>
+        <translation>Nachricht hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="494"/>
         <source>Add Recipient</source>
-        <translation>Empfänger hinzufügen</translation>
+        <translation>Weiteren Empfänger hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="538"/>
@@ -192,7 +192,7 @@
     </message>
     <message>
         <source>z-Addr(Sapling)</source>
-        <translation type="obsolete">Sichere Adresse (Zs-)</translation>
+        <translation type="vanished">Sichere Adresse (Zs-)</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="696"/>
@@ -201,7 +201,7 @@
     </message>
     <message>
         <source>z-Addr(Sprout)</source>
-        <translation type="obsolete">Sichere Adresse (Zs-)</translation>
+        <translation type="vanished">Sichere Adresse (Zs-)</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="720"/>
@@ -231,12 +231,12 @@
     <message>
         <location filename="../src/mainwindow.ui" line="791"/>
         <source>Export Private Key</source>
-        <translation>Private Key exportieren</translation>
+        <translation>Privaten Key exportieren</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="683"/>
         <source>z-Addr</source>
-        <translation>sichere Adresse</translation>
+        <translation>verborgene Adresse</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="861"/>
@@ -246,7 +246,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="878"/>
         <source>hushd</source>
-        <translation>hushd</translation>
+        <translation>Hush Daemon</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="908"/>
@@ -452,7 +452,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="614"/>
         <source> to support ZecWallet</source>
-        <translation>um Silentdragon zu unterstützen</translation>
+        <translation> um Silentdragon zu unterstützen</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="651"/>
@@ -468,7 +468,7 @@
         <location filename="../src/mainwindow.cpp" line="721"/>
         <location filename="../src/sendtab.cpp" line="670"/>
         <source>Computing Tx: </source>
-        <translation>Erstelle Transaktion:</translation>
+        <translation>Erstelle Transaktion: </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="880"/>
@@ -632,7 +632,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="1190"/>
         <source>Reply to </source>
-        <translation>Antworten an</translation>
+        <translation>Antworten an </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1271"/>
@@ -652,7 +652,7 @@
     <message>
         <location filename="../src/sendtab.cpp" line="203"/>
         <source>Recipient </source>
-        <translation>Empfänger</translation>
+        <translation>Empfänger </translation>
     </message>
     <message>
         <location filename="../src/sendtab.cpp" line="310"/>
@@ -668,13 +668,15 @@
         <location filename="../src/sendtab.cpp" line="319"/>
         <source>The memo field can only be used with a z-address.
 </source>
-        <translation>Nachrichten können nur mit sicheren (Zs-) Adressen genutzt werden</translation>
+        <translation>Nachrichten können nur mit sicheren (Zs-) Adressen genutzt werden
+</translation>
     </message>
     <message>
         <location filename="../src/sendtab.cpp" line="319"/>
         <source>
 doesn&apos;t look like a z-address</source>
-        <translation>Das sieht nicht wie eine sichere Adresse aus</translation>
+        <translation>
+Das sieht nicht wie eine sichere Adresse aus</translation>
     </message>
     <message>
         <location filename="../src/sendtab.cpp" line="492"/>
@@ -684,7 +686,7 @@ doesn&apos;t look like a z-address</source>
     <message>
         <location filename="../src/sendtab.cpp" line="633"/>
         <source>Current balance      : </source>
-        <translation>aktuelles Guthaben       :</translation>
+        <translation>aktuelles Guthaben       : </translation>
     </message>
     <message>
         <location filename="../src/sendtab.cpp" line="635"/>
@@ -704,12 +706,12 @@ doesn&apos;t look like a z-address</source>
     <message>
         <location filename="../src/sendtab.cpp" line="693"/>
         <source>Recipient Address </source>
-        <translation>Empfänger Adresse</translation>
+        <translation>Empfänger Adresse </translation>
     </message>
     <message>
         <location filename="../src/sendtab.cpp" line="693"/>
         <source> is Invalid</source>
-        <translation>ist ungültig</translation>
+        <translation> ist ungültig</translation>
     </message>
     <message>
         <location filename="../src/sendtab.cpp" line="699"/>
@@ -728,7 +730,7 @@ doesn&apos;t look like a z-address</source>
     <message>
         <location filename="../src/memodialog.ui" line="52"/>
         <source>Include Reply Address</source>
-        <translation>Fügen Sie eine Antwortadresse ein</translation>
+        <translation>Antwortadresse einfügen</translation>
     </message>
 </context>
 <context>
@@ -764,7 +766,7 @@ doesn&apos;t look like a z-address</source>
     <message>
         <location filename="../src/mobileappconnector.ui" line="84"/>
         <source>Allow connections over the internet via ZecWallet wormhole</source>
-        <translation>Erlaube Verbindungen über das Internet via Silentdragon Wurmloch</translation>
+        <translation>Erlaube Verbindungen über das Internet via SD Wurmloch</translation>
     </message>
     <message>
         <location filename="../src/mobileappconnector.ui" line="94"/>
@@ -883,12 +885,12 @@ Not starting embedded hushd because --no-embedded was passed</source>
         <location filename="../src/connection.cpp" line="279"/>
         <location filename="../src/connection.cpp" line="295"/>
         <source>Downloading </source>
-        <translation>Herunterladen</translation>
+        <translation>Herunterladen </translation>
     </message>
     <message>
         <location filename="../src/connection.cpp" line="279"/>
         <source> more remaining )</source>
-        <translation>mehr verbleibend )</translation>
+        <translation> mehr verbleibend )</translation>
     </message>
     <message>
         <location filename="../src/connection.cpp" line="280"/>
@@ -945,33 +947,33 @@ Not starting embedded hushd because --no-embedded was passed</source>
         <location filename="../src/sendtab.cpp" line="679"/>
         <location filename="../src/turnstile.cpp" line="367"/>
         <source>The transaction with id </source>
-        <translation>Transaktion mit der ID</translation>
+        <translation>Transaktion mit der ID </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="730"/>
         <location filename="../src/sendtab.cpp" line="679"/>
         <location filename="../src/turnstile.cpp" line="367"/>
         <source> failed. The error was</source>
-        <translation>gescheitert. Der Fehler war</translation>
+        <translation> gescheitert. Der Fehler war</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="727"/>
         <location filename="../src/sendtab.cpp" line="676"/>
         <location filename="../src/turnstile.cpp" line="364"/>
         <source> failed</source>
-        <translation>gescheitert</translation>
+        <translation> gescheitert</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="727"/>
         <location filename="../src/sendtab.cpp" line="676"/>
         <location filename="../src/turnstile.cpp" line="364"/>
         <source> Tx </source>
-        <translation>Transaktion</translation>
+        <translation> Transaktion </translation>
     </message>
     <message>
         <location filename="../src/rpc.cpp" line="960"/>
         <source> tx computing. This can take several minutes.</source>
-        <translation>Erzeuge Transaktion. Dies kann einige Minuten dauern.</translation>
+        <translation> Erzeuge Transaktion. Dies kann einige Minuten dauern.</translation>
     </message>
     <message>
         <location filename="../src/rpc.cpp" line="1009"/>
@@ -1008,7 +1010,7 @@ Would you like to visit the releases page?</source>
     <message>
         <location filename="../src/connection.cpp" line="295"/>
         <source> failed. Please check the help site for more info</source>
-        <translation>gescheitert. Bitte schauen Sie auf die Hilfeseite für mehr informationen</translation>
+        <translation> gescheitert. Bitte schauen Sie auf die Hilfeseite für mehr informationen</translation>
     </message>
     <message>
         <location filename="../src/connection.cpp" line="319"/>
@@ -1082,7 +1084,7 @@ Please set the host/port and user/password in the Edit-&gt;Settings menu.</sourc
     <message>
         <location filename="../src/addressbook.cpp" line="128"/>
         <source> doesn&apos;t seem to be a valid Hush address.</source>
-        <translation>Das sieht nicht nach einer gültigen Hush Adresse aus</translation>
+        <translation> Das sieht nicht nach einer gültigen Hush Adresse aus</translation>
     </message>
     <message>
         <location filename="../src/addressbook.cpp" line="138"/>
@@ -1133,7 +1135,8 @@ Please set the host/port and user/password in the Edit-&gt;Settings menu.</sourc
         <location filename="../src/turnstile.cpp" line="120"/>
         <source>Could not initiate migration.
 You either have unconfirmed funds or the balance is too low for an automatic migration.</source>
-        <translation>Konnte das verschieben nicht starten. Sie haben entweder unbestätigte Transaktionen oder Ihr Guthaben reicht für die automatische Verschiebung nicht aus. </translation>
+        <translation>Konnte das verschieben nicht starten.
+ Sie haben entweder unbestätigte Transaktionen oder Ihr Guthaben reicht für die automatische Verschiebung nicht aus.</translation>
     </message>
     <message>
         <location filename="../src/turnstile.cpp" line="357"/>
@@ -1168,7 +1171,7 @@ You either have unconfirmed funds or the balance is too low for an automatic mig
     <message>
         <location filename="../src/websockets.cpp" line="345"/>
         <source>Connected over the internet via SilentDragon wormhole service</source>
-        <translation>Über das Silentdragon Wurmloch zum Internet verbunden </translation>
+        <translation>Über das Silentdragon Wurmloch zum Internet verbunden</translation>
     </message>
     <message>
         <location filename="../src/websockets.cpp" line="646"/>
@@ -1229,7 +1232,7 @@ You either have unconfirmed funds or the balance is too low for an automatic mig
     <message>
         <location filename="../src/requestdialog.ui" line="78"/>
         <source>Amount in </source>
-        <translation>Betrag in</translation>
+        <translation>Betrag in </translation>
     </message>
     <message>
         <location filename="../src/requestdialog.ui" line="118"/>
@@ -1244,7 +1247,7 @@ You either have unconfirmed funds or the balance is too low for an automatic mig
     <message>
         <location filename="../src/requestdialog.ui" line="159"/>
         <source>The recipient will see this address in the &quot;to&quot; field when they pay your request.</source>
-        <translation>Bei Bezahlung ist deine Adresse in dem &quot;Empfänger&quot; Feld sichtbar für den Absender. </translation>
+        <translation>Bei Bezahlung ist deine Adresse in dem &quot;Empfänger&quot; Feld sichtbar.</translation>
     </message>
     <message>
         <location filename="../src/requestdialog.ui" line="179"/>
@@ -1269,12 +1272,12 @@ You either have unconfirmed funds or the balance is too low for an automatic mig
     <message>
         <location filename="../src/requestdialog.cpp" line="50"/>
         <source>Error paying HUSH URI</source>
-        <translation>Fehler bezahl HUSH URI </translation>
+        <translation>Fehler bezahl HUSH URI</translation>
     </message>
     <message>
         <location filename="../src/requestdialog.cpp" line="51"/>
         <source>URI should be of the form &apos;hush:&lt;addr&gt;?amt=x&amp;memo=y</source>
-        <translation>Die URI sollte im folgendem Format sein: &apos;hush:&lt;Adresse&gt;?Betrag=x&amp;Nachricht=y </translation>
+        <translation>Die URI sollte im folgendem Format sein: &apos;hush:&lt;Adresse&gt;?Betrag=x&amp;Nachricht=y</translation>
     </message>
     <message>
         <location filename="../src/requestdialog.cpp" line="65"/>
@@ -1392,7 +1395,7 @@ You either have unconfirmed funds or the balance is too low for an automatic mig
     <message>
         <location filename="../src/settings.ui" line="235"/>
         <source>Allow overriding the default fees when sending transactions. Enabling this option may compromise your privacy since fees are transparent. </source>
-        <translation>Erlaube die voreingestellte Gebühr beim versenden einer Transaktion zu ändern. Dies könnte Ihre Privatsphäre verletzen, da Gebühren für jeden sichtbar sind.</translation>
+        <translation>Erlaube die voreingestellte Gebühr beim versenden einer Transaktion zu ändern. Dies könnte Ihre Privatsphäre verletzen, da Gebühren für jeden sichtbar sind. </translation>
     </message>
     <message>
         <location filename="../src/settings.ui" line="205"/>
@@ -1426,7 +1429,7 @@ You either have unconfirmed funds or the balance is too low for an automatic mig
     <message>
         <location filename="../src/turnstile.ui" line="90"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Funds from Sprout z-Addresses (which start with &amp;quot;zc&amp;quot;) need to be moved to the upgraded Sapling z-Addresses (which start with &amp;quot;zs&amp;quot;). The funds cannot be moved directly, but need to be sent through intermediate &amp;quot;transparent&amp;quot; addresses in privacy-preserving way.&lt;/p&gt;&lt;p&gt;This migration can be done automatically for you.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&gt;&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; Guthaben von einer alten sicheren Zc Adresse muss in eine neue sichere Zs (Sapling) Adresse übertragen werden. Das Guthaben kann nicht direkt übertragen werden. Es muss erst auf eine transparente Adresse und dann auf eine sichere (Zs) Adresse übertragen werden. Dies kann auch automatisch für Sie erledigt werden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; </translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; Guthaben von einer alten sicheren Zc Adresse muss in eine neue sichere Zs (Sapling) Adresse übertragen werden. Das Guthaben kann nicht direkt übertragen werden. Es muss erst auf eine transparente Adresse und dann auf eine sichere (Zs) Adresse übertragen werden. Dies kann auch automatisch für Sie erledigt werden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/turnstile.ui" line="106"/>
@@ -1505,7 +1508,7 @@ You either have unconfirmed funds or the balance is too low for an automatic mig
     <message>
         <location filename="../src/addressbook.ui" line="26"/>
         <source>Address (z-Addr or t-Addr)</source>
-        <translation>Adresse (Sicher oder Transparent)</translation>
+        <translation>Adresse (verborgen oder sichtbar)</translation>
     </message>
     <message>
         <location filename="../src/addressbook.ui" line="36"/>
@@ -1581,7 +1584,7 @@ You either have unconfirmed funds or the balance is too low for an automatic mig
     <message>
         <location filename="../src/createzcashconfdialog.ui" line="109"/>
         <source>Please choose a directory to store your wallet.dat and blockchain</source>
-        <translation>Bitte wählen Sie einen Ordner aus, indem Ihre wallet.dat und Blockhain gespeichert wird</translation>
+        <translation>Wählen Sie einen Ordner aus, wo Ihre wallet.dat und Blockhain gespeichert wird</translation>
     </message>
     <message>
         <location filename="../src/createzcashconfdialog.ui" line="118"/>
@@ -1596,7 +1599,7 @@ You either have unconfirmed funds or the balance is too low for an automatic mig
     <message>
         <location filename="../src/createzcashconfdialog.ui" line="161"/>
         <source>Please note that you&apos;ll need to already have a Tor service configured on port 9050</source>
-        <translation>Stellen Sie bitte sicher, dass der Tor Service bereits für den Port 9050 konfiguriert ist.</translation>
+        <translation>Stellen Sie sicher, dass der Tor Service bereits für den Port 9050 konfiguriert ist.</translation>
     </message>
 </context>
 <context>
