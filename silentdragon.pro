@@ -96,6 +96,7 @@ FORMS += \
     src/about.ui \
     src/confirm.ui \
     src/privkey.ui \
+    src/importviewkey.ui \
     src/viewkey.ui \
     src/memodialog.ui \
     src/viewalladdresses.ui \

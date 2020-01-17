@@ -1520,6 +1520,7 @@
     </property>
     <addaction name="actionConnect_Mobile_App"/>
     <addaction name="actionValidate_Address"/>
+    <addaction name="actionImport_Viewkey"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menu_Edit">
@@ -1643,6 +1644,11 @@
   <action name="actionValidate_Address">
    <property name="text">
     <string>Validate Address</string>
+   </property>
+  </action>
+  <action name="actionImport_Viewkey">
+   <property name="text">
+    <string>Import Viewing Key</string>
    </property>
   </action>
  </widget>

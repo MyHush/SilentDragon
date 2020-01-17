@@ -9,6 +9,7 @@
 #include "ui_addressbook.h"
 #include "ui_privkey.h"
 #include "ui_viewkey.h"
+#include "ui_importviewkey.h"
 #include "ui_about.h"
 #include "ui_settings.h"
 #include "ui_viewalladdresses.h"
@@ -91,6 +92,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Validate Address
     QObject::connect(ui->actionValidate_Address, &QAction::triggered, this, &MainWindow::validateAddress);
+
+    // Import viewkey
+    QObject::connect(ui->actionImport_Viewkey, &QAction::triggered, this, &MainWindow::importViewKey);
 
     // Connect mobile app
     QObject::connect(ui->actionConnect_Mobile_App, &QAction::triggered, this, [=] () {
@@ -518,9 +522,50 @@ void MainWindow::donate() {
     ui->tabWidget->setCurrentIndex(1);
 }
 
-/**
- * Validate an address
- */
+// Import a zaddr viewkey
+void MainWindow::importViewKey() {
+    qDebug() << "Import viewing key";
+    if (!getRPC() || !getRPC()->getConnection())
+        return;
+
+    bool ok;
+    qDebug() << "Import viewing key dialog";
+    auto viewkey = QInputDialog::getText(this, tr("Enter Sapling viewing key (from z_exportviewingkey)"),
+        tr("Viewing Key (starts with zivk...) :") + QString(" ").repeated(140),    // Pad the label so the dialog box is wide enough
+        QLineEdit::Normal, "", &ok);
+    if (!ok)
+        return;
+    qDebug() << "Importing " << viewkey;
+
+/*
+    getRPC()->importViewKey(viewkey, [=] (json props) {
+        QDialog d(this);
+        Ui_ValidateAddress va;
+        va.setupUi(&d);
+        Settings::saveRestore(&d);
+        Settings::saveRestoreTableHeader(va.tblProps, &d, "validateaddressprops");
+        va.tblProps->horizontalHeader()->setStretchLastSection(true);
+
+        va.lblAddress->setText(address);
+
+        QList<QPair<QString, QString>> propsList;
+        for (auto it = props.begin(); it != props.end(); it++) {
+
+            propsList.append(
+                QPair<QString, QString>(
+                    QString::fromStdString(it.key()), QString::fromStdString(it.value().dump()))
+            );
+        }
+
+        ValidateAddressesModel model(va.tblProps, propsList);
+        va.tblProps->setModel(&model);
+
+        d.exec();
+    });
+*/
+}
+
+// Validate a taddr or zaddr address
 void MainWindow::validateAddress() {
     // Make sure everything is up and running
     if (!getRPC() || !getRPC()->getConnection())

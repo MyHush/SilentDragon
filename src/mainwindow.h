@@ -122,6 +122,7 @@ private:
     void addressBook();
     void postToZBoard();
     void importPrivKey();
+    void importViewKey();
     void exportAllKeys();
     void exportKeys(QString addr = "");
     void getViewKey(QString addr = "");
