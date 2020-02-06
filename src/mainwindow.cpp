@@ -61,6 +61,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(ui->actionWebsite, &QAction::triggered, this, &MainWindow::website);
 
+    // Send button
+    QObject::connect(ui->sendMemo, &QPushButton::clicked, this, &MainWindow::sendMemo);
+
     // Set up check for updates action
     QObject::connect(ui->actionCheck_for_Updates, &QAction::triggered, [=] () {
         // Silent is false, so show notification even if no update was found
@@ -141,6 +144,45 @@ MainWindow::MainWindow(QWidget *parent) :
 
         qDebug() << "MainWindow: createWebsocket with wormholecode=" << wormholecode;
         createWebsocket(wormholecode);
+    }
+}
+
+// Send button clicked
+void MainWindow::sendMemo() {
+    Tx tx = createTxFromSendPage();
+
+    QString error = doSendTxValidations(tx);
+    if (!error.isEmpty()) {
+        // Something went wrong, so show an error and exit
+        QMessageBox msg(QMessageBox::Critical, tr("Transaction Error"), error,
+                        QMessageBox::Ok, this);
+
+        msg.exec();
+
+        // abort the Tx
+        return;
+    }
+
+    // Show a dialog to confirm the Tx
+    if (confirmTx(tx)) {
+        // And send the Tx
+        rpc->executeTransaction(tx,
+            [=] (QString opid) {
+                ui->statusBar->showMessage(tr("Computing transaction: ") % opid);
+                qDebug() << "Computing opid: " << opid;
+            },
+            [=] (QString, QString txid) { 
+                ui->statusBar->showMessage(Settings::txidStatusMessage + " " + txid);
+            },
+            [=] (QString opid, QString errStr) {
+                ui->statusBar->showMessage(QObject::tr(" Transaction ") % opid % QObject::tr(" failed"), 15 * 1000);
+
+                if (!opid.isEmpty())
+                    errStr = QObject::tr("The transaction with id ") % opid % QObject::tr(" failed. The error was") + ":\n\n" + errStr; 
+
+                QMessageBox::critical(this, QObject::tr("Transaction Error"), errStr, QMessageBox::Ok);
+            }
+        );
     }
 }
 

@@ -100,6 +100,7 @@ private:
 
     void cancelButton();
     void sendButton();
+    void sendMemo();
     void inputComboTextChanged(int index);
     void addAddressSection();
     void maxAmountChecked(int checked);
