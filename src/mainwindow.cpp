@@ -149,7 +149,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
 // Send button clicked
 void MainWindow::sendMemo() {
-    Tx tx = createTxFromSendPage();
+    Tx tx;
+    tx.fee = Settings::getMinerFee();
+    // TODO: choose current zaddr for this contact
+    tx.fromAddr = ui->inputsCombo->currentText();
+    double amount = 0;
+    // TODO: look up input text to add to memo
+    QString memo = "";
+    QString addr;
+    tx.toAddrs.push_back( ToFields{addr, amount, memo, memo.toUtf8().toHex()} );
 
     QString error = doSendTxValidations(tx);
     if (!error.isEmpty()) {

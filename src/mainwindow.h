@@ -31,6 +31,16 @@ namespace Ui {
     class MainWindow;
 }
 
+class HushContact
+{
+
+public:
+    QString name();
+    void setName();
+private:
+
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -140,6 +150,7 @@ private:
 
     WSServer*       wsserver = nullptr;
     WormholeClient* wormhole = nullptr;
+    HushContact     currentContact;
 
     RPC*                rpc             = nullptr;
     QCompleter*         labelCompleter  = nullptr;
