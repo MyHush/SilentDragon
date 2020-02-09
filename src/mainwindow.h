@@ -41,6 +41,18 @@ private:
 
 };
 
+class HushChat
+{
+
+public:
+    HushContact contact();
+    void setContact();
+    QString myZaddr();
+private:
+
+};
+
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
