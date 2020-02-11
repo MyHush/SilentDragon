@@ -35,9 +35,15 @@ class HushContact
 {
 
 public:
-    QString name();
-    void setName();
+    void setName(QString newname) { name =  newname; }
+    QString getName() { return name; }
 private:
+    QString name;
+    QString nickname;
+    QString zaddr;
+    QString myZaddr;
+    int64_t lastSentTime;
+    int64_t lastReceivedTime;
 
 };
 
@@ -94,6 +100,8 @@ public:
     Logger*      logger;
 
     void doClose();
+    HushChat getHushChat() { return hushChat; }
+    void setHushChat(HushChat chat) { hushChat = chat; }
 
 private:    
     void closeEvent(QCloseEvent* event);
@@ -162,7 +170,7 @@ private:
 
     WSServer*       wsserver = nullptr;
     WormholeClient* wormhole = nullptr;
-    HushContact     currentContact;
+    HushChat        hushChat;
 
     RPC*                rpc             = nullptr;
     QCompleter*         labelCompleter  = nullptr;

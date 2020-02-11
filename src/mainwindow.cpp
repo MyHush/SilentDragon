@@ -122,6 +122,17 @@ MainWindow::MainWindow(QWidget *parent) :
     // Initialize to the balances tab
     ui->tabWidget->setCurrentIndex(0);
 
+    if (AppDataServer::getInstance()->isAppConnected()) {
+        auto ads = AppDataServer::getInstance();
+
+        QString wormholecode = "";
+        if (ads->getAllowInternetConnection())
+            wormholecode = ads->getWormholeCode(ads->getSecretHex());
+
+        qDebug() << "MainWindow: createWebsocket with wormholecode=" << wormholecode;
+        createWebsocket(wormholecode);
+    }
+
     setupSendTab();
     setupTransactionsTab();
     setupReceiveTab();
@@ -135,16 +146,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     restoreSavedStates();
 
-    if (AppDataServer::getInstance()->isAppConnected()) {
-        auto ads = AppDataServer::getInstance();
-
-        QString wormholecode = "";
-        if (ads->getAllowInternetConnection())
-            wormholecode = ads->getWormholeCode(ads->getSecretHex());
-
-        qDebug() << "MainWindow: createWebsocket with wormholecode=" << wormholecode;
-        createWebsocket(wormholecode);
-    }
 }
 
 // Send button clicked
