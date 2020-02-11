@@ -671,7 +671,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event) {
 
         return true;
     } else if (event->type() == QEvent::MouseButtonPress) {
-        qDebug() << __func__ <<": "<<" mouse button event";
+        qDebug() << __func__ <<": "<<" mouse button event on " << object->objectName();
         QMouseEvent *ev = static_cast<QMouseEvent *>(event);
         if (ev->buttons() & Qt::RightButton)
         {
@@ -680,6 +680,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event) {
         if (ev->buttons() & Qt::LeftButton)
         {
             qDebug()<< "LeftButton clicked";
+            //TODO: if this was a HushContact object, update MainWindow::contact
         }
     }
 
