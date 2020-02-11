@@ -51,10 +51,13 @@ class HushChat
 {
 
 public:
-    HushContact contact();
-    void setContact();
-    QString myZaddr();
+    void setContact(HushContact newcontact) { contact = newcontact; }
+    HushContact getContact() { return contact; }
+    QString getMyZaddr() { return myZaddr; }
+    void setMyZaddr(QString z) {  myZaddr = z; }
 private:
+    QString myZaddr;
+    HushContact contact;
 
 };
 
