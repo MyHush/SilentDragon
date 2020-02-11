@@ -672,6 +672,15 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event) {
         return true;
     } else if (event->type() == QEvent::MouseButtonPress) {
         qDebug() << __func__ <<": "<<" mouse button event";
+        QMouseEvent *ev = static_cast<QMouseEvent *>(event);
+        if (ev->buttons() & Qt::RightButton)
+        {
+            qDebug()<< "RightButton clicked";
+        }
+        if (ev->buttons() & Qt::LeftButton)
+        {
+            qDebug()<< "LeftButton clicked";
+        }
     }
 
     return QObject::eventFilter(object, event);
