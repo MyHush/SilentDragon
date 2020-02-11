@@ -37,6 +37,10 @@ class HushContact
 public:
     void setName(QString newname) { name =  newname; }
     QString getName() { return name; }
+    QString getZaddr() { return zaddr; }
+    void setZaddr(QString z) { zaddr = z; }
+    QString getMyZaddr() { return myZaddr; }
+    void setMyZaddr(QString z) { myZaddr = z; }
 private:
     QString name;
     QString nickname;

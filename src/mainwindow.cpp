@@ -153,11 +153,14 @@ void MainWindow::sendMemo() {
     Tx tx;
     tx.fee = Settings::getMinerFee();
     // TODO: choose current zaddr for this contact
-    tx.fromAddr = ui->inputsCombo->currentText();
+    HushChat chat       = MainWindow::getHushChat();
+    HushContact contact = chat.getContact();
+    //TODO: verify we currently own the private key to this zaddr via z_validateaddress
+    tx.fromAddr = chat.getMyZaddr();
     double amount = 0;
     // TODO: look up input text to add to memo
     QString memo = "";
-    QString addr;
+    QString addr = contact.getZaddr();
     tx.toAddrs.push_back( ToFields{addr, amount, memo, memo.toUtf8().toHex()} );
 
     QString error = doSendTxValidations(tx);
@@ -667,6 +670,8 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event) {
             payZcashURI(fileEvent->url().toString());
 
         return true;
+    } else if (event->type() == QEvent::MouseButtonPress) {
+        qDebug() << __func__ <<": "<<" mouse button event";
     }
 
     return QObject::eventFilter(object, event);
