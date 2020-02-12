@@ -1,3 +1,5 @@
+// Copyright 2019-2020 The Hush Developers
+// Released under the GPLv3
 #include "senttxstore.h"
 #include "settings.h"
 
@@ -103,7 +105,7 @@ void SentTxStore::addToSentTx(Tx tx, QString txid) {
     txItem["txid"]      = txid;
     txItem["amount"]    = -totalAmount;
     txItem["fee"]       = -tx.fee;
-    // TODO: store all outgoing memos
+    // TODO: store all outgoing memos, after encryption
     txItem["memo"]      = tx.toAddrs[0].txtMemo;
     list.append(txItem);
 
