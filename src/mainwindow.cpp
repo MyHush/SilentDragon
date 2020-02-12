@@ -132,6 +132,9 @@ MainWindow::MainWindow(QWidget *parent) :
         createWebsocket(wormholecode);
     }
 
+    //TODO: allow user to set this
+    ui->textEdit->setTextColor( QColor("red") );
+
     QItemSelectionModel* qsm = ui->chatView->selectionModel();
     QObject::connect(qsm, SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),this, SLOT(itemselectionChanged()));
 
@@ -1171,6 +1174,8 @@ void MainWindow::setupChatTab() {
 
     ui->contactsView->setModel(chatModel);
     ui->chatView->setModel( conversationModel );
+    ui->chatGridLayout->setColumnStretch(1,1);
+    ui->chatGridLayout->setRowStretch(1,2);
 }
 
 void MainWindow::setupMarketTab() {

@@ -1018,26 +1018,59 @@
        <attribute name="title">
         <string>Chat</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_7">
+       <layout class="QVBoxLayout" name="chatVBoxLayout">
         <item>
-         <layout class="QGridLayout" name="gridLayout_6">
-          <item row="0" column="0">
+         <layout class="QGridLayout" name="chatGridLayout">
+          <item row="1" column="0">
            <widget class="QListView" name="contactsView"/>
           </item>
+
           <item row="1" column="1">
-           <widget class="QTextEdit" name="textEdit"/>
-          </item>
-          <item row="0" column="1">
            <widget class="QListView" name="chatView"/>
           </item>
-          <item row="1" column="2">
-           <widget class="QPushButton" name="sendMemo">
-            <property name="text">
-             <string>Send</string>
-            </property>
+
+          <item row="0" column="0">
+           <widget class="QLabel" name="tmp2">
+                  <property name="text">
+                   <string>Hush Contacts</string>
+                  </property>
+            </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="tmp3">
+                  <property name="text">
+                   <string>XXX and YYY metadata about this HushChat</string>
+                  </property>
+            </widget>
+          </item>
+
+          <item row="2" column="1">
+           <widget class="QTextEdit" name="textEdit">
            </widget>
           </item>
-          <item row="1" column="0">
+          <item row="3" column="1">
+
+
+           <layout class="QGridLayout" name="chatButtonLayout">
+                  <item row="0" column="1">
+                   <widget class="QPushButton" name="sendMemo">
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>50</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                    <property name="text">
+                     <string>Send Memo!</string>
+                    </property>
+                   </widget>
+                  </item>
+          </layout>
+
+
+
+          </item>
+          <item row="2" column="0">
            <widget class="QPushButton" name="newHushChat">
             <property name="text">
              <string>New HushChat</string>
