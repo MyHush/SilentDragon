@@ -64,12 +64,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // Send button
     QObject::connect(ui->sendMemo, &QPushButton::clicked, this, &MainWindow::sendMemo);
 
-    // Set up check for updates action
-    QObject::connect(ui->actionCheck_for_Updates, &QAction::triggered, [=] () {
-        // Silent is false, so show notification even if no update was found
-        rpc->checkForUpdate(false);
-    });
-
     // Request hush
     QObject::connect(ui->actionRequest_zcash, &QAction::triggered, [=]() {
         RequestDialog::showRequestZcash(this);
@@ -142,6 +136,13 @@ MainWindow::MainWindow(QWidget *parent) :
     setupMarketTab();
     setupChatTab();
     setupHushTab();
+
+    // Set up check for updates action
+    QObject::connect(ui->actionCheck_for_Updates, &QAction::triggered, [=] () {
+        // Silent is false, so show notification even if no update was found
+        rpc->checkForUpdate(false);
+    });
+
 
     rpc = new RPC(this);
     qDebug() << "Created RPC";
