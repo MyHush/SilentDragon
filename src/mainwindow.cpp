@@ -189,13 +189,14 @@ void MainWindow::sendMemo() {
     //TODO: cid=random int64 or sha256
     QString cid = QString::number( time(NULL) % std::rand() ); // low entropy for testing!
     QString hmemo= createHeaderMemo(cid,chat.getMyZaddr());
-    // TODO: look up input text to add to memo
-    QString memo = "";
+    QString memo = ui->textEdit->toPlainText();
     QString addr = contact.getZaddr();
 
     // we send a header memo plus actual memo
     tx.toAddrs.push_back( ToFields{addr, amount, hmemo, hmemo.toUtf8().toHex()} );
     tx.toAddrs.push_back( ToFields{addr, amount, memo, memo.toUtf8().toHex()} );
+
+    qDebug() << "Sending "<< addr << " a memo: " << memo;
 
     QString error = doSendTxValidations(tx);
     if (!error.isEmpty()) {
