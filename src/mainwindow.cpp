@@ -133,6 +133,8 @@ MainWindow::MainWindow(QWidget *parent) :
         createWebsocket(wormholecode);
     }
 
+    //QObject::connect(chatView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
+
     setupSendTab();
     setupTransactionsTab();
     setupReceiveTab();
@@ -148,6 +150,25 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
+QString MainWindow::createHeaderMemo(QString cid, QString zaddr, int version=0, int headerNumber=1)
+{
+    QString header="";
+    QJsonDocument j;
+    QJsonObject h;
+    // We use short keynames to use less space for metadata and so allow
+    // the user to send more actual data in memos
+    h["h"]   = headerNumber;    // header number
+    h["v"]   = version;         // HushChat version
+    h["z"]   = zaddr;           // zaddr to respond to
+    h["cid"] = cid;             // conversation id
+
+    j.setObject(h);
+    header = j.toJson();
+    qDebug() << "made header=" << header;
+
+    return header;
+}
+
 // Send button clicked
 void MainWindow::sendMemo() {
     Tx tx;
@@ -158,9 +179,15 @@ void MainWindow::sendMemo() {
     //TODO: verify we currently own the private key to this zaddr via z_validateaddress
     tx.fromAddr = chat.getMyZaddr();
     double amount = 0;
+    //TODO: cid=random int64 or sha256
+    QString cid = QString::number( time(NULL) % std::rand() ); // low entropy for testing!
+    QString hmemo= createHeaderMemo(cid,chat.getMyZaddr());
     // TODO: look up input text to add to memo
     QString memo = "";
     QString addr = contact.getZaddr();
+
+    // we send a header memo plus actual memo
+    tx.toAddrs.push_back( ToFields{addr, amount, hmemo, hmemo.toUtf8().toHex()} );
     tx.toAddrs.push_back( ToFields{addr, amount, memo, memo.toUtf8().toHex()} );
 
     QString error = doSendTxValidations(tx);

@@ -109,6 +109,7 @@ public:
     void doClose();
     HushChat getHushChat() { return hushChat; }
     void setHushChat(HushChat chat) { hushChat = chat; }
+    QString createHeaderMemo(QString cid, QString zaddr, int version, int headerNumnber);
 
 private:    
     void closeEvent(QCloseEvent* event);
