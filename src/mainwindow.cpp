@@ -1556,7 +1556,7 @@ void MainWindow::slot_change_currency(const std::string& currency_name)
        saved_currency_name = Settings::getInstance()->get_currency_name();
     } catch (const std::exception& e) {
         qDebug() << QString("Ignoring currency change Exception! : ") << e.what();
-        saved_currency_name = "USD";
+        saved_currency_name = "BTC";
     }
 }
 
