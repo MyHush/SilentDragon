@@ -24,6 +24,11 @@
 
 using json = nlohmann::json;
 
+void QListView::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
+{
+    qDebug() << "Selected " << selected;
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -127,7 +132,8 @@ MainWindow::MainWindow(QWidget *parent) :
         createWebsocket(wormholecode);
     }
 
-    //QObject::connect(chatView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onTableClicked(const QModelIndex &)));
+    QItemSelectionModel* qsm = ui->chatView->selectionModel();
+    QObject::connect(qsm, SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),this, SLOT(itemselectionChanged()));
 
     setupSendTab();
     setupTransactionsTab();
@@ -690,8 +696,8 @@ void MainWindow::balancesReady() {
 
 }
 
-// Event filter for MacOS specific handling of payment URIs
 bool MainWindow::eventFilter(QObject *object, QEvent *event) {
+    // Event filter for MacOS specific handling of payment URIs
     if (event->type() == QEvent::FileOpen) {
         QFileOpenEvent *fileEvent = static_cast<QFileOpenEvent*>(event);
         if (!fileEvent->url().isEmpty())
@@ -708,8 +714,9 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event) {
         if (ev->buttons() & Qt::LeftButton)
         {
             qDebug()<< "LeftButton clicked";
-            //TODO: if this was a HushContact object, update MainWindow::contact
+            //TODO: if this was a HushContact object in chatView, update MainWindow::contact
         }
+        return false;
     }
 
     return QObject::eventFilter(object, event);
