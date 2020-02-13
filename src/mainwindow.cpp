@@ -193,8 +193,8 @@ void MainWindow::sendMemo() {
     //TODO: verify we currently own the private key to this zaddr via z_validateaddress
     tx.fromAddr = chat.getMyZaddr();
     double amount = 0;
-    //TODO: cid=random int64 or sha256
-    QString cid = QString::number( time(NULL) % std::rand() ); // low entropy for testing!
+    //QString cid = QString::number( time(NULL) % std::rand() ); // low entropy for testing!
+    QString cid = QUuid::createUuid().toString(QUuid::WithoutBraces);
     QString hmemo= createHeaderMemo(cid,chat.getMyZaddr());
     QString memo = ui->textEdit->toPlainText();
     QString addr = contact.getZaddr();
