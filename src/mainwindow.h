@@ -80,6 +80,7 @@ public:
     QCompleter*         getLabelCompleter() { return labelCompleter; }
     QRegExpValidator*   getAmountValidator() { return amtValidator; }
 
+    QString getZaddrForContact(QString contact);
     QString doSendTxValidations(Tx tx);
     void setDefaultPayFrom();
 

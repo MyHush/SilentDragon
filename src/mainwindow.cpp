@@ -29,6 +29,18 @@ void QListView::selectionChanged(const QItemSelection& selected, const QItemSele
     qDebug() << "Selected " << selected;
 }
 
+QString MainWindow::getZaddrForContact(QString contact) {
+    QList<QPair<QString,QString>> addressLabels = AddressBook::getInstance()->getAllAddressLabels();
+    for (int i = 0; i < addressLabels.size(); ++i) {
+        QPair<QString,QString> pair = addressLabels.at(i);
+        if (pair.first == contact) {
+            qDebug() << "Found contact " << pair.first << " " << pair.second;
+            return pair.second;
+        }
+    }
+    return "";
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -177,6 +189,7 @@ QString MainWindow::createHeaderMemo(QString cid, QString zaddr, int version=0, 
     h["cid"] = cid;             // conversation id
 
     j.setObject(h);
+    //TODO: how do we remove newlines?
     header = j.toJson();
     qDebug() << "made header=" << header;
 
@@ -204,7 +217,9 @@ void MainWindow::sendMemo() {
         qDebug() << "Current (row,col) index: " << qmi.row() << "," << qmi.column();
         // we seem to get duplicates due to QT internals shenanigans, just pick the first
         QMap <int, QVariant> currentContacts = ui->contactsView->model()->itemData(qmi);
-        qDebug() << "Current HushContact: " << currentContacts[0].toString();
+        QString contact = currentContacts[0].toString();
+        qDebug() << "Current HushContact: " << contact;
+        addr = getZaddrForContact(contact);
     } else {
         qDebug() << "Invalid current index, no contacts selected";
     }
@@ -1158,6 +1173,7 @@ void MainWindow::setupBalancesTab() {
 void MainWindow::setupHushTab() {
     ui->hushlogo->setBasePixmap(QPixmap(":/img/res/zcashdlogo.gif"));
 }
+
 
 void MainWindow::setupChatTab() {
     qDebug() << __FUNCTION__;
