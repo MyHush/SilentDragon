@@ -205,12 +205,16 @@ void MainWindow::sendMemo() {
     HushContact contact = chat.getContact();
     //TODO: verify we currently own the private key to this zaddr via z_validateaddress
     tx.fromAddr = chat.getMyZaddr();
+    if(tx.fromAddr.isEmpty()) {
+        // TODO: we must update our addressbook to store a custom zaddr for each contact, until then
+        // make HushChat use the Duke feedback zaddr as reply zaddr
+        tx.fromAddr = "zs1aq4xnrkjlnxx0zesqye7jz3dfrf3rjh7q5z6u8l6mwyqqaam3gx3j2fkqakp33v93yavq46j83q";
+    }
     double amount = 0;
-    //QString cid = QString::number( time(NULL) % std::rand() ); // low entropy for testing!
-    QString cid = QUuid::createUuid().toString(QUuid::WithoutBraces);
-    QString hmemo= createHeaderMemo(cid,chat.getMyZaddr());
-    QString memo = ui->textEdit->toPlainText();
-    QString addr = contact.getZaddr();
+    QString cid   = QUuid::createUuid().toString(QUuid::WithoutBraces);
+    QString hmemo = createHeaderMemo(cid,chat.getMyZaddr());
+    QString memo  = ui->textEdit->toPlainText();
+    QString addr  = contact.getZaddr();
 
     QModelIndex qmi = ui->contactsView->currentIndex();
     if (qmi.isValid()) {
