@@ -3,6 +3,7 @@
 # Released under the GPLv3
 
 set -e
+set -x
 UNAME=$(uname)
 
 if [ "$UNAME" == "Linux" ] ; then
