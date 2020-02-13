@@ -54,16 +54,11 @@ MainWindow::MainWindow(QWidget *parent) :
     // Settings editor
     setupSettingsModal();
 
-    // Set up exit action
+    // Set up actions
     QObject::connect(ui->actionExit, &QAction::triggered, this, &MainWindow::close);
-
-    // Set up feedback action
     QObject::connect(ui->actionDonate, &QAction::triggered, this, &MainWindow::donate);
-
     QObject::connect(ui->actionDiscord, &QAction::triggered, this, &MainWindow::discord);
-
     QObject::connect(ui->actionReportBug, &QAction::triggered, this, &MainWindow::reportbug);
-
     QObject::connect(ui->actionWebsite, &QAction::triggered, this, &MainWindow::website);
 
     // Send button
@@ -136,11 +131,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->textEdit->setTextColor( QColor("red") );
 
     QItemSelectionModel* qsm = ui->chatView->selectionModel();
-    QObject::connect(qsm, SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),this, SLOT(itemselectionChanged()));
+    QObject::connect(qsm, SIGNAL(itemSelectionChanged(const QItemSelection&, const QItemSelection&)),this, SLOT(itemSelectionChanged()));
 
     // Contacts and chat views should not be editable
     ui->chatView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->contactsView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    ui->contactsView->setViewMode(QListView::ListMode);
+
+    // This works but doesn't take into account dark theme and is unreadable
+    //ui->contactsView->setAlternatingRowColors(true);
 
     setupSendTab();
     setupTransactionsTab();
@@ -198,6 +198,9 @@ void MainWindow::sendMemo() {
     QString hmemo= createHeaderMemo(cid,chat.getMyZaddr());
     QString memo = ui->textEdit->toPlainText();
     QString addr = contact.getZaddr();
+
+    QModelIndex qmil = ui->contactsView->currentIndex();
+    qDebug() << "Current index: " << qmil;
 
     // we send a header memo plus actual memo
     tx.toAddrs.push_back( ToFields{addr, amount, hmemo, hmemo.toUtf8().toHex()} );
@@ -724,7 +727,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event) {
             qDebug()<< "LeftButton clicked";
             //TODO: if this was a HushContact object in chatView, update MainWindow::contact
         }
-        return false;
+        //return false;
     }
 
     return QObject::eventFilter(object, event);
@@ -1167,6 +1170,11 @@ void MainWindow::setupChatTab() {
     QStringList conversations;
     conversations << "Bring home some milk" << "Markets look rough" << "How's the weather?" << "Is this on?";
     conversationModel->setStringList(conversations);
+
+    //conversationModel[0].setItemAlignment(Qt::AlignRight);
+
+    // iterate on all elements in chat view and set alignment
+    // ui->chatView->
 
 
     //Ui_addressBook ab;
