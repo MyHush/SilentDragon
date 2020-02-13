@@ -138,6 +138,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QItemSelectionModel* qsm = ui->chatView->selectionModel();
     QObject::connect(qsm, SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),this, SLOT(itemselectionChanged()));
 
+    // Contacts and chat views should not be editable
+    ui->chatView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->contactsView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
     setupSendTab();
     setupTransactionsTab();
     setupReceiveTab();
