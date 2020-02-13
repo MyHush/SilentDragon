@@ -199,8 +199,15 @@ void MainWindow::sendMemo() {
     QString memo = ui->textEdit->toPlainText();
     QString addr = contact.getZaddr();
 
-    QModelIndex qmil = ui->contactsView->currentIndex();
-    qDebug() << "Current index: " << qmil;
+    QModelIndex qmi = ui->contactsView->currentIndex();
+    if (qmi.isValid()) {
+        qDebug() << "Current (row,col) index: " << qmi.row() << "," << qmi.column();
+        // we seem to get duplicates due to QT internals shenanigans, just pick the first
+        QMap <int, QVariant> currentContacts = ui->contactsView->model()->itemData(qmi);
+        qDebug() << "Current HushContact: " << currentContacts[0].toString();
+    } else {
+        qDebug() << "Invalid current index, no contacts selected";
+    }
 
     // we send a header memo plus actual memo
     tx.toAddrs.push_back( ToFields{addr, amount, hmemo, hmemo.toUtf8().toHex()} );
@@ -720,11 +727,11 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event) {
         QMouseEvent *ev = static_cast<QMouseEvent *>(event);
         if (ev->buttons() & Qt::RightButton)
         {
-            qDebug()<< "RightButton clicked";
+            //qDebug()<< "RightButton clicked";
         }
         if (ev->buttons() & Qt::LeftButton)
         {
-            qDebug()<< "LeftButton clicked";
+            //qDebug()<< "LeftButton clicked";
             //TODO: if this was a HushContact object in chatView, update MainWindow::contact
         }
         //return false;
