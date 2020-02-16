@@ -270,8 +270,21 @@ void AddressBook::readFromStorage() {
         file.open(QIODevice::ReadOnly);
         QDataStream in(&file);    // read the data serialized from the file
         QString version;
-        //TODO: Do we need to convert v1 address file to v2, or is QT smart enough?
-        in >> version >> allLabels; 
+        in >> version;
+        if (version == "v1") {
+            qDebug() << "Detected old addressbook format";
+            // Convert old addressbook format v1 to v2
+            QList<QPair<QString,QString>> stuff;
+            in >> stuff;
+            qDebug() << "Stuff: " << stuff;
+            for (int i=0; i < stuff.size(); i++) {
+                QList<QString> contact = { stuff[i].first, stuff[i].second, "" };
+                qDebug() << "contact=" << contact;
+                allLabels.push_back(contact);
+            }
+        } else {
+            in >> allLabels;
+        }
         qDebug() << "Read " << version << " Hush contacts from disk...";
 
         file.close();
