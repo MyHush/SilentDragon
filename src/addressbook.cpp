@@ -328,6 +328,7 @@ QString AddressBook::writeableFile() {
 
 // Add a new address/label to the database
 void AddressBook::addAddressLabel(QString label, QString address, QString myzaddr) {
+    qDebug() << "Adding " << label << "=" << address << "," << myzaddr;
     Q_ASSERT(Settings::isValidAddress(address));
 
     // First, remove any existing label
