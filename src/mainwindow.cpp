@@ -209,10 +209,12 @@ void MainWindow::sendMemo() {
         // Either we made a custom zaddr for this contact in the past, or we make a new one now
         QString newzaddr;
         rpc->newZaddr( [=] (json reply) {
-            newzaddr = QString::fromStdString(reply.get<json::string_t>());
+            QString z = QString::fromStdString(reply.get<json::string_t>());
+            qDebug() << "created new myZaddr="<< z;
+            // TODO: bullshit error about const objects
+            // contact.setMyZaddr(z);
         });
-        qDebug() << "created new myZaddr="<< newzaddr;
-        contact.setMyZaddr(newzaddr);
+        //TODO: race condition in setting/getting new contact zaddr?
         AddressBook::getInstance()->addAddressLabel(contact.getName(), contact.getZaddr(), contact.getMyZaddr() );
         qDebug() << "Wrote new myZaddr for " << contact.getName() << " to storage";
 
@@ -220,7 +222,7 @@ void MainWindow::sendMemo() {
     qDebug() << "Using " << tx.fromAddr << " as from address for " << contact.getName();
     double amount = 0;
     QString cid   = QUuid::createUuid().toString(QUuid::WithoutBraces);
-    QString hmemo = createHeaderMemo(cid,chat.getMyZaddr());
+    QString hmemo = createHeaderMemo(cid,contact.getMyZaddr());
     QString memo  = ui->textEdit->toPlainText();
     QString addr  = contact.getZaddr();
 
