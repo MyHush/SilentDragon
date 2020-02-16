@@ -303,6 +303,7 @@ void AddressBook::readFromStorage() {
 }
 
 void AddressBook::writeToStorage() {
+    //TODO: we probably should do more exception-handling here
     QFile file(AddressBook::writeableFile());
     file.open(QIODevice::ReadWrite | QIODevice::Truncate);
     QDataStream out(&file);   // we will serialize the data into the file

@@ -204,12 +204,20 @@ void MainWindow::sendMemo() {
     HushChat chat       = MainWindow::getHushChat();
     HushContact contact = chat.getContact();
     //TODO: verify we currently own the private key to this zaddr via z_validateaddress
-    tx.fromAddr = chat.getMyZaddr();
+    tx.fromAddr = contact.getMyZaddr();
     if(tx.fromAddr.isEmpty()) {
-        // TODO: we must update our addressbook to store a custom zaddr for each contact, until then
-        // make HushChat use the Duke feedback zaddr as reply zaddr
-        tx.fromAddr = "zs1aq4xnrkjlnxx0zesqye7jz3dfrf3rjh7q5z6u8l6mwyqqaam3gx3j2fkqakp33v93yavq46j83q";
+        // Either we made a custom zaddr for this contact in the past, or we make a new one now
+        QString newzaddr;
+        rpc->newZaddr( [=] (json reply) {
+            newzaddr = QString::fromStdString(reply.get<json::string_t>());
+        });
+        qDebug() << "created new myZaddr="<< newzaddr;
+        contact.setMyZaddr(newzaddr);
+        AddressBook::getInstance()->addAddressLabel(contact.getName(), contact.getZaddr(), contact.getMyZaddr() );
+        qDebug() << "Wrote new myZaddr for " << contact.getName() << " to storage";
+
     }
+    qDebug() << "Using " << tx.fromAddr << " as from address for " << contact.getName();
     double amount = 0;
     QString cid   = QUuid::createUuid().toString(QUuid::WithoutBraces);
     QString hmemo = createHeaderMemo(cid,chat.getMyZaddr());
