@@ -46,8 +46,8 @@ private:
     QString nickname;
     QString zaddr;
     QString myZaddr;
-    int64_t lastSentTime;
-    int64_t lastReceivedTime;
+    //int64_t lastSentTime;
+    //int64_t lastReceivedTime;
 
 };
 

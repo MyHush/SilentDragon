@@ -30,12 +30,12 @@ void QListView::selectionChanged(const QItemSelection& selected, const QItemSele
 }
 
 QString MainWindow::getZaddrForContact(QString contact) {
-    QList<QPair<QString,QString>> addressLabels = AddressBook::getInstance()->getAllAddressLabels();
+    QList<QList<QString>> addressLabels = AddressBook::getInstance()->getAllAddressLabels();
     for (int i = 0; i < addressLabels.size(); ++i) {
-        QPair<QString,QString> pair = addressLabels.at(i);
-        if (pair.first == contact) {
-            qDebug() << "Found contact " << pair.first << " " << pair.second;
-            return pair.second;
+        QList<QString> thisContact = addressLabels.at(i);
+        if (thisContact[0] == contact) {
+            qDebug() << "Found contact " << thisContact[0] << " " << thisContact[1];
+            return thisContact[1];
         }
     }
     return "";
@@ -1181,14 +1181,14 @@ void MainWindow::setupHushTab() {
 
 void MainWindow::setupChatTab() {
     qDebug() << __FUNCTION__;
-    QList<QPair<QString,QString>> addressLabels = AddressBook::getInstance()->getAllAddressLabels();
+    QList<QList<QString>> addressLabels = AddressBook::getInstance()->getAllAddressLabels();
     QStringListModel *chatModel = new QStringListModel();
     QStringList contacts;
     //contacts << "Alice" << "Bob" << "Charlie" << "Eve";
     for (int i = 0; i < addressLabels.size(); ++i) {
-        QPair<QString,QString> pair = addressLabels.at(i);
-        qDebug() << "Found contact " << pair.first << " " << pair.second;
-        contacts << pair.first;
+        QList<QString> thisContact = addressLabels.at(i);
+        qDebug() << "Found contact " << thisContact[0] << " " << thisContact[1];
+        contacts << thisContact[0];
     }
 
     chatModel->setStringList(contacts);
@@ -1534,14 +1534,12 @@ void MainWindow::setupReceiveTab() {
         if (!curLabel.isEmpty() && label.isEmpty()) {
             info = "Removed Label '" % curLabel % "'";
             AddressBook::getInstance()->removeAddressLabel(curLabel, addr);
-        }
-        else if (!curLabel.isEmpty() && !label.isEmpty()) {
+        } else if (!curLabel.isEmpty() && !label.isEmpty()) {
             info = "Updated Label '" % curLabel % "' to '" % label % "'";
             AddressBook::getInstance()->updateLabel(curLabel, addr, label);
-        }
-        else if (curLabel.isEmpty() && !label.isEmpty()) {
+        } else if (curLabel.isEmpty() && !label.isEmpty()) {
             info = "Added Label '" % label % "'";
-            AddressBook::getInstance()->addAddressLabel(label, addr);
+            AddressBook::getInstance()->addAddressLabel(label, addr,"");
         }
 
         // Update labels everywhere on the UI

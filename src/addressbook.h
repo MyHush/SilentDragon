@@ -1,3 +1,5 @@
+// Copyright 2019-2020 The Hush Developers
+// Released under the GPLv3
 #ifndef ADDRESSBOOK_H
 #define ADDRESSBOOK_H
 
@@ -11,9 +13,9 @@ public:
     AddressBookModel(QTableView* parent);
     ~AddressBookModel();
                             
-    void                    addNewLabel(QString label, QString addr);
+    void                    addNewLabel(QString label, QString addr, QString myzaddr);
     void                    removeItemAt(int row);
-    QPair<QString, QString> itemAt(int row);
+    QList<QString>          itemAt(int row);
 
     int      rowCount(const QModelIndex &parent) const;
     int      columnCount(const QModelIndex &parent) const;
@@ -25,7 +27,7 @@ private:
     void saveData();
 
     QTableView* parent;
-    QList<QPair<QString, QString>> labels;
+    QList<QList<QString>> labels;
     QStringList headers;    
 };
 
@@ -39,7 +41,7 @@ public:
     static QString addressFromAddressLabel(const QString& lblAddr);
 
     // Add a new address/label to the database
-    void addAddressLabel(QString label, QString address);
+    void addAddressLabel(QString label, QString address, QString myZaddr);
 
     // Remove a new address/label from the database
     void removeAddressLabel(QString label, QString address);
@@ -48,7 +50,7 @@ public:
     void updateLabel(QString oldlabel, QString address, QString newlabel);
 
     // Read all addresses
-    const QList<QPair<QString, QString>>& getAllAddressLabels();
+    const QList<QList<QString>>& getAllAddressLabels();
 
     // Get an address's first label
     QString getLabelForAddress(QString address);
@@ -61,7 +63,8 @@ private:
     void writeToStorage();
 
     QString writeableFile();
-    QList<QPair<QString, QString>> allLabels;
+    // contact name, contact address, myzaddr (the zaddr we use to receive from this contact)
+    QList<QList<QString>> allLabels;
 
     static AddressBook* instance;
 };

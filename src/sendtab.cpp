@@ -1,4 +1,5 @@
 // Copyright 2019-2020 Hush developers
+// Released under the GPLv3
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "addressbook.h"
@@ -124,7 +125,7 @@ void MainWindow::updateLabelsAutoComplete() {
     auto labels = AddressBook::getInstance()->getAllAddressLabels();
     
     std::transform(labels.begin(), labels.end(), std::back_inserter(list), [=] (auto la) -> QString {
-        return la.first % "/" % la.second;
+        return la[0] % "/" % la[1];
     });
     
     delete labelCompleter;
