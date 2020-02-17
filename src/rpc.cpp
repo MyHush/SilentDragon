@@ -33,7 +33,7 @@ RPC::RPC(MainWindow* main) {
     QObject::connect(priceTimer, &QTimer::timeout, [=]() {
         refreshPrice();
     });
-    priceTimer->start(Settings::priceRefreshSpeed);  // Every hour
+    priceTimer->start(Settings::priceRefreshSpeed);
 
     // Set up a timer to refresh the UI every few seconds
     timer = new QTimer(main);
