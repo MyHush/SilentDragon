@@ -181,6 +181,7 @@ QString MainWindow::createHeaderMemo(QString cid, QString zaddr, int version=0, 
     QString header="";
     QJsonDocument j;
     QJsonObject h;
+    version  = -1; // This is unstable v=-1 until we launch with v=0
     // We use short keynames to use less space for metadata and so allow
     // the user to send more actual data in memos
     h["h"]   = headerNumber;    // header number
@@ -196,36 +197,8 @@ QString MainWindow::createHeaderMemo(QString cid, QString zaddr, int version=0, 
     return header;
 }
 
-// Send button clicked
-void MainWindow::sendMemo() {
-    Tx tx;
-    tx.fee = Settings::getMinerFee();
-    // TODO: choose current zaddr for this contact
-    HushChat chat       = MainWindow::getHushChat();
-    HushContact contact = chat.getContact();
-    //TODO: verify we currently own the private key to this zaddr via z_validateaddress
-    tx.fromAddr = contact.getMyZaddr();
-    if(tx.fromAddr.isEmpty()) {
-        // Either we made a custom zaddr for this contact in the past, or we make a new one now
-        QString newzaddr;
-        rpc->newZaddr( [=] (json reply) {
-            QString z = QString::fromStdString(reply.get<json::string_t>());
-            qDebug() << "created new myZaddr="<< z;
-            // TODO: bullshit error about const objects
-            // contact.setMyZaddr(z);
-        });
-        //TODO: race condition in setting/getting new contact zaddr?
-        AddressBook::getInstance()->addAddressLabel(contact.getName(), contact.getZaddr(), contact.getMyZaddr() );
-        qDebug() << "Wrote new myZaddr for " << contact.getName() << " to storage";
-
-    }
-    qDebug() << "Using " << tx.fromAddr << " as from address for " << contact.getName();
-    double amount = 0;
-    QString cid   = QUuid::createUuid().toString(QUuid::WithoutBraces);
-    QString hmemo = createHeaderMemo(cid,contact.getMyZaddr());
-    QString memo  = ui->textEdit->toPlainText();
-    QString addr  = contact.getZaddr();
-
+QString MainWindow::getZaddrForCurrentContact() {
+    QString zaddr;
     QModelIndex qmi = ui->contactsView->currentIndex();
     if (qmi.isValid()) {
         qDebug() << "Current (row,col) index: " << qmi.row() << "," << qmi.column();
@@ -233,50 +206,102 @@ void MainWindow::sendMemo() {
         QMap <int, QVariant> currentContacts = ui->contactsView->model()->itemData(qmi);
         QString contact = currentContacts[0].toString();
         qDebug() << "Current HushContact: " << contact;
-        addr = getZaddrForContact(contact);
+        zaddr = getZaddrForContact(contact);
     } else {
         qDebug() << "Invalid current index, no contacts selected";
     }
+    return zaddr;
+}
 
-    // we send a header memo plus actual memo
-    tx.toAddrs.push_back( ToFields{addr, amount, hmemo, hmemo.toUtf8().toHex()} );
-    tx.toAddrs.push_back( ToFields{addr, amount, memo, memo.toUtf8().toHex()} );
-
-    qDebug() << "Sending "<< addr << " a memo: " << memo;
-
-    QString error = doSendTxValidations(tx);
-    if (!error.isEmpty()) {
-        // Something went wrong, so show an error and exit
-        QMessageBox msg(QMessageBox::Critical, tr("Transaction Error"), error,
-                        QMessageBox::Ok, this);
-
-        msg.exec();
-
-        // abort the Tx
-        return;
+QString MainWindow::getNameForCurrentContact() {
+    QString name;
+    QModelIndex qmi = ui->contactsView->currentIndex();
+    if (qmi.isValid()) {
+        qDebug() << "Current (row,col) index: " << qmi.row() << "," << qmi.column();
+        // we seem to get duplicates due to QT internals shenanigans, just pick the first
+        QMap <int, QVariant> currentContacts = ui->contactsView->model()->itemData(qmi);
+        QString name = currentContacts[0].toString();
+    } else {
+        qDebug() << "Invalid current index, no contacts selected";
     }
+    return name;
+}
 
-    // Show a dialog to confirm the Tx
-    if (confirmTx(tx)) {
-        // And send the Tx
-        rpc->executeTransaction(tx,
-            [=] (QString opid) {
-                ui->statusBar->showMessage(tr("Computing transaction: ") % opid);
-                qDebug() << "Computing opid: " << opid;
-            },
-            [=] (QString, QString txid) { 
-                ui->statusBar->showMessage(Settings::txidStatusMessage + " " + txid);
-            },
-            [=] (QString opid, QString errStr) {
-                ui->statusBar->showMessage(QObject::tr(" Transaction ") % opid % QObject::tr(" failed"), 15 * 1000);
+// Send button clicked
+void MainWindow::sendMemo() {
+    HushChat thisChat   = MainWindow::getHushChat();
 
-                if (!opid.isEmpty())
-                    errStr = QObject::tr("The transaction with id ") % opid % QObject::tr(" failed. The error was") + ":\n\n" + errStr; 
+    // Either we made a custom zaddr for this contact in the past, or we make a new one now
+    if(thisChat.getContact().getMyZaddr().isEmpty()) {
+        QString newzaddr;
+        rpc->newZaddr( [=] (json reply) {
+            Tx tx;
+            tx.fee = Settings::getMinerFee();
+            //TODO: verify we currently own the private key to this zaddr via z_validateaddress
+            HushChat chat       = MainWindow::getHushChat();
+            HushContact contact = chat.getContact();
+            QString myZaddr     = QString::fromStdString(reply.get<json::string_t>());
+            QString addr        = getZaddrForCurrentContact();
+            QString name        = getNameForCurrentContact();
+            qDebug() << "created new myZaddr="<< myZaddr << " for " << name;
+            contact.setName(name);
+            contact.setMyZaddr(myZaddr);
+            contact.setZaddr(addr);
 
-                QMessageBox::critical(this, QObject::tr("Transaction Error"), errStr, QMessageBox::Ok);
+
+            AddressBook::getInstance()->addAddressLabel(contact.getName(), contact.getZaddr(), contact.getMyZaddr());
+            qDebug() << "Wrote new myZaddr for " << contact.getName() << " to storage";
+
+            qDebug() << "Using " << myZaddr << " as from address for " << contact.getName();
+            double amount = 0;
+            QString cid   = QUuid::createUuid().toString(QUuid::WithoutBraces);
+            QString hmemo = createHeaderMemo(cid,myZaddr);
+            QString memo  = ui->textEdit->toPlainText();
+
+            // we send a header memo plus actual memo
+            tx.toAddrs.push_back( ToFields{addr, amount, hmemo, hmemo.toUtf8().toHex()} );
+            tx.toAddrs.push_back( ToFields{addr, amount, memo, memo.toUtf8().toHex()} );
+            tx.fromAddr         = contact.getMyZaddr();
+
+            qDebug() << "Sending "<< name << "(" << addr << ") a memo: " << memo;
+
+            QString error = doSendTxValidations(tx);
+            if (!error.isEmpty()) {
+                // Something went wrong, so show an error and exit
+                QMessageBox msg(QMessageBox::Critical, tr("Transaction Error"), error,
+                                QMessageBox::Ok, this);
+
+                msg.exec();
+
+                // abort the Tx
+                return;
             }
-        );
-    }
+
+            // Show a dialog to confirm the Tx
+            if (confirmTx(tx)) {
+                // And send the Tx
+                rpc->executeTransaction(tx,
+                    [=] (QString opid) {
+                        ui->statusBar->showMessage(tr("Computing transaction: ") % opid);
+                        qDebug() << "Computing opid: " << opid;
+                    },
+                    [=] (QString, QString txid) { 
+                        ui->statusBar->showMessage(Settings::txidStatusMessage + " " + txid);
+                    },
+                    [=] (QString opid, QString errStr) {
+                        ui->statusBar->showMessage(QObject::tr(" Transaction ") % opid % QObject::tr(" failed"), 15 * 1000);
+
+                        if (!opid.isEmpty())
+                            errStr = QObject::tr("The transaction with id ") % opid % QObject::tr(" failed. The error was") + ":\n\n" + errStr; 
+
+                        QMessageBox::critical(this, QObject::tr("Transaction Error"), errStr, QMessageBox::Ok);
+                    }
+                );
+            }
+     }); // newZaddr
+ } else {
+    // this contact already has a myZaddr
+ }
 }
 
 void MainWindow::createWebsocket(QString wormholecode) {

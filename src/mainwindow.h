@@ -81,6 +81,8 @@ public:
     QRegExpValidator*   getAmountValidator() { return amtValidator; }
 
     QString getZaddrForContact(QString contact);
+    QString getZaddrForCurrentContact();
+    QString getNameForCurrentContact();
     QString doSendTxValidations(Tx tx);
     void setDefaultPayFrom();
 
