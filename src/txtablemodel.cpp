@@ -1,3 +1,5 @@
+// Copyright 2019-2020 The Hush Developers
+// Released under the GPLv3
 #include "txtablemodel.h"
 #include "settings.h"
 #include "rpc.h"

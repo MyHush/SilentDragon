@@ -1230,7 +1230,7 @@ void MainWindow::setupChatTab() {
 
     QStringListModel *conversationModel = new QStringListModel();
     QStringList conversations;
-    conversations << "Bring home some milk" << "Markets look rough" << "How's the weather?" << "Is this on?";
+    conversations << "The Bitcoin network might actually reduce spam by diverting zombie farms to generating bitcoins instead.";
     conversationModel->setStringList(conversations);
 
     //conversationModel[0].setItemAlignment(Qt::AlignRight);
