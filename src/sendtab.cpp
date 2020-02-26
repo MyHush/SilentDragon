@@ -707,15 +707,44 @@ void MainWindow::sendButton() {
 
     // Show a dialog to confirm the Tx
     if (confirmTx(tx)) {
+
+          // Create a new Dialog to show that we are computing/sending the Tx
+        auto d = new QDialog(this);
+        auto connD = new Ui_ConnectionDialog();
+        connD->setupUi(d);
+        QPixmap logo(":/img/res/logobig.gif");
+        connD->topIcon->setBasePixmap(logo.scaled(256, 256, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+        connD->status->setText(tr("Please wait..."));
+        connD->statusDetail->setText(tr("Computing your transaction"));
+
+        d->show();
+
         // And send the Tx
         rpc->executeTransaction(tx,
             [=] (QString opid) {
                 ui->statusBar->showMessage(tr("Computing transaction: ") % opid);
                 qDebug() << "Computing opid: " << opid;
             },
+
             [=] (QString, QString txid) { 
                 ui->statusBar->showMessage(Settings::txidStatusMessage + " " + txid);
-            },
+
+                connD->status->setText(tr("Done!"));
+                connD->statusDetail->setText(txid);
+
+                QTimer::singleShot(1000, [=]() {
+                    d->accept();
+                    d->close();
+                    delete connD;
+                    delete d;
+
+                    // And switch to the balances tab
+                    ui->tabWidget->setCurrentIndex(0);
+                     });
+                       // Force a UI update so we get the unconfirmed Tx
+                rpc->refresh(true);
+            },       
             [=] (QString opid, QString errStr) {
                 ui->statusBar->showMessage(QObject::tr(" Transaction ") % opid % QObject::tr(" failed"), 15 * 1000);
 
@@ -725,7 +754,7 @@ void MainWindow::sendButton() {
                 QMessageBox::critical(this, QObject::tr("Transaction Error"), errStr, QMessageBox::Ok);
             }
         );
-    }
+    }   
 }
 
 QString MainWindow::doSendTxValidations(Tx tx) {
