@@ -11,14 +11,21 @@
     <qresource prefix="/img">
         <file>res/zcashdlogo.gif</file>
         <file>res/logobig.gif</file>
+        <file>res/silentdragon-animated.gif</file>
+        <file>res/silentdragon-animated-dark.gif</file>
+        <file>res/silentdragon-animated-startup.gif</file>
+        <file>res/silentdragon-animated-startup-dark.gif</file>
     </qresource>
     <qresource prefix="/translations">
+        <file>res/silentdragon_bg.qm</file>
         <file>res/silentdragon_de.qm</file>
         <file>res/silentdragon_es.qm</file>
         <file>res/silentdragon_fi.qm</file>
+        <file>res/silentdragon_fil.qm</file>
         <file>res/silentdragon_fr.qm</file>
         <file>res/silentdragon_hr.qm</file>
         <file>res/silentdragon_it.qm</file>
+        <file>res/silentdragon_id.qm</file>
         <file>res/silentdragon_nl.qm</file>
         <file>res/silentdragon_pt.qm</file>
         <file>res/silentdragon_ru.qm</file>
@@ -32,6 +39,7 @@
         <file>res/css/dark.css</file>
         <file>res/css/default.css</file>
         <file>res/css/light.css</file>
+        <file>res/css/midnight.css</file>
     </qresource>
     <qresource prefix="/images/blue">
         <file>res/images/blue/unchecked.png</file>

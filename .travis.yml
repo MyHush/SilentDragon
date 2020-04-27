@@ -1,3 +1,5 @@
+dist: trusty
+
 matrix:
   include:
     # works on Precise and Trusty
@@ -9,10 +11,12 @@ matrix:
           packages: ['clang-3.7', 'g++-8']
 
 before_install:
+# TODO: I usually make builds with 5.14 - Duke
  - sudo add-apt-repository ppa:beineri/opt-qt591-trusty -y
  - sudo apt-get update -qq
  - sudo apt-get install qt59base qt59websockets 
  - source /opt/qt59/bin/qt59-env.sh
+ - chmod +x res/libsodium/buildlibsodium.sh
 
 script:
  - qmake -v
@@ -22,6 +26,10 @@ script:
  - make CC=clang CXX=clang++ -j2
  - make distclean
  - qmake silentdragon.pro CONFIG+=release -spec linux-g++
+# These next 2 lines test that translation source files can be compiled
+# correctly and will hopefully catch syntax errors earlier
+# We want the build to fail if we can't compile translations.
+ - lupdate silentdragon.pro
+ - lrelease silentdragon.pro
  - res/libsodium/buildlibsodium.sh
  - make CC=gcc-8 CXX=g++-8 -j2
- 

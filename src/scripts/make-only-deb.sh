@@ -13,7 +13,7 @@ if [ -z $APP_VERSION ]; then echo "APP_VERSION is not set"; exit 1; fi
 # This assumes we already have a staticly compiled SD
 
 echo "Building Debian package for $APP_VERSION-$ARCH..."
-debdir=deb-SilentDragon-v$APP_VERSION-$ARCH
+debdir=SilentDragon-v$APP_VERSION-$ARCH
 if [ -e $debdir ]; then
     mv $debdir $debdir-backup.$(perl -e 'print time')
 fi

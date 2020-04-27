@@ -1092,8 +1092,8 @@ void RPC::checkForUpdate(bool silent) {
                 } 
             }
         } catch (const std::exception& e) {
-            // If anything at all goes wrong, just set the price to 0 and move on.
-            qDebug() << QString("Caught something nasty: ") << e.what();
+            // If anything at all goes wrong, move on
+            qDebug() << QString("Exception checking for updates!");
         }
     });
 }
@@ -1110,11 +1110,14 @@ void RPC::refreshPrice() {
     QNetworkReply *reply = conn->restclient->get(req);
     auto s = Settings::getInstance();
 
+    qDebug() << "Requesting price feed data via " << price_feed;
+
     QObject::connect(reply, &QNetworkReply::finished, [=] {
         reply->deleteLater();
 
         try {
             if (reply->error() != QNetworkReply::NoError) {
+                qDebug() << "Parsing price feed response";
                 auto parsed = json::parse(reply->readAll(), nullptr, false);
                 if (!parsed.is_discarded() && !parsed["error"]["message"].is_null()) {
                     qDebug() << QString::fromStdString(parsed["error"]["message"]);
@@ -1190,7 +1193,7 @@ void RPC::refreshPrice() {
             }
         } catch (const std::exception& e) {
             // If anything at all goes wrong, just set the price to 0 and move on.
-            qDebug() << QString("Caught something nasty: ") << e.what();
+            qDebug() << QString("Price feed update failure : ") << e.what();
         }
 
         // If nothing, then set the price to 0;
@@ -1214,7 +1217,21 @@ void RPC::shutdownZcashd() {
     d.setWindowFlags(d.windowFlags() & ~(Qt::WindowCloseButtonHint | Qt::WindowContextHelpButtonHint));
     Ui_ConnectionDialog connD;
     connD.setupUi(&d);
-    connD.topIcon->setBasePixmap(QIcon(":/icons/res/icon.ico").pixmap(256, 256));
+    //connD.topIcon->setBasePixmap(QIcon(":/icons/res/icon.ico").pixmap(256, 256));
+
+    QMovie *movie1 = new QMovie(":/img/res/silentdragon-animated.gif");;
+    QMovie *movie2 = new QMovie(":/img/res/silentdragon-animated-dark.gif");;
+    auto theme = Settings::getInstance()->get_theme_name();
+    if (theme == "dark" || "midnight") {
+        movie2->setScaledSize(QSize(512,512));
+        connD.topIcon->setMovie(movie2);
+        movie2->start();
+    } else {
+        movie1->setScaledSize(QSize(512,512));
+        connD.topIcon->setMovie(movie1);
+        movie1->start();
+    }
+
     connD.status->setText(QObject::tr("Please enhance your calm and wait for SilentDragon to exit"));
     connD.statusDetail->setText(QObject::tr("Waiting for hushd to exit, y'all"));
 

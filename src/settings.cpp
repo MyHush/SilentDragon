@@ -62,7 +62,7 @@ Config Settings::getSettings() {
     auto port        = s.value("connection/port").toString();
     auto username    = s.value("connection/rpcuser").toString();
     auto password    = s.value("connection/rpcpassword").toString();
-
+    
     return Config{host, port, username, password};
 }
 

@@ -464,7 +464,6 @@ void MainWindow::setupSettingsModal() {
         int theme_index = settings.comboBoxTheme->findText(Settings::getInstance()->get_theme_name(), Qt::MatchExactly);
         settings.comboBoxTheme->setCurrentIndex(theme_index);
 
-        QObject::connect(settings.comboBoxTheme, SIGNAL(currentIndexChanged(QString)), this, SLOT(slot_change_theme(QString)));
         QObject::connect(settings.comboBoxTheme, &QComboBox::currentTextChanged, [=] (QString theme_name) {
             this->slot_change_theme(theme_name);
             QMessageBox::information(this, tr("Theme Change"), tr("This change can take a few seconds."), QMessageBox::Ok);
@@ -474,7 +473,6 @@ void MainWindow::setupSettingsModal() {
         QString ticker = QString::fromStdString( Settings::getInstance()->get_currency_name() );
         int currency_index = settings.comboBoxCurrency->findText(ticker, Qt::MatchExactly);
         settings.comboBoxCurrency->setCurrentIndex(currency_index);
-        QObject::connect(settings.comboBoxCurrency, SIGNAL(currentIndexChanged(QString)), this, SLOT(slot_change_currency(QString)));
         QObject::connect(settings.comboBoxCurrency, &QComboBox::currentTextChanged, [=] (QString ticker) {
             this->slot_change_currency(ticker.toStdString());
             rpc->refresh(true);
@@ -510,6 +508,48 @@ void MainWindow::setupSettingsModal() {
             settings.lblTor->setToolTip(tooltip);
         }
 
+        //Use Consolidation
+
+        bool isUsingConsolidation = false;
+        int size = 0;
+        QDir zcashdir(rpc->getConnection()->config->zcashDir);
+        QFile WalletSize(zcashdir.filePath("wallet.dat"));
+        if (WalletSize.open(QIODevice::ReadOnly)){
+        size = WalletSize.size() / 1000000;  //when file does open.
+        //QString size1 = QString::number(size) ;
+        settings.WalletSize->setText(QString::number(size));
+        WalletSize.close();
+        } 
+        if (rpc->getConnection() != nullptr) {
+            isUsingConsolidation = !rpc->getConnection()->config->consolidation.isEmpty() == true;
+        }
+        settings.chkConso->setChecked(isUsingConsolidation);
+        if (rpc->getEZcashD() == nullptr) {
+            settings.chkConso->setEnabled(false);
+        }
+
+         //Use Deletetx
+
+        bool isUsingDeletetx = false;
+        if (rpc->getConnection() != nullptr) {
+            isUsingDeletetx = !rpc->getConnection()->config->deletetx.isEmpty() == true;
+        }
+        settings.chkDeletetx->setChecked(isUsingDeletetx);
+        if (rpc->getEZcashD() == nullptr) {
+            settings.chkDeletetx->setEnabled(false);
+        }
+
+          //Use Zindex
+
+        bool isUsingZindex = false;
+        if (rpc->getConnection() != nullptr) {
+            isUsingZindex = !rpc->getConnection()->config->zindex.isEmpty() == true;
+        }
+        settings.chkzindex->setChecked(isUsingZindex);
+        if (rpc->getEZcashD() == nullptr) {
+            settings.chkzindex->setEnabled(false);      
+        }
+
         // Connection Settings
         QIntValidator validator(0, 65535);
         settings.port->setValidator(&validator);
@@ -521,16 +561,15 @@ void MainWindow::setupSettingsModal() {
             settings.hostname->setEnabled(false);
             settings.port->setEnabled(false);
             settings.rpcuser->setEnabled(false);
-            settings.rpcpassword->setEnabled(false);
+            settings.rpcpassword->setEnabled(false);         
         } else {
             settings.confMsg->setText("No local HUSH3.conf found. Please configure connection manually.");
             settings.hostname->setEnabled(true);
             settings.port->setEnabled(true);
             settings.rpcuser->setEnabled(true);
-            settings.rpcpassword->setEnabled(true);
+            settings.rpcpassword->setEnabled(true);     
         }
 
-        // Load current values into the dialog
         // Load current values into the dialog
         auto conf = Settings::getInstance()->getSettings();
         settings.hostname->setText(conf.host);
@@ -616,6 +655,7 @@ void MainWindow::setupSettingsModal() {
 
             // Check to see if rescan or reindex have been enabled
             bool showRestartInfo = false;
+            bool showReindexInfo = false;
             if (settings.chkRescan->isChecked()) {
                 Settings::addToZcashConf(zcashConfLocation, "rescan=1");
                 showRestartInfo = true;
@@ -626,8 +666,58 @@ void MainWindow::setupSettingsModal() {
                 showRestartInfo = true;
             }
 
+             if (!rpc->getConnection()->config->consolidation.isEmpty()==false) {
+                 if (settings.chkConso->isChecked()) {
+                 Settings::addToZcashConf(zcashConfLocation, "consolidation=1");
+                showRestartInfo = true;       
+                }
+            }
+
+            if (!rpc->getConnection()->config->consolidation.isEmpty()) {
+                 if (settings.chkConso->isChecked() == false) {
+                 Settings::removeFromZcashConf(zcashConfLocation, "consolidation");
+                showRestartInfo = true;       
+                 }
+            }
+                  
+             if (!rpc->getConnection()->config->deletetx.isEmpty() == false) {
+                 if (settings.chkDeletetx->isChecked()) {
+                 Settings::addToZcashConf(zcashConfLocation, "deletetx=1");
+                showRestartInfo = true;       
+                }
+            }
+
+             if (!rpc->getConnection()->config->deletetx.isEmpty()) {
+                 if (settings.chkDeletetx->isChecked() == false) {
+                 Settings::removeFromZcashConf(zcashConfLocation, "deletetx");
+                showRestartInfo = true;
+                 }
+            }
+    
+             if (!rpc->getConnection()->config->zindex.isEmpty() == false) {
+                 if (settings.chkzindex->isChecked()) {
+                 Settings::addToZcashConf(zcashConfLocation, "zindex=1");
+                 Settings::addToZcashConf(zcashConfLocation, "reindex=1");
+                showReindexInfo = true;       
+                }
+            }
+
+             if (!rpc->getConnection()->config->zindex.isEmpty()) {
+                 if (settings.chkzindex->isChecked() == false) {
+                 Settings::removeFromZcashConf(zcashConfLocation, "zindex");
+                 Settings::addToZcashConf(zcashConfLocation, "reindex=1");
+                showReindexInfo = true;       
+                 }
+            }
+        
             if (showRestartInfo) {
-                auto desc = tr("SilentDragon needs to restart to rescan/reindex. SilentDragon will now close, please restart SilentDragon to continue");
+                auto desc = tr("SilentDragon needs to restart to rescan,reindex,consolidation or deletetx. SilentDragon will now close, please restart SilentDragon to continue");
+
+                QMessageBox::information(this, tr("Restart SilentDragon"), desc, QMessageBox::Ok);
+                QTimer::singleShot(1, [=]() { this->close(); });
+            }
+            if (showReindexInfo) {
+                auto desc = tr("SilentDragon needs to reindex for zindex. SilentDragon will now close, please restart SilentDragon to continue");
 
                 QMessageBox::information(this, tr("Restart SilentDragon"), desc, QMessageBox::Ok);
                 QTimer::singleShot(1, [=]() { this->close(); });
@@ -1212,7 +1302,6 @@ void MainWindow::setupBalancesTab() {
 void MainWindow::setupHushTab() {
     ui->hushlogo->setBasePixmap(QPixmap(":/img/res/zcashdlogo.gif"));
 }
-
 
 void MainWindow::setupChatTab() {
     qDebug() << __FUNCTION__;

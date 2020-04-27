@@ -538,7 +538,7 @@ QString AppDataServer::encryptOutgoing(QString msg) {
 /**
   Attempt to decrypt a message. If the decryption fails, it returns the string "error", the decrypted message otherwise. 
   It will use the given secret to attempt decryption. In addition, it will enforce that the nonce is greater than the last seen nonce, 
-  unless the skipNonceCheck = true, which is used when attempting decrtption with a temp secret key.
+  unless the skipNonceCheck = true, which is used when attempting decrytption with a temp secret key.
 */
 QString AppDataServer::decryptMessage(QJsonDocument msg, QString secretHex, QString lastRemoteNonceHex) {
     qDebug() << "Decrypting message";
@@ -547,8 +547,9 @@ QString AppDataServer::decryptMessage(QJsonDocument msg, QString secretHex, QStr
     QString encryptedhex = msg.object().value("payload").toString();
 
     // Enforce limits on the size of the message
-    if (noncehex.length() > ((int)crypto_secretbox_NONCEBYTES * 2) ||
-        encryptedhex.length() > 2 * 50 * 1024 /*50kb*/) {
+    int MAX_LENGTH = 2*50*1024; // 50kb
+    if (noncehex.length() > ((int)crypto_secretbox_NONCEBYTES * 2) || encryptedhex.length() > MAX_LENGTH) {
+        qDebug() << "Encrypted hex size of " << encryptedhex.length() << " bytes is too large!";
         return "error";
     }
 
@@ -566,6 +567,7 @@ QString AppDataServer::decryptMessage(QJsonDocument msg, QString secretHex, QStr
         // Refuse to accept a lower nonce, return an error
         delete[] lastRemoteBin;
         delete[] noncebin;
+        qDebug() << "Repeated nonce detected, potential attack or misconfiguration! Bailing out.";
         return "error";
     }
     

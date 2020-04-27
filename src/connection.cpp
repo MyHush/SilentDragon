@@ -19,15 +19,28 @@ ConnectionLoader::ConnectionLoader(MainWindow* main, RPC* rpc) {
     d->setWindowFlags(d->windowFlags() & ~(Qt::WindowCloseButtonHint | Qt::WindowContextHelpButtonHint));
     connD = new Ui_ConnectionDialog();
     connD->setupUi(d);
-    QPixmap logo(":/img/res/logobig.gif");
-    connD->topIcon->setBasePixmap(logo.scaled(512, 512, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    //main->logger->write("set topIcon");
+    QMovie *movie1 = new QMovie(":/img/res/silentdragon-animated-startup.gif");;
+    QMovie *movie2 = new QMovie(":/img/res/silentdragon-animated-startup-dark.gif");;
+    auto theme = Settings::getInstance()->get_theme_name();
+    auto size  = QSize(512,512);
+    if (theme == "dark" || "midnight") {
+        movie2->setScaledSize(size);
+        connD->topIcon->setMovie(movie2);
+        movie2->start();
+    } else {
+        movie1->setScaledSize(size);
+        connD->topIcon->setMovie(movie1);
+        movie1->start();
+    }
+    main->logger->write("set animation");
+    qDebug() << "set animation";
 }
 
 ConnectionLoader::~ConnectionLoader() {
     delete d;
     delete connD;
     main->logger->write("ConnectionLoader done");
+    qDebug() << "connection loader done";
 }
 
 void ConnectionLoader::loadConnection() {
@@ -656,7 +669,7 @@ std::shared_ptr<ConnectionConfig> ConnectionLoader::autoDetectZcashConf() {
     zcashconf->usingZcashConf = true;
     zcashconf->zcashDir = QFileInfo(confLocation).absoluteDir().absolutePath();
     zcashconf->zcashDaemon = false;
-
+   
     Settings::getInstance()->setUsingZcashConf(confLocation);
 
     while (!in.atEnd()) {
@@ -679,6 +692,15 @@ std::shared_ptr<ConnectionConfig> ConnectionLoader::autoDetectZcashConf() {
         }
         if (name == "proxy") {
             zcashconf->proxy = value;
+        }
+         if (name == "consolidation") {
+            zcashconf->consolidation = value;
+        }
+          if (name == "deletetx") {
+            zcashconf->deletetx = value;
+        }
+          if (name == "zindex") {
+            zcashconf->zindex = value;
         }
         if (name == "testnet" &&
             value == "1"  &&
@@ -706,12 +728,12 @@ std::shared_ptr<ConnectionConfig> ConnectionLoader::loadFromSettings() {
     auto host        = s.value("connection/host").toString();
     auto port        = s.value("connection/port").toString();
     auto username    = s.value("connection/rpcuser").toString();
-    auto password    = s.value("connection/rpcpassword").toString();    
-
+    auto password    = s.value("connection/rpcpassword").toString();
+  
     if (username.isEmpty() || password.isEmpty())
         return nullptr;
 
-    auto uiConfig = new ConnectionConfig{ host, port, username, password, false, false, "", "", ConnectionType::UISettingsZCashD};
+    auto uiConfig = new ConnectionConfig{ host, port, username, password, false, false,"","", "", "","", ConnectionType::UISettingsZCashD};
 
     return std::shared_ptr<ConnectionConfig>(uiConfig);
 }

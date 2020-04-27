@@ -24,6 +24,9 @@ struct ConnectionConfig {
     bool    zcashDaemon;
     QString zcashDir;
     QString proxy;
+    QString consolidation;
+    QString deletetx;
+    QString zindex;
 
     ConnectionType connType;
 };

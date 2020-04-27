@@ -1,3 +1,5 @@
+// Copyright 2019-2020 The Hush developers
+// GPLv3
 #include <singleapplication.h>
 
 #include "precompiled.h"
@@ -154,16 +156,16 @@ public:
         QCommandLineOption headlessOption(QStringList() << "headless", "Running it via GUI.");
         parser.addOption(headlessOption);
 
-        // No embedded will disable the embedded zcashd node
+        // No embedded will disable the embedded hushd node
         QCommandLineOption noembeddedOption(QStringList() << "no-embedded", "Disable embedded hushd");
         parser.addOption(noembeddedOption);
 
-        // Positional argument will specify a zcash payment URI
+        // Positional argument will specify a Hush payment URI
         parser.addPositionalArgument("hushURI", "An optional HUSH URI to pay");
 
         parser.process(a);
 
-        // Check for a positional argument indicating a zcash payment URI
+        // Check for a positional argument indicating a Hush payment URI
         if (a.isSecondary()) {
             if (parser.positionalArguments().length() > 0) {
                 a.sendMessage(parser.positionalArguments()[0].toUtf8());    
@@ -225,7 +227,7 @@ public:
             w->payZcashURI(parser.positionalArguments()[0]);
         }
 
-        // Listen for any secondary instances telling us about a zcash payment URI
+        // Listen for any secondary instances telling us about a Hush payment URI
         QObject::connect(&a, &SingleApplication::receivedMessage, [=] (quint32, QByteArray msg) {
             QString uri(msg);
 

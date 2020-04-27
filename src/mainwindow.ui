@@ -1014,6 +1014,7 @@
         </item>
        </layout>
       </widget>
+<!--
       <widget class="QWidget" name="chat_tab">
        <attribute name="title">
         <string>Chat</string>
@@ -1088,6 +1089,7 @@
         </item>
        </layout>
       </widget>
+-->
       <widget class="QWidget" name="tab_5">
        <attribute name="title">
         <string>hushd</string>
