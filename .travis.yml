@@ -22,14 +22,13 @@ script:
  - qmake -v
  - clang++ -v
  - g++-8 -v
+  # Linguist test that translation source files can be compiled
+  # correctly and will hopefully catch syntax errors earlier
+  # We want the build to fail if we can't compile translations.
+ - ./build.sh linguist
  - qmake silentdragon.pro CONFIG+=release -spec linux-clang
  - make CC=clang CXX=clang++ -j2
  - make distclean
  - qmake silentdragon.pro CONFIG+=release -spec linux-g++
-# These next 2 lines test that translation source files can be compiled
-# correctly and will hopefully catch syntax errors earlier
-# We want the build to fail if we can't compile translations.
- - lupdate silentdragon.pro
- - lrelease silentdragon.pro
  - res/libsodium/buildlibsodium.sh
  - make CC=gcc-8 CXX=g++-8 -j2

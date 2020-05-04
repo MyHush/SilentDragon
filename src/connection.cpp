@@ -23,7 +23,8 @@ ConnectionLoader::ConnectionLoader(MainWindow* main, RPC* rpc) {
     QMovie *movie2 = new QMovie(":/img/res/silentdragon-animated-startup-dark.gif");;
     auto theme = Settings::getInstance()->get_theme_name();
     auto size  = QSize(512,512);
-    if (theme == "dark" || "midnight") {
+
+    if (theme == "dark" || theme == "midnight") {
         movie2->setScaledSize(size);
         connD->topIcon->setMovie(movie2);
         movie2->start();

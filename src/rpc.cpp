@@ -1193,7 +1193,7 @@ void RPC::refreshPrice() {
             }
         } catch (const std::exception& e) {
             // If anything at all goes wrong, just set the price to 0 and move on.
-            qDebug() << QString("Price feed update failure : ") << e.what();
+            qDebug() << QString("Price feed update failure : ");
         }
 
         // If nothing, then set the price to 0;
@@ -1222,7 +1222,7 @@ void RPC::shutdownZcashd() {
     QMovie *movie1 = new QMovie(":/img/res/silentdragon-animated.gif");;
     QMovie *movie2 = new QMovie(":/img/res/silentdragon-animated-dark.gif");;
     auto theme = Settings::getInstance()->get_theme_name();
-    if (theme == "dark" || "midnight") {
+    if (theme == "dark" || theme == "midnight") {
         movie2->setScaledSize(QSize(512,512));
         connD.topIcon->setMovie(movie2);
         movie2->start();
