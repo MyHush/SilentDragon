@@ -1,8 +1,9 @@
-// Copyright 2019-2020 The Hush developers
-// GPLv3
+# Copyright 2019-2020 The Hush developers
+# Released under the GPLv3
 #-------------------------------------------------
 #
 # Project created by QtCreator 2018-10-05T09:54:45
+# Originally from zecwallet
 #
 #-------------------------------------------------
 
