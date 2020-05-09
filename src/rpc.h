@@ -1,3 +1,5 @@
+// Copyright 2019-2020 The Hush Developers
+// Released under the GPLv3
 #ifndef RPCCLIENT_H
 #define RPCCLIENT_H
 

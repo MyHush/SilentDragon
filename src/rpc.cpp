@@ -534,6 +534,7 @@ void RPC::refreshReceivedZTrans(QList<QString> zaddrs) {
 
 /// This will refresh all the balance data from hushd
 void RPC::refresh(bool force) {
+    qDebug() << __func__;
     if  (conn == nullptr) 
         return noConnection();
 
@@ -693,6 +694,8 @@ void RPC::getInfoThenRefresh(bool force) {
                 price = QString(", ") % "HUSH" % "=" % QString::number( (double)ticker_price,'f',8) % " " % QString::fromStdString(ticker) % " " % extra;
             }
 
+            qDebug() << "Updating status bar";
+
             // Update the status bar
             QString statusText = QString() %
                 (isSyncing ? QObject::tr("Syncing") : QObject::tr("Connected")) %
@@ -708,8 +711,8 @@ void RPC::getInfoThenRefresh(bool force) {
             QString tooltip;
             if (connections > 0) {
                 tooltip = QObject::tr("Connected to hushd");
-            }
-            else {
+            } else {
+                qDeug() << "No connections!";
                 tooltip = QObject::tr("hushd has no peer connections! Network issues?");
             }
             tooltip = tooltip % "(v" % QString::number(Settings::getInstance()->getZcashdVersion()) % ")";
@@ -719,9 +722,11 @@ void RPC::getInfoThenRefresh(bool force) {
             }
             main->statusLabel->setToolTip(tooltip);
             main->statusIcon->setToolTip(tooltip);
+            qDebug() << "Set tooltip";
         });
 
     }, [=](QNetworkReply* reply, const json&) {
+        qDebug() << "hushd is gone!";
         // hushd has probably disappeared.
         this->noConnection();
 
@@ -739,6 +744,7 @@ void RPC::getInfoThenRefresh(bool force) {
 }
 
 void RPC::refreshAddresses() {
+    qDebug() << __func__;
     if  (conn == nullptr) 
         return noConnection();
     
@@ -804,6 +810,7 @@ bool RPC::processUnspent(const json& reply, QMap<QString, double>* balancesMap, 
 };
 
 void RPC::refreshBalances() {    
+    qDebug() << "Updating balances";
     if  (conn == nullptr) 
         return noConnection();
 
@@ -832,10 +839,12 @@ void RPC::refreshBalances() {
     auto newUtxos = new QList<UnspentOutput>();
     auto newBalances = new QMap<QString, double>();
 
+    qDebug() << "Updating taddr balances";
     // Call the Transparent and Z unspent APIs serially and then, once they're done, update the UI
     getTransparentUnspent([=] (json reply) {
         auto anyTUnconfirmed = processUnspent(reply, newBalances, newUtxos);
 
+        qDebug() << "Updating zaddr balances";
         getZUnspent([=] (json reply) {
             auto anyZUnconfirmed = processUnspent(reply, newBalances, newUtxos);
 
@@ -889,6 +898,7 @@ void RPC::refreshTransactions() {
 
 // Read sent Z transactions from the file.
 void RPC::refreshSentZTrans() {
+    qDebug() << __func__;
     if  (conn == nullptr) 
         return noConnection();
 
@@ -942,6 +952,7 @@ void RPC::refreshSentZTrans() {
 
 void RPC::addNewTxToWatch(const QString& newOpid, WatchedTx wtx) {    
     watchingOps.insert(newOpid, wtx);
+    qDebug() << "Watched new opid " << opid;
 
     watchTxStatus();
 }
@@ -1274,8 +1285,8 @@ void RPC::shutdownZcashd() {
  */ 
 QString RPC::getDefaultSaplingAddress() {
     for (QString addr: *zaddresses) {
-        if (Settings::getInstance()->isSaplingAddress(addr))
-            return addr;
+        //if (Settings::getInstance()->isSaplingAddress(addr))
+        return addr;
     }
 
     return QString();
