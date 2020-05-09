@@ -1,3 +1,5 @@
+// Copyright 2019-2020 The Hush developers
+// Released under the GPLv3
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
@@ -84,7 +86,7 @@ private:
 };
 
 /**
- * Represents a connection to a zcashd. It may even start a new zcashd if needed.
+ * Represents a connection to a hushd. It may even start a new hushd if needed.
  * This is also a UI class, so it may show a dialog waiting for the connection.
 */
 class Connection {
@@ -121,6 +123,7 @@ public:
         static QMap<QString, bool> inProgress;
 
         QString method = QString::fromStdString(payloadGenerator(payloads[0])["method"]);
+        qDebug() << __func__ << " with method=" << method << " and totalSize=" << totalSize;
         //if (inProgress.value(method, false)) {
         //    qDebug() << "In progress batch, skipping";
         //    return;
@@ -135,11 +138,12 @@ public:
             QObject::connect(reply, &QNetworkReply::finished, [=] {
                 reply->deleteLater();
                 if (shutdownInProgress) {
-                    // Ignoring callback because shutdown in progress
+                    qDebug() << "Ignoring callback because shutdown in progress";
                     return;
                 }
                 
-                auto all = reply->readAll();            
+                auto all    = reply->readAll();
+                qDebug() << "Parsing JSON...";
                 auto parsed = json::parse(all.toStdString(), nullptr, false);
 
                 if (reply->error() != QNetworkReply::NoError) {            
@@ -149,8 +153,10 @@ public:
                     (*responses)[item] = json::object();    // Empty object
                 } else {
                     if (parsed.is_discarded()) {
+                        qDebug() << "Discarded response!";
                         (*responses)[item] = json::object();    // Empty object
                     } else {
+                        qDebug() << "Parsed valid JSON";
                         (*responses)[item] = parsed["result"];
                     }
                 }
@@ -158,8 +164,10 @@ public:
         }
 
         auto waitTimer = new QTimer(main);
+        qDebug() << "Created timer...";
         QObject::connect(waitTimer, &QTimer::timeout, [=]() {
             if (shutdownInProgress) {
+                qDebug() << "Shutdown in progress, removing timer";
                 waitTimer->stop();
                 waitTimer->deleteLater();  
                 return;
@@ -167,6 +175,7 @@ public:
 
             // If all responses have arrived, return
             if (responses->size() == totalSize) {
+                qDebug() << "Response arrived, removing timer...";
 
                 waitTimer->stop();
                 
@@ -176,6 +185,7 @@ public:
                 waitTimer->deleteLater();            
             }
         });
+        qDebug() << "Starting timer...";
         waitTimer->start(100);    
     }
 

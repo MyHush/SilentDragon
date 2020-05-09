@@ -427,6 +427,7 @@ void RPC::refreshReceivedZTrans(QList<QString> zaddrs) {
 
     // We'll only refresh the received Z txs if settings allows us.
     if (!Settings::getInstance()->getSaveZtxs()) {
+        qDebug() << "Settings have saved zaddr transactions OFF, showing empty list";
         QList<TransactionItem> emptylist;
         transactionsTableModel->addZRecvData(emptylist);
         return;
@@ -454,6 +455,7 @@ void RPC::refreshReceivedZTrans(QList<QString> zaddrs) {
             // appears multiple times in a single tx's outputs.
             QSet<QString> txids;
             QMap<QString, QString> memos;
+            qDebug() << "Processing zaddrs...";
             for (auto it = zaddrTxids->constBegin(); it != zaddrTxids->constEnd(); it++) {
                 auto zaddr = it.key();
                 for (auto& i : it.value().get<json::array_t>()) {   
@@ -467,16 +469,18 @@ void RPC::refreshReceivedZTrans(QList<QString> zaddrs) {
 
                         // Check for Memos
                         QString memoBytes = QString::fromStdString(i["memo"].get<json::string_t>());
+                        //TODO: This should check for valid utf8!
                         if (!memoBytes.startsWith("f600"))  {
-                            QString memo(QByteArray::fromHex(
-                                            QByteArray::fromStdString(i["memo"].get<json::string_t>())));
+                            QString memo(QByteArray::fromHex(QByteArray::fromStdString(i["memo"].get<json::string_t>())));
                             if (!memo.trimmed().isEmpty())
+                                qDebug() << "Found a memo for txid=" << txid;
                                 memos[zaddr + txid] = memo;
                         }
                     }
                 }                        
             }
 
+            qDebug() << "Processing all txids...";
             // 2. For all txids, go and get the details of that txid.
             conn->doBatchRPC<QString>(txids.toList(),
                 [=] (QString txid) {
