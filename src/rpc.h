@@ -11,8 +11,6 @@
 #include "mainwindow.h"
 #include "connection.h"
 
-using json = nlohmann::json;
-
 class Turnstile;
 
 struct TransactionItem {
@@ -56,8 +54,8 @@ public:
         const std::function<void(QString opid, QString txid)> computed,
         const std::function<void(QString opid, QString errStr)> error);
 
-    void fillTxJsonParams(json& params, Tx tx);
-    void sendZTransaction(json params, const std::function<void(json)>& cb, const std::function<void(QString)>& err);
+    void fillTxJsonParams(QJsonArray& params, Tx tx);
+    void sendZTransaction(QJsonValue params, const std::function<void(QJsonValue)>& cb, const std::function<void(QString)>& err);
     void watchTxStatus();
 
     const QMap<QString, WatchedTx> getWatchingTxns() { return watchingOps; }
@@ -70,15 +68,15 @@ public:
     const QMap<QString, double>*      getAllBalances()       { return allBalances; }
     const QMap<QString, bool>*        getUsedAddresses()     { return usedAddresses; }
 
-    void newZaddr(const std::function<void(json)>& cb);
-    void newTaddr(const std::function<void(json)>& cb);
+    void newZaddr(const std::function<void(QJsonValue)>& cb);
+    void newTaddr(const std::function<void(QJsonValue)>& cb);
 
-    void getZPrivKey(QString addr, const std::function<void(json)>& cb);
-    void getZViewKey(QString addr, const std::function<void(json)>& cb);
-    void getTPrivKey(QString addr, const std::function<void(json)>& cb);
-    void importZPrivKey(QString addr, bool rescan, const std::function<void(json)>& cb);
-    void importTPrivKey(QString addr, bool rescan, const std::function<void(json)>& cb);
-    void validateAddress(QString address, const std::function<void(json)>& cb);
+    void getZPrivKey(QString addr, const std::function<void(QJsonValue)>& cb);
+    void getZViewKey(QString addr, const std::function<void(QJsonValue)>& cb);
+    void getTPrivKey(QString addr, const std::function<void(QJsonValue)>& cb);
+    void importZPrivKey(QString addr, bool rescan, const std::function<void(QJsonValue)>& cb);
+    void importTPrivKey(QString addr, bool rescan, const std::function<void(QJsonValue)>& cb);
+    void validateAddress(QString address, const std::function<void(QJsonValue)>& cb);
 
     void shutdownZcashd();
     void noConnection();
@@ -99,20 +97,20 @@ private:
     void refreshSentZTrans();
     void refreshReceivedZTrans(QList<QString> zaddresses);
 
-    bool processUnspent     (const json& reply, QMap<QString, double>* newBalances, QList<UnspentOutput>* newUtxos);
+    bool processUnspent     (const QJsonValue& reply, QMap<QString, double>* newBalances, QList<UnspentOutput>* newUtxos);
     void updateUI           (bool anyUnconfirmed);
 
     void getInfoThenRefresh(bool force);
 
-    void getBalance(const std::function<void(json)>& cb);
-	json makePayload(std::string method, std::string params);
-	json makePayload(std::string method);
+    void getBalance(const std::function<void(QJsonValue)>& cb);
+    QJsonValue makePayload(QString method, QString params);
+    QJsonValue makePayload(QString method);
 
-    void getTransparentUnspent  (const std::function<void(json)>& cb);
-    void getZUnspent            (const std::function<void(json)>& cb);
-    void getTransactions        (const std::function<void(json)>& cb);
-    void getZAddresses          (const std::function<void(json)>& cb);
-    void getTAddresses          (const std::function<void(json)>& cb);
+    void getTransparentUnspent  (const std::function<void(QJsonValue)>& cb);
+    void getZUnspent            (const std::function<void(QJsonValue)>& cb);
+    void getTransactions        (const std::function<void(QJsonValue)>& cb);
+    void getZAddresses          (const std::function<void(QJsonValue)>& cb);
+    void getTAddresses          (const std::function<void(QJsonValue)>& cb);
 
     Connection*                 conn                        = nullptr;
     std::shared_ptr<QProcess>   ezcashd                     = nullptr;

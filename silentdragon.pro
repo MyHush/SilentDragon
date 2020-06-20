@@ -27,6 +27,7 @@ DEFINES += \
     QT_DEPRECATED_WARNINGS
 
 INCLUDEPATH  += src/3rdparty/
+INCLUDEPATH  += src/
 
 mac: LIBS+= -Wl,-dead_strip
 mac: LIBS+= -Wl,-dead_strip_dylibs
@@ -74,7 +75,6 @@ HEADERS += \
     src/3rdparty/qrcode/BitBuffer.hpp \
     src/3rdparty/qrcode/QrCode.hpp \
     src/3rdparty/qrcode/QrSegment.hpp \
-    src/3rdparty/json/json.hpp \
     src/settings.h \
     src/txtablemodel.h \
     src/senttxstore.h \
@@ -124,6 +124,7 @@ TRANSLATIONS = res/silentdragon_bg.ts \
                res/silentdragon_it.ts \
                res/silentdragon_nl.ts \
                res/silentdragon_pt.ts \
+               res/silentdragon_ro.ts \
                res/silentdragon_ru.ts \
                res/silentdragon_sr.ts \
                res/silentdragon_tr.ts \

@@ -85,8 +85,8 @@ public:
     QString get_theme_name();
     void set_theme_name(QString theme_name);
 
-    std::string get_currency_name();
-    void set_currency_name(std::string currency_name);
+    QString get_currency_name();
+    void set_currency_name(QString currency_name);
 
     void    setUsingZcashConf(QString confLocation);
     const   QString& getZcashdConfLocation() { return _confLocation; }
@@ -97,12 +97,12 @@ public:
     double  getZECPrice();
     double  get_fiat_price();
     unsigned int  getBTCPrice();
-    double get_price(std::string currency);
-    void   set_price(std::string currency, double price);
-    double get_volume(std::string ticker);
-    void   set_volume(std::string curr, double volume);
-    double get_marketcap(std::string curr);
-    void   set_marketcap(std::string curr, double marketcap);
+    double get_price(QString currency);
+    void   set_price(QString currency, double price);
+    double get_volume(QString ticker);
+    void   set_volume(QString curr, double volume);
+    double get_marketcap(QString curr);
+    void   set_marketcap(QString curr, double marketcap);
 
     void    setPeers(int peers);
     int     getPeers();
@@ -165,9 +165,9 @@ private:
     double  zecPrice          = 0.0;
     double  fiat_price        = 0.0;
     unsigned int  btcPrice    = 0;
-    std::map<std::string, double> prices;
-    std::map<std::string, double> volumes;
-    std::map<std::string, double> marketcaps;
+    std::map<QString, double> prices;
+    std::map<QString, double> volumes;
+    std::map<QString, double> marketcaps;
 };
 
 #endif // SETTINGS_H

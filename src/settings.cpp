@@ -163,9 +163,9 @@ double Settings::getZECPrice() {
     return zecPrice;
 }
 
-double Settings::get_price(std::string currency) {
-    std::for_each(currency.begin(), currency.end(), [](char & c){ c = ::tolower(c); });
-    QString ticker = QString::fromStdString(currency);
+double Settings::get_price(QString currency) {
+    currency = currency.toLower();
+    QString ticker = currency;
     auto search = prices.find(currency);
     if (search != prices.end()) {
         qDebug() << "Found price of " << ticker << " = " << search->second;
@@ -176,21 +176,22 @@ double Settings::get_price(std::string currency) {
     }
 }
 
-void Settings::set_price(std::string curr, double price) {
-    QString ticker = QString::fromStdString(curr);
+void Settings::set_price(QString curr, double price) {
+    QString ticker = curr;
     qDebug() << "Setting price of " << ticker << "=" << QString::number(price);
+    prices.insert( std::make_pair(curr, price) );
     prices.insert( std::make_pair(curr, price) );
 }
 
-void Settings::set_volume(std::string curr, double volume) {
-    QString ticker = QString::fromStdString(curr);
+void Settings::set_volume(QString curr, double volume) {
+    QString ticker = curr;
     qDebug() << "Setting volume of " << ticker << "=" << QString::number(volume);
     volumes.insert( std::make_pair(curr, volume) );
 }
 
-double Settings::get_volume(std::string currency) {
-    std::for_each(currency.begin(), currency.end(), [](char & c){ c = ::tolower(c); });
-    QString ticker = QString::fromStdString(currency);
+double Settings::get_volume(QString currency) {
+    currency = currency.toLower();
+    QString ticker = currency;
     auto search = volumes.find(currency);
     if (search != volumes.end()) {
         qDebug() << "Found volume of " << ticker << " = " << search->second;
@@ -201,15 +202,15 @@ double Settings::get_volume(std::string currency) {
     }
 }
 
-void Settings::set_marketcap(std::string curr, double marketcap) {
-    QString ticker = QString::fromStdString(curr);
+void Settings::set_marketcap(QString curr, double marketcap) {
+    QString ticker = curr;
     qDebug() << "Setting marketcap of " << ticker << "=" << QString::number(marketcap);
     marketcaps.insert( std::make_pair(curr, marketcap) );
 }
 
-double Settings::get_marketcap(std::string currency) {
-    std::for_each(currency.begin(), currency.end(), [](char & c){ c = ::tolower(c); });
-    QString ticker = QString::fromStdString(currency);
+double Settings::get_marketcap(QString currency) {
+    currency = currency.toLower();
+    QString ticker = currency;
     auto search = marketcaps.find(currency);
     if (search != marketcaps.end()) {
         qDebug() << "Found marketcap of " << ticker << " = " << search->second;
@@ -281,7 +282,7 @@ void Settings::saveRestore(QDialog* d) {
 
 QString Settings::getUSDFormat(double bal) {
     //TODO: respect current locale!
-    return QLocale(QLocale::English).toString(bal * Settings::getInstance()->getZECPrice(), 'f', 8) + " " + QString::fromStdString(Settings::getInstance()->get_currency_name());
+    return QLocale(QLocale::English).toString(bal * Settings::getInstance()->getZECPrice(), 'f', 8) + " " +Settings::getInstance()->get_currency_name();
 }
 
 QString Settings::getDecimalString(double amt) {
@@ -341,13 +342,13 @@ bool Settings::addToZcashConf(QString confLocation, QString line) {
     return true;
 }
 
-std::string Settings::get_currency_name() {
+QString Settings::get_currency_name() {
     // Load from the QT Settings.
-    return QSettings().value("options/currency_name", "BTC").toString().toStdString();
+    return QSettings().value("options/currency_name", "BTC").toString();
 }
 
-void Settings::set_currency_name(std::string currency_name) {
-    QSettings().setValue("options/currency_name", QString::fromStdString(currency_name));
+void Settings::set_currency_name(QString currency_name) {
+    QSettings().setValue("options/currency_name", currency_name);
 }
 
 

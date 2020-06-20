@@ -784,9 +784,9 @@ void AppDataServer::processSendTx(QJsonObject sendTx, MainWindow* mainwindow, st
         return;
     }
 
-    json params = json::array();
+    QJsonArray params;
     mainwindow->getRPC()->fillTxJsonParams(params, tx);
-    std::cout << std::setw(2) << params << std::endl;
+    //std::cout << std::setw(2) << params << std::endl;
 
     // And send the Tx
     mainwindow->getRPC()->executeTransaction(tx,

@@ -9,7 +9,6 @@
 
 #include "precompiled.h"
 
-using json = nlohmann::json;
 
 ConnectionLoader::ConnectionLoader(MainWindow* main, RPC* rpc) {
     this->main = main;
@@ -214,6 +213,9 @@ void ConnectionLoader::createZcashConf() {
     out << "timestampindex=1\n";
     out << "rpcworkqueue=256\n";
     out << "rpcallowip=127.0.0.1\n";
+
+    // Consolidation is now defaulted to ON for new wallets
+    out << "consolidation=1\n";
 
     if (!datadir.isEmpty()) {
         out << "datadir=" % datadir % "\n";
@@ -477,7 +479,7 @@ Connection* ConnectionLoader::makeConnection(std::shared_ptr<ConnectionConfig> c
 void ConnectionLoader::refreshZcashdState(Connection* connection, std::function<void(void)> refused) {
     main->logger->write("refreshing state");
 
-    json payload = {
+    QJsonObject payload = {
         {"jsonrpc", "1.0"},
         {"id", "someid"},
         {"method", "getinfo"}
@@ -489,10 +491,10 @@ void ConnectionLoader::refreshZcashdState(Connection* connection, std::function<
             // Delay 1 second to ensure loading (splash) is seen at least 1 second.
             QTimer::singleShot(1000, [=]() { this->doRPCSetConnection(connection); });
         },
-        [=] (auto reply, auto res) {            
+        [=] (QNetworkReply* reply, const QJsonValue &res) {
             // Failed, see what it is. 
             auto err = reply->error();
-            //qDebug() << err << ":" << QString::fromStdString(res.dump());
+            //qDebug() << err << res;
 
             if (err == QNetworkReply::NetworkError::ConnectionRefusedError) {   
                 refused();
@@ -504,9 +506,9 @@ void ConnectionLoader::refreshZcashdState(Connection* connection, std::function<
 
                 this->showError(explanation);
             } else if (err == QNetworkReply::NetworkError::InternalServerError && 
-                    !res.is_discarded()) {
+                    !res.isNull()) {
                 // The server is loading, so just poll until it succeeds
-                QString status      = QString::fromStdString(res["error"]["message"]);
+                QString status      = res["error"].toObject()["message"].toString();
                 {
                     static int dots = 0;
                     status = status.left(status.length() - 3) + QString(".").repeated(dots);
@@ -759,16 +761,19 @@ Connection::~Connection() {
     delete request;
 }
 
-void Connection::doRPC(const json& payload, const std::function<void(json)>& cb, 
-                       const std::function<void(QNetworkReply*, const json&)>& ne) {
+void Connection::doRPC(const QJsonValue& payload, const std::function<void(QJsonValue)>& cb,
+                       const std::function<void(QNetworkReply*, const QJsonValue&)>& ne) {
     if (shutdownInProgress) {
         // Ignoring RPC because shutdown in progress
         return;
     }
 
-    qDebug() << "RPC:" << QString::fromStdString(payload["method"]) << QString::fromStdString(payload.dump());
+    qDebug() << "RPC:" << payload["method"].toString() << payload;
 
-    QNetworkReply *reply = restclient->post(*request, QByteArray::fromStdString(payload.dump()));
+    QJsonDocument jd_rpc_call(payload.toObject());
+    QByteArray ba_rpc_call = jd_rpc_call.toJson();
+
+    QNetworkReply *reply = restclient->post(*request, ba_rpc_call);
 
     QObject::connect(reply, &QNetworkReply::finished, [=] {
         reply->deleteLater();
@@ -777,15 +782,20 @@ void Connection::doRPC(const json& payload, const std::function<void(json)>& cb,
             return;
         }
         
+        QJsonDocument jd_reply = QJsonDocument::fromJson(reply->readAll());
+        QJsonValue parsed;
+
+        if (jd_reply.isObject())
+            parsed = jd_reply.object();
+        else
+            parsed = jd_reply.array();
+
         if (reply->error() != QNetworkReply::NoError) {
-            auto parsed = json::parse(reply->readAll(), nullptr, false);
             ne(reply, parsed);
-            
             return;
         } 
         
-        auto parsed = json::parse(reply->readAll(), nullptr, false);
-        if (parsed.is_discarded()) {
+        if (parsed.isNull()) {
             ne(reply, "Unknown error");
         }
         
@@ -793,17 +803,17 @@ void Connection::doRPC(const json& payload, const std::function<void(json)>& cb,
     });
 }
 
-void Connection::doRPCWithDefaultErrorHandling(const json& payload, const std::function<void(json)>& cb) {
-    doRPC(payload, cb, [=] (auto reply, auto parsed) {
-        if (!parsed.is_discarded() && !parsed["error"]["message"].is_null()) {
-            this->showTxError(QString::fromStdString(parsed["error"]["message"]));
+void Connection::doRPCWithDefaultErrorHandling(const QJsonValue& payload, const std::function<void(QJsonValue)>& cb) {
+    doRPC(payload, cb, [=] (QNetworkReply* reply, const QJsonValue &parsed) {
+        if (!parsed.isUndefined() && !parsed["error"].toObject()["message"].isNull()) {
+            this->showTxError(parsed["error"].toObject()["message"].toString());
         } else {
             this->showTxError(reply->errorString());
         }
     });
 }
 
-void Connection::doRPCIgnoreError(const json& payload, const std::function<void(json)>& cb) {
+void Connection::doRPCIgnoreError(const QJsonValue& payload, const std::function<void(QJsonValue)>& cb) {
     doRPC(payload, cb, [=] (auto, auto) {
         // Ignored error handling
     });

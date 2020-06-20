@@ -70,7 +70,6 @@
 #include <QApplication>
 #include <QDesktopWidget>
 
-#include "3rdparty/json/json.hpp"
 #include "3rdparty/qrcode/QrCode.hpp"
 
 #define SODIUM_STATIC

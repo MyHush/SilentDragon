@@ -119,22 +119,22 @@
         <location filename="../src/mainwindow.ui" line="404"/>
         <location filename="../src/mainwindow.ui" line="411"/>
         <location filename="../src/mainwindow.ui" line="872"/>
-        <location filename="../src/sendtab.cpp" line="219"/>
-        <location filename="../src/sendtab.cpp" line="224"/>
+        <location filename="../src/sendtab.cpp" line="218"/>
+        <location filename="../src/sendtab.cpp" line="223"/>
         <source>Address</source>
         <translation>Indirizzo</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="418"/>
-        <location filename="../src/sendtab.cpp" line="234"/>
+        <location filename="../src/sendtab.cpp" line="233"/>
         <source>Address Book</source>
         <translation>Rubrica</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="429"/>
         <location filename="../src/mainwindow.ui" line="445"/>
-        <location filename="../src/sendtab.cpp" line="247"/>
-        <location filename="../src/sendtab.cpp" line="251"/>
+        <location filename="../src/sendtab.cpp" line="246"/>
+        <location filename="../src/sendtab.cpp" line="250"/>
         <source>Amount</source>
         <translatorcomment>check</translatorcomment>
         <translation>Importo</translation>
@@ -151,9 +151,9 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="498"/>
-        <location filename="../src/mainwindow.cpp" line="1184"/>
-        <location filename="../src/mainwindow.cpp" line="1251"/>
-        <location filename="../src/sendtab.cpp" line="273"/>
+        <location filename="../src/mainwindow.cpp" line="1189"/>
+        <location filename="../src/mainwindow.cpp" line="1256"/>
+        <location filename="../src/sendtab.cpp" line="272"/>
         <source>Memo</source>
         <translation>Memo</translation>
     </message>
@@ -179,7 +179,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="634"/>
-        <location filename="../src/sendtab.cpp" line="640"/>
+        <location filename="../src/sendtab.cpp" line="639"/>
         <source>Miner Fee</source>
         <translation>Commissioni di rete</translation>
     </message>
@@ -318,7 +318,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="850"/>
-        <location filename="../src/mainwindow.cpp" line="1388"/>
+        <location filename="../src/mainwindow.cpp" line="1393"/>
         <source>Export Private Key</source>
         <translation>Esporta la chiave privata</translation>
     </message>
@@ -360,8 +360,8 @@
         <location filename="../src/mainwindow.ui" line="1399"/>
         <location filename="../src/mainwindow.ui" line="1413"/>
         <location filename="../src/mainwindow.ui" line="1434"/>
-        <location filename="../src/mainwindow.cpp" line="883"/>
-        <location filename="../src/mainwindow.cpp" line="947"/>
+        <location filename="../src/mainwindow.cpp" line="888"/>
+        <location filename="../src/mainwindow.cpp" line="952"/>
         <source>Loading...</source>
         <translation>Caricamento...</translation>
     </message>
@@ -560,7 +560,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1630"/>
-        <location filename="../src/mainwindow.cpp" line="823"/>
+        <location filename="../src/mainwindow.cpp" line="828"/>
         <source>Export transactions</source>
         <translation>Transazioni di esportazione</translation>
     </message>
@@ -603,42 +603,42 @@
         <translation type="vanished">Le chiavi sono state importate. Potrebbero essere necessari alcuni minuti per eseguire nuovamente la scansione della blockchain. Fino ad allora, le funzionalità potrebbero essere limitate</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="665"/>
+        <location filename="../src/mainwindow.cpp" line="670"/>
         <source>Private key import rescan finished</source>
         <translation>L&apos;importazione delle chiavi private è stata completata</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="348"/>
+        <location filename="../src/mainwindow.cpp" line="345"/>
         <source>Tor configuration is available only when running an embedded hushd.</source>
         <translation>La configurazione Tor è disponibile solo quando si esegue un hushd incorporato.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="435"/>
+        <location filename="../src/mainwindow.cpp" line="432"/>
         <source>You&apos;re using an external hushd. Please restart hushd with -rescan</source>
         <translation>Stai usando un hushd esterno. Si prega di riavviare hushd con -rescan</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="438"/>
+        <location filename="../src/mainwindow.cpp" line="435"/>
         <source>You&apos;re using an external hushd. Please restart hushd with -reindex</source>
         <translation>Stai usando un hushd esterno. Si prega di riavviare hushd con -reindex</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="464"/>
+        <location filename="../src/mainwindow.cpp" line="461"/>
         <source>Enable Tor</source>
         <translation>Abilita Tor</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="465"/>
+        <location filename="../src/mainwindow.cpp" line="462"/>
         <source>Connection over Tor has been enabled. To use this feature, you need to restart SilentDragon.</source>
         <translation>La connessione tramite Tor è stata abilitata. Per utilizzare questa funzione, è necessario riavviare SilentDragon.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="474"/>
+        <location filename="../src/mainwindow.cpp" line="471"/>
         <source>Disable Tor</source>
         <translation>Disabilita Tor</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="475"/>
+        <location filename="../src/mainwindow.cpp" line="472"/>
         <source>Connection over Tor has been disabled. To fully disconnect from Tor, you need to restart SilentDragon.</source>
         <translation>La connessione tramite Tor è stata disabilitata. Per disconnettersi completamente da Tor, è necessario riavviare SilentDragon.</translation>
     </message>
@@ -647,8 +647,8 @@
         <translation type="vanished">SilentDragon deve essere riavviato per ripetere la scansione / reindicizzazione. SilentDragon ora si chiuderà, riavviare SilentDragon per continuare</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="558"/>
-        <location filename="../src/mainwindow.cpp" line="564"/>
+        <location filename="../src/mainwindow.cpp" line="555"/>
+        <location filename="../src/mainwindow.cpp" line="561"/>
         <source>Restart SilentDragon</source>
         <translation>Riavvia SilentDragon</translation>
     </message>
@@ -662,194 +662,194 @@
         <translation type="vanished">Le chiavi saranno importate nel tuo nodo hushd</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="310"/>
+        <location filename="../src/mainwindow.cpp" line="308"/>
         <source>Theme Change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="310"/>
-        <location filename="../src/mainwindow.cpp" line="321"/>
+        <location filename="../src/mainwindow.cpp" line="308"/>
+        <location filename="../src/mainwindow.cpp" line="318"/>
         <source>This change can take a few seconds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="321"/>
+        <location filename="../src/mainwindow.cpp" line="318"/>
         <source>Currency Change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="556"/>
+        <location filename="../src/mainwindow.cpp" line="553"/>
         <source>SilentDragon needs to restart to rescan,reindex,consolidation or deletetx. SilentDragon will now close, please restart SilentDragon to continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="562"/>
+        <location filename="../src/mainwindow.cpp" line="559"/>
         <source>SilentDragon needs to reindex for zindex. SilentDragon will now close, please restart SilentDragon to continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="606"/>
+        <location filename="../src/mainwindow.cpp" line="603"/>
         <source>Some feedback about SilentDragon or Hush...</source>
         <translation>Alcuni feedback su SilentDragon o Hush ...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="608"/>
+        <location filename="../src/mainwindow.cpp" line="605"/>
         <source>Send Duke some private and shielded feedback about </source>
         <translation>Invia a Duke un feedback privato e schermato</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="608"/>
+        <location filename="../src/mainwindow.cpp" line="605"/>
         <source> or SilentDragon</source>
         <translation>o SilentDragon</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="624"/>
+        <location filename="../src/mainwindow.cpp" line="621"/>
         <source>Enter Address to validate</source>
         <translation>Inserisci un indirizzo per convalidare</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="625"/>
+        <location filename="../src/mainwindow.cpp" line="622"/>
         <source>Transparent or Shielded Address:</source>
         <translation>Indirizzo trasparente o schermato:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="730"/>
+        <location filename="../src/mainwindow.cpp" line="735"/>
         <source>Paste HUSH URI</source>
         <translation>Incolla URI HUSH</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="742"/>
+        <location filename="../src/mainwindow.cpp" line="747"/>
         <source>Error paying Hush URI</source>
         <translation>Errore nel pagamento dell&apos;URI Hush</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="743"/>
+        <location filename="../src/mainwindow.cpp" line="748"/>
         <source>URI should be of the form &apos;hush:&lt;addr&gt;?amt=x&amp;memo=y</source>
         <translation>L&apos;URI dovrebbe essere nella forma &apos;hush:&lt;addr&gt;?amt=x&amp;memo=y</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="778"/>
+        <location filename="../src/mainwindow.cpp" line="783"/>
         <source>Please paste your private keys here, one per line</source>
         <translation>Incolla qui le tue chiavi private, una per riga</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="779"/>
+        <location filename="../src/mainwindow.cpp" line="784"/>
         <source>The keys will be imported into your connected Hush node</source>
         <translation>Le chiavi verranno importate nel nodo Hush collegato</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="810"/>
+        <location filename="../src/mainwindow.cpp" line="815"/>
         <source>The keys were imported! It may take several minutes to rescan the blockchain. Until then, functionality may be limited</source>
         <translation>Le chiavi sono state importate! Potrebbero essere necessari alcuni minuti per ripetere la scansione della blockchain. Fino ad allora, la funzionalità potrebbe essere limitata</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="829"/>
+        <location filename="../src/mainwindow.cpp" line="834"/>
         <source>Error</source>
         <translation>Errore</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="830"/>
+        <location filename="../src/mainwindow.cpp" line="835"/>
         <source>Error exporting transactions, file was not saved</source>
         <translation>Errore durante l&apos;esportazione delle transazioni, il file non è stato salvato</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="852"/>
+        <location filename="../src/mainwindow.cpp" line="857"/>
         <source>No wallet.dat</source>
         <translation>Nessun wallet.dat</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="852"/>
+        <location filename="../src/mainwindow.cpp" line="857"/>
         <source>Couldn&apos;t find the wallet.dat on this computer</source>
         <translation>Impossibile trovare il wallet.dat su questo computer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="853"/>
+        <location filename="../src/mainwindow.cpp" line="858"/>
         <source>You need to back it up from the machine hushd is running on</source>
         <translation>È necessario eseguire il backup dalla macchina su cui hushd è in esecuzione</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="857"/>
+        <location filename="../src/mainwindow.cpp" line="862"/>
         <source>Backup wallet.dat</source>
         <translation>Backup wallet.dat</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="862"/>
+        <location filename="../src/mainwindow.cpp" line="867"/>
         <source>Couldn&apos;t backup</source>
         <translation>Impossibile eseguire il backup</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="862"/>
+        <location filename="../src/mainwindow.cpp" line="867"/>
         <source>Couldn&apos;t backup the wallet.dat file.</source>
         <translation>Impossibile eseguire il backup del file wallet.dat.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="863"/>
+        <location filename="../src/mainwindow.cpp" line="868"/>
         <source>You need to back it up manually.</source>
         <translation>Devi eseguire il backup manualmente.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="952"/>
+        <location filename="../src/mainwindow.cpp" line="957"/>
         <source>These are all the private keys for all the addresses in your wallet</source>
         <translation>Queste sono le chiavi private per tutti gli indirizzi nel tuo portafoglio</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="954"/>
+        <location filename="../src/mainwindow.cpp" line="959"/>
         <source>Private key for </source>
         <translation>Chiave privata per </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="894"/>
-        <location filename="../src/mainwindow.cpp" line="962"/>
+        <location filename="../src/mainwindow.cpp" line="899"/>
+        <location filename="../src/mainwindow.cpp" line="967"/>
         <source>Save File</source>
         <translation>Salva File</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="898"/>
-        <location filename="../src/mainwindow.cpp" line="966"/>
+        <location filename="../src/mainwindow.cpp" line="903"/>
+        <location filename="../src/mainwindow.cpp" line="971"/>
         <source>Unable to open file</source>
         <translation>Impossibile aprire il file</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1060"/>
-        <location filename="../src/mainwindow.cpp" line="1213"/>
+        <location filename="../src/mainwindow.cpp" line="1065"/>
+        <location filename="../src/mainwindow.cpp" line="1218"/>
         <source>Copy address</source>
         <translation>Copia indirizzo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1063"/>
-        <location filename="../src/mainwindow.cpp" line="1209"/>
-        <location filename="../src/mainwindow.cpp" line="1215"/>
+        <location filename="../src/mainwindow.cpp" line="1068"/>
+        <location filename="../src/mainwindow.cpp" line="1214"/>
+        <location filename="../src/mainwindow.cpp" line="1220"/>
         <source>Copied to clipboard</source>
         <translation>Copiato negli appunti</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1066"/>
+        <location filename="../src/mainwindow.cpp" line="1071"/>
         <source>Get private key</source>
         <translation>Ottieni una chiave privata</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1071"/>
+        <location filename="../src/mainwindow.cpp" line="1076"/>
         <source>Get viewing key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1087"/>
+        <location filename="../src/mainwindow.cpp" line="1092"/>
         <source>Shield balance to Sapling</source>
         <translation>Trasferisci il saldo su un indirizzo shielded Sapling</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1092"/>
-        <location filename="../src/mainwindow.cpp" line="1219"/>
+        <location filename="../src/mainwindow.cpp" line="1097"/>
+        <location filename="../src/mainwindow.cpp" line="1224"/>
         <source>View on block explorer</source>
         <translation>Guarda sul block-explorer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1114"/>
+        <location filename="../src/mainwindow.cpp" line="1119"/>
         <source>Address Asset Viewer</source>
         <translation>Addresses Asset Viewer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1120"/>
+        <location filename="../src/mainwindow.cpp" line="1125"/>
         <source>Convert Address</source>
         <translation>Converti indirizzo</translation>
     </message>
@@ -858,146 +858,146 @@
         <translation type="vanished">Migra a Sapling</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1207"/>
+        <location filename="../src/mainwindow.cpp" line="1212"/>
         <source>Copy txid</source>
         <translation>Copia txid</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1230"/>
+        <location filename="../src/mainwindow.cpp" line="1235"/>
         <source>Copy block explorer link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1243"/>
+        <location filename="../src/mainwindow.cpp" line="1248"/>
         <source>View Payment Request</source>
         <translation>Visualizza richiesta di pagamento</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1250"/>
+        <location filename="../src/mainwindow.cpp" line="1255"/>
         <source>View Memo</source>
         <translation>Visualizza memo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1264"/>
+        <location filename="../src/mainwindow.cpp" line="1269"/>
         <source>Reply to </source>
         <translation>Rispondi a</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1345"/>
+        <location filename="../src/mainwindow.cpp" line="1350"/>
         <source>Created new t-Addr</source>
         <translation>Crea nuovo t-Addr</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1394"/>
+        <location filename="../src/mainwindow.cpp" line="1399"/>
         <source>Copy Address</source>
         <translation>Copia indirizzo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1460"/>
+        <location filename="../src/mainwindow.cpp" line="1465"/>
         <source>Address has been previously used</source>
         <translation>L&apos;indirizzo è stato precedentemente utilizzato</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1462"/>
+        <location filename="../src/mainwindow.cpp" line="1467"/>
         <source>Address is unused</source>
         <translation>L&apos;indirizzo non è utilizzato</translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="210"/>
+        <location filename="../src/sendtab.cpp" line="209"/>
         <source>Recipient </source>
         <translation>Destinatario </translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="283"/>
-        <location filename="../src/sendtab.cpp" line="335"/>
+        <location filename="../src/sendtab.cpp" line="282"/>
+        <location filename="../src/sendtab.cpp" line="334"/>
         <source>File Upload</source>
         <translation>Upload di file</translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="326"/>
+        <location filename="../src/sendtab.cpp" line="325"/>
         <source>Only z-addresses can have memos</source>
         <translation>Solo gli indirizzi shielded (z-address) possono avere le memo</translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="346"/>
+        <location filename="../src/sendtab.cpp" line="345"/>
         <source>File size too large</source>
         <translation>Dimensione del file troppo grande</translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="347"/>
+        <location filename="../src/sendtab.cpp" line="346"/>
         <source>The file size </source>
         <translation>La dimensione del file </translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="347"/>
+        <location filename="../src/sendtab.cpp" line="346"/>
         <source> bytes is greater than </source>
         <translation> byte è maggiore di </translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="347"/>
+        <location filename="../src/sendtab.cpp" line="346"/>
         <source>bytes</source>
         <translation>byte</translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="362"/>
+        <location filename="../src/sendtab.cpp" line="361"/>
         <source>Memos can only be used with z-addresses</source>
         <translation>Le memos possono essere utilizzate solo con z-addresses (Shielded)</translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="363"/>
+        <location filename="../src/sendtab.cpp" line="362"/>
         <source>The memo field can only be used with a z-address.
 </source>
         <translation>Il campo memo può essere utilizzato solo con z-address (Shielded) </translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="363"/>
+        <location filename="../src/sendtab.cpp" line="362"/>
         <source>
 doesn&apos;t look like a z-address</source>
         <translation>Non sembra uno z-address (Shielded) </translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="534"/>
+        <location filename="../src/sendtab.cpp" line="533"/>
         <source>Change from </source>
         <translatorcomment>Controllare se opportuno inserire Mittente</translatorcomment>
         <translation>Cambiare da </translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="675"/>
+        <location filename="../src/sendtab.cpp" line="674"/>
         <source>Current balance      : </source>
         <translation>Bilancio corrente      :</translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="677"/>
+        <location filename="../src/sendtab.cpp" line="676"/>
         <source>Balance after this Tx: </source>
         <translation>Equilibrio dopo questo Tx:</translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="698"/>
+        <location filename="../src/sendtab.cpp" line="697"/>
         <source>Transaction Error</source>
         <translation>Errore di transazione</translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="730"/>
+        <location filename="../src/sendtab.cpp" line="729"/>
         <source>Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="731"/>
+        <location filename="../src/sendtab.cpp" line="730"/>
         <source>Computing your transaction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="738"/>
+        <location filename="../src/sendtab.cpp" line="737"/>
         <source>Computing transaction: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="745"/>
+        <location filename="../src/sendtab.cpp" line="744"/>
         <source>Done!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="776"/>
+        <location filename="../src/sendtab.cpp" line="775"/>
         <source>From Address is Invalid!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1007,17 +1007,17 @@ doesn&apos;t look like a z-address</source>
         <translation type="vanished">L&apos;indirizzo selezionato non è valido</translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="782"/>
+        <location filename="../src/sendtab.cpp" line="781"/>
         <source>Recipient Address </source>
         <translation>Indirizzo Destinatario </translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="782"/>
+        <location filename="../src/sendtab.cpp" line="781"/>
         <source> is Invalid</source>
         <translation> non valido</translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="788"/>
+        <location filename="../src/sendtab.cpp" line="787"/>
         <source>Amount &apos;%1&apos; is invalid!</source>
         <translation>L&apos;importo &apos;%1&apos; non è valido!</translation>
     </message>
@@ -1189,12 +1189,12 @@ Non è stato avviato hushd integrato perché è stato passato il comando --no-em
         <translation>Scegli la directory dei dati</translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="257"/>
+        <location filename="../src/connection.cpp" line="260"/>
         <source>All Downloads Finished Successfully!</source>
         <translation>Tutti i download sono terminati con successo!</translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="280"/>
+        <location filename="../src/connection.cpp" line="283"/>
         <source>Couldn&apos;t download params. Please check the help site for more info.</source>
         <translation>Impossibile scaricare i parametri. Si prega di controllare il sito di aiuto per maggiori informazioni.</translation>
     </message>
@@ -1227,103 +1227,103 @@ If all else fails, please run hushd manually.</source>
         <translation>Impossibile creare HUSH3.conf.</translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="306"/>
-        <location filename="../src/connection.cpp" line="322"/>
+        <location filename="../src/connection.cpp" line="309"/>
+        <location filename="../src/connection.cpp" line="325"/>
         <source>Downloading </source>
         <translation>Downlaoding </translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="306"/>
+        <location filename="../src/connection.cpp" line="309"/>
         <source> more remaining )</source>
         <translation> rimanenti )</translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="307"/>
+        <location filename="../src/connection.cpp" line="310"/>
         <source>MB of </source>
         <translation>MB di </translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="307"/>
+        <location filename="../src/connection.cpp" line="310"/>
         <source>MB at </source>
         <translation>MB a </translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="533"/>
+        <location filename="../src/connection.cpp" line="536"/>
         <source>This may take several hours, grab some popcorn</source>
         <translation>Potrebbero essere necessarie alcune ore, prendi dei popcorn</translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="820"/>
+        <location filename="../src/connection.cpp" line="831"/>
         <source>There was an error! : </source>
         <translation>C&apos;era un errore! :</translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="680"/>
+        <location filename="../src/rpc.cpp" line="683"/>
         <source>Downloading blocks</source>
         <translation>Scaricando i blocchi</translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="683"/>
+        <location filename="../src/rpc.cpp" line="686"/>
         <source>Block height</source>
         <translation>Altezza ultimo blocco</translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="698"/>
+        <location filename="../src/rpc.cpp" line="701"/>
         <source>Syncing</source>
         <translation>Sincronizzazione in corso</translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="698"/>
+        <location filename="../src/rpc.cpp" line="701"/>
         <source>Connected</source>
         <translation>Connesso</translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="700"/>
+        <location filename="../src/rpc.cpp" line="703"/>
         <source>testnet:</source>
         <translation>testnet:</translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="710"/>
+        <location filename="../src/rpc.cpp" line="713"/>
         <source>Connected to hushd</source>
         <translation>Connesso a hushd</translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="732"/>
+        <location filename="../src/rpc.cpp" line="735"/>
         <source>There was an error connecting to hushd. The error was</source>
         <translation>Si è verificato un errore durante la connessione a hushd. L&apos;errore era</translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="1026"/>
+        <location filename="../src/rpc.cpp" line="1030"/>
         <source> transaction computing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="1235"/>
+        <location filename="../src/rpc.cpp" line="1247"/>
         <source>Please enhance your calm and wait for SilentDragon to exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="1236"/>
+        <location filename="../src/rpc.cpp" line="1248"/>
         <source>Waiting for hushd to exit, y&apos;all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="761"/>
+        <location filename="../src/sendtab.cpp" line="760"/>
         <source> Transaction </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="764"/>
+        <location filename="../src/sendtab.cpp" line="763"/>
         <source>The transaction with id </source>
         <translation>La transazione con id </translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="764"/>
+        <location filename="../src/sendtab.cpp" line="763"/>
         <source> failed. The error was</source>
         <translation> fallito. l&apos;errore era</translation>
     </message>
     <message>
-        <location filename="../src/sendtab.cpp" line="761"/>
+        <location filename="../src/sendtab.cpp" line="760"/>
         <source> failed</source>
         <translation> fallito</translation>
     </message>
@@ -1332,7 +1332,7 @@ If all else fails, please run hushd manually.</source>
         <translation type="vanished"> Tx </translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="713"/>
+        <location filename="../src/rpc.cpp" line="716"/>
         <source>hushd has no peer connections! Network issues?</source>
         <translation>hushd non ha connessioni peer! Problemi di rete?</translation>
     </message>
@@ -1341,12 +1341,12 @@ If all else fails, please run hushd manually.</source>
         <translation type="vanished"> computazione Tx. Questo può richiedere diversi minuti.</translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="1075"/>
+        <location filename="../src/rpc.cpp" line="1079"/>
         <source>Update Available</source>
         <translation>Aggiornamento disponibile</translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="1076"/>
+        <location filename="../src/rpc.cpp" line="1080"/>
         <source>A new release v%1 is available! You have v%2.
 
 Would you like to visit the releases page?</source>
@@ -1355,12 +1355,12 @@ Would you like to visit the releases page?</source>
         Vuoi visitare la pagina dei rilasci?</translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="1088"/>
+        <location filename="../src/rpc.cpp" line="1092"/>
         <source>No updates available</source>
         <translation>Nessun aggiornamento disponibile</translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="1089"/>
+        <location filename="../src/rpc.cpp" line="1093"/>
         <source>You already have the latest release v%1</source>
         <translation>Hai già l&apos;ultima versione v%1</translation>
     </message>
@@ -1375,17 +1375,17 @@ Would you like to visit the releases page?</source>
         <translation type="vanished">Attendere l&apos;uscita di hushd</translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="322"/>
+        <location filename="../src/connection.cpp" line="325"/>
         <source> failed. Please check the help site for more info</source>
         <translation> fallito. Per favore controlllare il sito di aiuto per maggior informazioni</translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="346"/>
+        <location filename="../src/connection.cpp" line="349"/>
         <source>hushd error</source>
         <translation>hushd errore</translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="426"/>
+        <location filename="../src/connection.cpp" line="429"/>
         <source>A manual connection was requested, but the settings are not configured.
 
 Please set the host/port and user/password in the Edit-&gt;Settings menu.</source>
@@ -1393,7 +1393,7 @@ Please set the host/port and user/password in the Edit-&gt;Settings menu.</sourc
 Impostare host/porta e utente/password nel menu Modifica-&gt; Impostazioni.</translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="438"/>
+        <location filename="../src/connection.cpp" line="441"/>
         <source>Could not connect to hushd configured in settings.
 
 Please set the host/port and user/password in the Edit-&gt;Settings menu.</source>
@@ -1402,24 +1402,24 @@ Please set the host/port and user/password in the Edit-&gt;Settings menu.</sourc
 Impostare host/porta e utente/password nel menu Modifica-&gt; Impostazioni.</translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="501"/>
+        <location filename="../src/connection.cpp" line="504"/>
         <source>Authentication failed. The username / password you specified was not accepted by hushd. Try changing it in the Edit-&gt;Settings menu</source>
         <translation>Autenticazione fallita. Il nome utente/password che hai specificato non sono stati accettati da hushd. Prova a cambiarlo nel menu Modifica-&gt; Impostazioni</translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="516"/>
+        <location filename="../src/connection.cpp" line="519"/>
         <source>Your hushd is starting up. Please wait.</source>
         <translation>Il tuo hushd si sta avviando. Attendere prego.</translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="550"/>
-        <location filename="../src/rpc.cpp" line="732"/>
+        <location filename="../src/connection.cpp" line="553"/>
+        <location filename="../src/rpc.cpp" line="735"/>
         <source>Connection Error</source>
         <translation>Errore di Connessione</translation>
     </message>
     <message>
-        <location filename="../src/connection.cpp" line="820"/>
-        <location filename="../src/sendtab.cpp" line="766"/>
+        <location filename="../src/connection.cpp" line="831"/>
+        <location filename="../src/sendtab.cpp" line="765"/>
         <source>Transaction Error</source>
         <translation>Errore di transazione</translation>
     </message>
@@ -1428,8 +1428,8 @@ Impostare host/porta e utente/password nel menu Modifica-&gt; Impostazioni.</tra
         <translation type="vanished">Si è verificato un errore durante l&apos;invio della transazione. L&apos;errore era:</translation>
     </message>
     <message>
-        <location filename="../src/rpc.cpp" line="394"/>
         <location filename="../src/rpc.cpp" line="396"/>
+        <location filename="../src/rpc.cpp" line="398"/>
         <source>No Connection</source>
         <translation>Nessuna connessione</translation>
     </message>
@@ -1570,7 +1570,7 @@ Avete fondi non confermati o il saldo è troppo basso per una migrazione automat
         <translation type="vanished">Nessun sapling o indirizzi trasparenti con abbastanza equilibrio da spendere.</translation>
     </message>
     <message>
-        <location filename="../src/settings.cpp" line="312"/>
+        <location filename="../src/settings.cpp" line="313"/>
         <source>Transaction submitted (right click to copy) txid:</source>
         <translation type="unfinished"></translation>
     </message>
