@@ -228,13 +228,13 @@ void MainWindow::sendMemo() {
     // Either we made a custom zaddr for this contact in the past, or we make a new one now
     if(thisChat.getContact().getMyZaddr().isEmpty()) {
         QString newzaddr;
-        rpc->newZaddr( [=] (json reply) {
+        rpc->newZaddr( [=] (QJsonValue reply) {
             Tx tx;
             tx.fee = Settings::getMinerFee();
             //TODO: verify we currently own the private key to this zaddr via z_validateaddress
             HushChat chat       = MainWindow::getHushChat();
             HushContact contact = chat.getContact();
-            QString myZaddr     = QString::fromStdString(reply.get<json::string_t>());
+            QString myZaddr     = reply.toString();
             QString addr        = getZaddrForCurrentContact();
             QString name        = getNameForCurrentContact();
             qDebug() << "created new myZaddr="<< myZaddr << " for " << name;
