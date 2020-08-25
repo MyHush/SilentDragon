@@ -1,4 +1,5 @@
 // Copyright 2019-2020 Hush developers
+// Released under the GPLv3
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "addressbook.h"

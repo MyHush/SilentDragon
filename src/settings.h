@@ -1,4 +1,6 @@
-// Copyright 2019 The Hush developers
+// Copyright 2019-2020 The Hush developers
+// Released under the GPLv3
+
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
@@ -142,8 +144,8 @@ public:
 
     //TODO: add these as advanced options, with sane minimums
     static const int     updateSpeed         = 10 * 1000;        // 10 sec
-    static const int     quickUpdateSpeed    = 3  * 1000;        // 3 sec
-    static const int     priceRefreshSpeed   = 15 * 60 * 1000;   // 15 mins
+    static const int     quickUpdateSpeed    = 5  * 1000;        // 5 sec
+    static const int     priceRefreshSpeed   = 5 * 60 * 1000;    // 5 mins
 
 private:
     // This class can only be accessed through Settings::getInstance()

@@ -1,5 +1,5 @@
 // Copyright 2019-2020 The Hush developers
-// GPLv3
+// Released under the GPLv3
 #include <singleapplication.h>
 
 #include "precompiled.h"

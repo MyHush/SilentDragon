@@ -37,7 +37,7 @@ RPC::RPC(MainWindow* main) {
     // Set up a timer to refresh the UI every few seconds
     timer = new QTimer(main);
     QObject::connect(timer, &QTimer::timeout, [=]() {
-        //qDebug() << "Refreshing main UI";
+        qDebug() << "Refreshing main UI";
         refresh();
     });
     timer->start(Settings::updateSpeed);    
@@ -45,7 +45,7 @@ RPC::RPC(MainWindow* main) {
     // Set up the timer to watch for tx status
     txTimer = new QTimer(main);
     QObject::connect(txTimer, &QTimer::timeout, [=]() {
-        //qDebug() << "Watching tx status";
+        qDebug() << "Watching tx status";
         watchTxStatus();
     });
     // Start at every 10s. When an operation is pending, this will change to every second
@@ -1001,7 +1001,7 @@ void RPC::watchTxStatus() {
                     watchingOps.remove(id);
                     wtx.completed(id, txid);
 
-                    qDebug() << "opid "<< id << " started at "<<QString::number((unsigned int)it.toObject()["creation_time"].toInt()) << " took " << QString::number((double)it.toObject()["execution_secs"].toDouble()) << " seconds";
+                    qDebug() << "opid "<< id << " for " << txid << " started at "<<QString::number((unsigned int)it.toObject()["creation_time"].toInt()) << " took " << QString::number((double)it.toObject()["execution_secs"].toDouble()) << " seconds";
 
                     // Refresh balances to show unconfirmed balances
                     refresh(true);
@@ -1016,8 +1016,10 @@ void RPC::watchTxStatus() {
             }
 
             if (watchingOps.isEmpty()) {
+                qDebug() << "Using default update speed";
                 txTimer->start(Settings::updateSpeed);
             } else {
+                qDebug() << "Using quick update speed";
                 txTimer->start(Settings::quickUpdateSpeed);
             }
         }
