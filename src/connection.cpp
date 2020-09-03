@@ -449,7 +449,6 @@ void ConnectionLoader::doManualConnect() {
 }
 
 void ConnectionLoader::doRPCSetConnection(Connection* conn) {
-    rpc->setEZcashd(ezcashd);
     rpc->setConnection(conn);
     
     d->accept();
@@ -547,7 +546,6 @@ void ConnectionLoader::showInformation(QString info, QString detail) {
  * Show error will close the loading dialog and show an error. 
 */
 void ConnectionLoader::showError(QString explanation) {    
-    rpc->setEZcashd(nullptr);
     rpc->noConnection();
 
     QMessageBox::critical(main, QObject::tr("Connection Error"), explanation, QMessageBox::Ok);

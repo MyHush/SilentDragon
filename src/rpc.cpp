@@ -48,7 +48,7 @@ RPC::RPC(MainWindow* main) {
         qDebug() << "Watching tx status";
         watchTxStatus();
     });
-    // Start at every 10s. When an operation is pending, this will change to every second
+    // Start at normal updateSpeed. When an operation is pending, this will change to quickUpdateSpeed 
     txTimer->start(Settings::updateSpeed);  
 
     usedAddresses = new QMap<QString, bool>();
@@ -57,25 +57,14 @@ RPC::RPC(MainWindow* main) {
 RPC::~RPC() {
     delete timer;
     delete txTimer;
-
     delete transactionsTableModel;
     delete balancesTableModel;
-
     delete utxos;
     delete allBalances;
     delete usedAddresses;
     delete zaddresses;
     delete taddresses;
-
     delete conn;
-}
-
-void RPC::setEZcashd(std::shared_ptr<QProcess> p) {
-    ezcashd = p;
-
-    if (ezcashd && ui->tabWidget->widget(4) == nullptr) {
-        ui->tabWidget->addTab(main->zcashdtab, "zcashd");
-    }
 }
 
 // Called when a connection to hushd is available. 
@@ -893,6 +882,7 @@ void RPC::refreshTransactions() {
 
 // Read sent Z transactions from the file.
 void RPC::refreshSentZTrans() {
+    qDebug() << "refreshing sent ztx's";
     if  (conn == nullptr) 
         return noConnection();
 
@@ -946,6 +936,7 @@ void RPC::refreshSentZTrans() {
 
 void RPC::addNewTxToWatch(const QString& newOpid, WatchedTx wtx) {    
     watchingOps.insert(newOpid, wtx);
+    qDebug() << newOpid << " added to watchlist";
 
     watchTxStatus();
 }
@@ -965,6 +956,7 @@ void RPC::executeTransaction(Tx tx,
         QString opid = reply.toString();
 
         // And then start monitoring the transaction
+        qDebug() << "Starting to watch " << opid;
         addNewTxToWatch( opid, WatchedTx { opid, tx, computed, error} );
         submitted(opid);
     },
@@ -1016,10 +1008,10 @@ void RPC::watchTxStatus() {
             }
 
             if (watchingOps.isEmpty()) {
-                qDebug() << "Using default update speed";
+                qDebug() << "Using default update speed " << Settings::updateSpeed;
                 txTimer->start(Settings::updateSpeed);
             } else {
-                qDebug() << "Using quick update speed";
+                qDebug() << "Using quick update speed " << Settings::quickUpdateSpeed;
                 txTimer->start(Settings::quickUpdateSpeed);
             }
         }

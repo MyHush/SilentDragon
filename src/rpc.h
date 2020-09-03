@@ -1,3 +1,5 @@
+// Copyright 20190-2020 The Hush developers
+// Released under the GPLv3
 #ifndef RPCCLIENT_H
 #define RPCCLIENT_H
 
@@ -36,7 +38,6 @@ public:
     ~RPC();
 
     void setConnection(Connection* c);
-    void setEZcashd(std::shared_ptr<QProcess> p);
     const QProcess* getEZcashD() { return ezcashd.get(); }
 
     void refresh(bool force = false);
