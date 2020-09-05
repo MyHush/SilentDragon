@@ -1018,8 +1018,10 @@ void RPC::watchTxStatus() {
 
         // If there is some op that we are watching, then show the loading bar, otherwise hide it
         if (watchingOps.empty()) {
+            qDebug() << "No ops to watch";
             main->loadingLabel->setVisible(false);
         } else {
+            qDebug() << "watching " << QString::number(watchingOps.size()) << " opids";
             main->loadingLabel->setVisible(true);
             main->loadingLabel->setToolTip(QString::number(watchingOps.size()) + QObject::tr(" transaction computing."));
         }
