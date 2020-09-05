@@ -920,6 +920,7 @@ void RPC::refreshSentZTrans() {
             // with the confirmed block number, so we don't have to keep calling gettransaction for the
             // sent items.
             for (TransactionItem& sentTx: newSentZTxs) {
+                qDebug() << "updating conf count for " << sentTx.txid;
                 auto j = txidList->value(sentTx.txid);
                 if (j.isNull())
                     continue;
@@ -932,6 +933,7 @@ void RPC::refreshSentZTrans() {
             delete txidList;
         }
      );
+    qDebug() << "done refreshing sent ztx's";
 }
 
 void RPC::addNewTxToWatch(const QString& newOpid, WatchedTx wtx) {    
@@ -972,6 +974,7 @@ void RPC::watchTxStatus() {
 
     // Make an RPC to load pending operation statues
     conn->doRPCIgnoreError(makePayload("z_getoperationstatus"), [=] (const QJsonValue& reply) {
+        qDebug() << "Got reply from z_getoperationstatus with " << reply.toArray().size() << " items";
         // conn->doRPCIgnoreError(payload, [=] (const json& reply) {
         // There's an array for each item in the status
         for (const auto& it : reply.toArray()) {
