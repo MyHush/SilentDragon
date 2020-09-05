@@ -77,7 +77,7 @@ public:
     void importTPrivKey(QString addr, bool rescan, const std::function<void(QJsonValue)>& cb);
     void validateAddress(QString address, const std::function<void(QJsonValue)>& cb);
 
-    void shutdownZcashd();
+    void shutdownHushd();
     void noConnection();
     bool isEmbedded() { return ezcashd != nullptr; }
 

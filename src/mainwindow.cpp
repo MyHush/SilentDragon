@@ -200,7 +200,7 @@ void MainWindow::closeEvent(QCloseEvent* event) {
     s.sync();
 
     // Let the RPC know to shut down any running service.
-    rpc->shutdownZcashd();
+    rpc->shutdownHushd();
 
     // Bubble up
     if (event)

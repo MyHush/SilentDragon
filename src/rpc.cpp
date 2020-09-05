@@ -1210,7 +1210,7 @@ void RPC::refreshPrice() {
     });
 }
 
-void RPC::shutdownZcashd() {
+void RPC::shutdownHushd() {
     // Shutdown embedded hushd if it was started
     if (ezcashd == nullptr || ezcashd->processId() == 0 || conn == nullptr) {
         // No hushd running internally, just return
