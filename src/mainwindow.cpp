@@ -118,9 +118,10 @@ MainWindow::MainWindow(QWidget *parent) :
     // Initialize to the balances tab
     ui->tabWidget->setCurrentIndex(0);
 
-    setupSendTab();
-    setupTransactionsTab();
     setupReceiveTab();
+
+    setupTransactionsTab();
+    setupSendTab();
     setupBalancesTab();
     setupMarketTab();
     //setupChatTab();
@@ -253,6 +254,7 @@ void MainWindow::setupStatusBar() {
         }
 
         menu.addAction("Refresh", [=]() {
+            qDebug() << "Manual refresh";
             rpc->refresh(true);
         });
         QPoint gpos(mapToGlobal(pos).x(), mapToGlobal(pos).y() + this->height() - ui->statusBar->height());
@@ -1180,8 +1182,10 @@ void MainWindow::setupMarketTab() {
 }
 
 void MainWindow::setupTransactionsTab() {
+    qDebug() << __func__;
     // Double click opens up memo if one exists
     QObject::connect(ui->transactionsTable, &QTableView::doubleClicked, [=] (auto index) {
+        qDebug() << "Tx double clicked, showing memo";
         auto txModel = dynamic_cast<TxTableModel *>(ui->transactionsTable->model());
         QString memo = txModel->getMemo(index.row());
 
@@ -1294,6 +1298,7 @@ void MainWindow::setupTransactionsTab() {
 void MainWindow::addNewZaddr() {
     rpc->newZaddr( [=] (QJsonValue reply) {
         QString addr = reply.toString();
+        qDebug() << __func__ << ": created new zaddr " << addr;
         // Make sure the RPC class reloads the z-addrs for future use
         rpc->refreshAddresses();
 
@@ -1335,6 +1340,7 @@ std::function<void(bool)> MainWindow::addZAddrsToComboList(bool sapling) {
 }
 
 void MainWindow::setupReceiveTab() {
+    qDebug() << __func__;
     auto addNewTAddr = [=] () {
         rpc->newTaddr([=] (QJsonValue reply) {
             qDebug() << "New addr button clicked";

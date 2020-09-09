@@ -45,7 +45,7 @@ private:
 
     Connection* makeConnection(std::shared_ptr<ConnectionConfig> config);
 
-    void doAutoConnect(bool tryEzcashdStart = true);
+    void doAutoConnect(bool tryEhushdStart = true);
     void doManualConnect();
 
     void createZcashConf();
@@ -58,14 +58,14 @@ private:
     void doNextDownload(std::function<void(void)> cb);
     bool startEmbeddedZcashd();
 
-    void refreshZcashdState(Connection* connection, std::function<void(void)> refused);
+    void refreshHushdState(Connection* connection, std::function<void(void)> refused);
 
     void showError(QString explanation);
     void showInformation(QString info, QString detail = "");
 
     void doRPCSetConnection(Connection* conn);
 
-    std::shared_ptr<QProcess> ezcashd;
+    std::shared_ptr<QProcess> ehushd;
 
     QDialog*                d;
     Ui_ConnectionDialog*    connD;
@@ -82,7 +82,7 @@ private:
 };
 
 /**
- * Represents a connection to a zcashd. It may even start a new zcashd if needed.
+ * Represents a connection to a hushd. It may even start a new hushd if needed.
  * This is also a UI class, so it may show a dialog waiting for the connection.
 */
 class Connection {
@@ -119,6 +119,7 @@ public:
         static QMap<QString, bool> inProgress;
 
         QString method = payloadGenerator(payloads[0])["method"].toString();
+        qDebug() << __func__ << "(" << method << ") totalSize=" << totalSize << "  at " << QDateTime::currentSecsSinceEpoch();
 
         //if (inProgress.value(method, false)) {
         //    qDebug() << "In progress batch, skipping";
@@ -126,6 +127,7 @@ public:
         //}
 
         for (auto item: payloads) {
+            qDebug() << __func__ << ": payload " << item;
             QJsonValue payload = payloadGenerator(item);
             inProgress[method] = true;
             
@@ -137,22 +139,25 @@ public:
             QObject::connect(reply, &QNetworkReply::finished, [=] {
                 reply->deleteLater();
                 if (shutdownInProgress) {
-                    // Ignoring callback because shutdown in progress
+                    qDebug() << __func__ << ": Ignoring callback because shutdown in progress";
                     return;
                 }
                 
                 auto all = reply->readAll();            
                 auto parsed = QJsonDocument::fromJson(all);
 
+
                 if (reply->error() != QNetworkReply::NoError) {            
-                    qDebug() << parsed.toJson();
+                    qDebug() << "Error JSON response: " << parsed.toJson();
                     qDebug() << reply->errorString();
 
                     (*responses)[item] = {};    // Empty object
                 } else {
                     if (parsed.isEmpty()) {
+                        qDebug() << __func__ << ": got empty response";
                         (*responses)[item] = {};    // Empty object
                     } else {
+                        qDebug() << "Got network reply from RPC " << method << "(" << payload << ")" << " of " << parsed["result"].toString().size() << " bytes";
                         (*responses)[item] = parsed["result"];
                     }
                 }
@@ -162,14 +167,18 @@ public:
         auto waitTimer = new QTimer(main);
         QObject::connect(waitTimer, &QTimer::timeout, [=]() {
             if (shutdownInProgress) {
+                qDebug() << "Shutdown in progress, aborting";
                 waitTimer->stop();
                 waitTimer->deleteLater();  
                 return;
             }
 
+            //qDebug() << ".";
+
             // If all responses have arrived, return
             if (responses->size() == totalSize) {
 
+                qDebug() << __func__ << ": stopping timer";
                 waitTimer->stop();
                 
                 cb(responses);
@@ -178,7 +187,9 @@ public:
                 waitTimer->deleteLater();            
             }
         });
+        qDebug() << __func__ << ": starting timer"<< QDateTime::currentSecsSinceEpoch();
         waitTimer->start(100);    
+        qDebug() << __func__ << ": finished at " << QDateTime::currentSecsSinceEpoch();
     }
 
 private:

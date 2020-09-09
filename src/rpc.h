@@ -38,7 +38,7 @@ public:
     ~RPC();
 
     void setConnection(Connection* c);
-    const QProcess* getEZcashD() { return ezcashd.get(); }
+    const QProcess* getEZcashD() { return ehushd.get(); }
 
     void refresh(bool force = false);
 
@@ -79,7 +79,9 @@ public:
 
     void shutdownHushd();
     void noConnection();
-    bool isEmbedded() { return ezcashd != nullptr; }
+    bool isEmbedded() { return ehushd != nullptr; }
+    QJsonValue makePayload(QString method, QString params);
+    QJsonValue makePayload(QString method);
 
     QString getDefaultSaplingAddress();
     QString getDefaultTAddress();
@@ -102,8 +104,6 @@ private:
     void getInfoThenRefresh(bool force);
 
     void getBalance(const std::function<void(QJsonValue)>& cb);
-    QJsonValue makePayload(QString method, QString params);
-    QJsonValue makePayload(QString method);
 
     void getTransparentUnspent  (const std::function<void(QJsonValue)>& cb);
     void getZUnspent            (const std::function<void(QJsonValue)>& cb);
@@ -112,7 +112,7 @@ private:
     void getTAddresses          (const std::function<void(QJsonValue)>& cb);
 
     Connection*                 conn                        = nullptr;
-    std::shared_ptr<QProcess>   ezcashd                     = nullptr;
+    std::shared_ptr<QProcess>   ehushd                     = nullptr;
 
     QList<UnspentOutput>*       utxos                       = nullptr;
     QMap<QString, double>*      allBalances                 = nullptr;

@@ -11,6 +11,7 @@
 
 RPC::RPC(MainWindow* main) {
     auto cl = new ConnectionLoader(main, this);
+    qDebug() << "ConnectionLoader created";
 
     // Execute the load connection async, so we can set up the rest of RPC properly. 
     QTimer::singleShot(1, [=]() { cl->loadConnection(); });
@@ -26,26 +27,30 @@ RPC::RPC(MainWindow* main) {
     transactionsTableModel = new TxTableModel(ui->transactionsTable);
     main->ui->transactionsTable->setModel(transactionsTableModel);
     main->ui->transactionsTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+    qDebug() << "Created transationsTableModel";
 
     // Set up timer to refresh Price
     priceTimer = new QTimer(main);
     QObject::connect(priceTimer, &QTimer::timeout, [=]() {
+        qDebug() << "Refreshing price at " << QDateTime::currentSecsSinceEpoch();
         refreshPrice();
     });
-    priceTimer->start(Settings::priceRefreshSpeed);  // Every hour
+    qDebug() << "Starting price timer with speed=" << Settings::priceRefreshSpeed;
+    priceTimer->start(Settings::priceRefreshSpeed);
 
     // Set up a timer to refresh the UI every few seconds
     timer = new QTimer(main);
     QObject::connect(timer, &QTimer::timeout, [=]() {
-        qDebug() << "Refreshing main UI";
+        qDebug() << "Refreshing main UI with timer at " << QDateTime::currentSecsSinceEpoch();
         refresh();
     });
+    qDebug() << "Starting main UI timer with speed=" << Settings::updateSpeed;
     timer->start(Settings::updateSpeed);    
 
     // Set up the timer to watch for tx status
     txTimer = new QTimer(main);
     QObject::connect(txTimer, &QTimer::timeout, [=]() {
-        qDebug() << "Watching tx status";
+        qDebug() << "Watching tx status at " << QDateTime::currentSecsSinceEpoch();
         watchTxStatus();
     });
     // Start at normal updateSpeed. When an operation is pending, this will change to quickUpdateSpeed 
@@ -237,6 +242,7 @@ void RPC::getTransactions(const std::function<void(QJsonValue)>& cb) {
 
 void RPC::sendZTransaction(QJsonValue params, const std::function<void(QJsonValue)>& cb,
     const std::function<void(QString)>& err) {
+    qDebug() << __func__ << "  at " << QDateTime::currentSecsSinceEpoch();
     QJsonObject payload = {
         {"jsonrpc", "1.0"},
         {"id", "someid"},
@@ -343,6 +349,7 @@ void RPC::getAllPrivKeys(const std::function<void(QList<QPair<QString, QString>>
 
 // Build the RPC JSON Parameters for this tx
 void RPC::fillTxJsonParams(QJsonArray& params, Tx tx) {
+    qDebug() << __func__;
 
     Q_ASSERT(QJsonValue(params).isArray());
 
@@ -379,6 +386,7 @@ void RPC::fillTxJsonParams(QJsonArray& params, Tx tx) {
 
 
 void RPC::noConnection() {    
+    qDebug() << "No connection!!!";
     QIcon i = QApplication::style()->standardIcon(QStyle::SP_MessageBoxCritical);
     main->statusIcon->setPixmap(i.pixmap(16, 16));
     main->statusIcon->setToolTip("");
@@ -411,24 +419,36 @@ void RPC::noConnection() {
     ui->inputsCombo->clear();
 }
 
-// Refresh received z txs by calling z_listreceivedbyaddress/gettransaction
+// Refresh received z txs by calling z_listreceivedbyaddress
 void RPC::refreshReceivedZTrans(QList<QString> zaddrs) {
+    qDebug() << __func__ << " at " << QDateTime::currentSecsSinceEpoch();
     if  (conn == nullptr) 
         return noConnection();
 
     // We'll only refresh the received Z txs if settings allows us.
     if (!Settings::getInstance()->getSaveZtxs()) {
+        qDebug() << "Not saving sent ztx's as per settings";
         QList<TransactionItem> emptylist;
         transactionsTableModel->addZRecvData(emptylist);
         return;
     }
         
-    // This method is complicated because z_listreceivedbyaddress only returns the txid, and 
-    // we have to make a follow up call to gettransaction to get details of that transaction. 
-    // Additionally, it has to be done in batches, because there are multiple z-Addresses, 
+    // It has to be done in batches, because there are multiple z-Addresses, 
     // and each z-Addr can have multiple received txs. 
 
     // 1. For each z-Addr, get list of received txs    
+    /*
+  {
+    "txid": "deadbeef",
+    "amount": 420.69000000,
+    "memo": "...",
+    "memoStr": "",
+    "outindex": 0,
+    "rawconfirmations": 27793,
+    "confirmations": 27793,
+    "change": false
+  }
+*/
     conn->doBatchRPC<QString>(zaddrs,
         [=] (QString zaddr) {
             QJsonObject payload = {
@@ -441,12 +461,15 @@ void RPC::refreshReceivedZTrans(QList<QString> zaddrs) {
             return payload;
         },          
         [=] (QMap<QString, QJsonValue>* zaddrTxids) {
+            qDebug() << __func__ << ": processing z_listreceivedbyaddress JSON at " << QDateTime::currentSecsSinceEpoch();
             // Process all txids, removing duplicates. This can happen if the same address
             // appears multiple times in a single tx's outputs.
             QSet<QString> txids;
             QMap<QString, QString> memos;
             for (auto it = zaddrTxids->constBegin(); it != zaddrTxids->constEnd(); it++) {
-                auto zaddr = it.key();
+                auto zaddr   = it.key();
+                qint64 numTx = 0;
+                qDebug() << __func__ << ": processing tx's of " << zaddr << " at " << QDateTime::currentSecsSinceEpoch();
                 for (const auto& i : it.value().toArray()) {
                     // Mark the address as used
                     usedAddresses->insert(zaddr, true);
@@ -464,63 +487,48 @@ void RPC::refreshReceivedZTrans(QList<QString> zaddrs) {
                             if (!memo.trimmed().isEmpty())
                                 memos[zaddr + txid] = memo;
                         }
+                        // Fill in other data
+                        QList<TransactionItem> txdata;
+
+                        for (const auto& j : it.value().toArray()) {
+                            numTx++;
+                            // Filter out change txs
+                            if (j.toObject()["change"].toBool()) {
+                                //qDebug() << __func__ << ": filtered change";
+                                continue;
+                            }
+                            auto zaddr = it.key();
+                            auto txid  = j.toObject()["txid"].toString();
+                            // Lookup txid in the map
+                            auto txidInfo = zaddrTxids->find(txid);
+                            qint64 timestamp;
+                            if (!txidInfo->toObject()["time"].isUndefined()) {
+                                timestamp = txidInfo->toObject()["time"].toInt();
+                            } else {
+                                timestamp = txidInfo->toObject()["blocktime"].toInt();
+                            }
+                            auto amount        = j.toObject()["amount"].toDouble();
+                            //auto confirmations = (unsigned long)txidInfo["confirmations"].toInt();
+                            auto confirmations = (unsigned long)txidInfo->toObject()["confirmations"].toInt();
+
+                            //qDebug() << __func__ << ": Adding " << txid << " at time=" << timestamp << " with " << confirmations << " confs";
+                            TransactionItem tx{ QString("receive"), timestamp, zaddr, txid, amount, confirmations, "", memos.value(zaddr + txid, "") };
+                            txdata.push_front(tx);
+                            if(numTx % 1000 == 0) {
+                                qDebug() << "z_listreceivedbyaddress: Processed " << numTx << " transactions for " << zaddr;
+                            }
+                        }
+
+                        qDebug() << __func__ << ": Updating transactionsTableModel with numTx=" << numTx;
+                        transactionsTableModel->addZRecvData(txdata);
                     }
                 }                        
             }
-
-            // 2. For all txids, go and get the details of that txid.
-            conn->doBatchRPC<QString>(txids.toList(),
-                [=] (QString txid) {
-                    QJsonObject payload = {
-                        {"jsonrpc", "1.0"},
-                        {"id",  "gettx"},
-                        {"method", "gettransaction"},
-                        {"params", QJsonArray {txid}}
-                    };
-
-                    return payload;
-                },
-                [=] (QMap<QString, QJsonValue>* txidDetails) {
-                    QList<TransactionItem> txdata;
-
-                    // Combine them both together. For every zAddr's txid, get the amount, fee, confirmations and time
-                    for (auto it = zaddrTxids->constBegin(); it != zaddrTxids->constEnd(); it++) {                        
-                        for (const auto& i : it.value().toArray()) {
-                            // Filter out change txs
-                            if (i.toObject()["change"].toBool())
-                                continue;
-                            
-                            auto zaddr = it.key();
-                            auto txid  = i.toObject()["txid"].toString();
-
-                            // Lookup txid in the map
-                            auto txidInfo = txidDetails->value(txid);
-
-                            qint64 timestamp;
-                            if (!txidInfo.toObject()["time"].isUndefined()) {
-                                timestamp = txidInfo.toObject()["time"].toInt();
-                            } else {
-                                timestamp = txidInfo.toObject()["blocktime"].toInt();
-                            }
-                            
-                            auto amount        = i.toObject()["amount"].toDouble();
-                            auto confirmations = (unsigned long)txidInfo["confirmations"].toInt();
-
-                            TransactionItem tx{ QString("receive"), timestamp, zaddr, txid, amount, 
-                                                confirmations, "", memos.value(zaddr + txid, "") };
-                            txdata.push_front(tx);
-                        }
-                    }
-
-                    transactionsTableModel->addZRecvData(txdata);
-
-                    // Cleanup both responses;
-                    delete zaddrTxids;
-                    delete txidDetails;
-                }
-            );
         }
     );
+    delete zaddrTxids;
+    delete txidDetails;
+
 } 
 
 /// This will refresh all the balance data from hushd
@@ -583,6 +591,7 @@ void RPC::getInfoThenRefresh(bool force) {
 
         if ( force || (curBlock != lastBlock) ) {
             // Something changed, so refresh everything.
+            qDebug() << "Something changed, time to refresh";
             lastBlock = curBlock;
 
             refreshBalances();        
@@ -731,6 +740,7 @@ void RPC::getInfoThenRefresh(bool force) {
 }
 
 void RPC::refreshAddresses() {
+    qDebug() << __func__;
     if  (conn == nullptr) 
         return noConnection();
     
@@ -777,6 +787,7 @@ void RPC::updateUI(bool anyUnconfirmed) {
 
 // Function to process reply of the listunspent and z_listunspent API calls, used below.
 bool RPC::processUnspent(const QJsonValue& reply, QMap<QString, double>* balancesMap, QList<UnspentOutput>* newUtxos) {
+    qDebug() << __func__;
     bool anyUnconfirmed = false;
     for (const auto& it : reply.toArray()) {
         QString qsAddr = it.toObject()["address"].toString();
@@ -796,6 +807,7 @@ bool RPC::processUnspent(const QJsonValue& reply, QMap<QString, double>* balance
 };
 
 void RPC::refreshBalances() {    
+    qDebug() << __func__;
     if  (conn == nullptr) 
         return noConnection();
 
@@ -844,9 +856,11 @@ void RPC::refreshBalances() {
             main->balancesReady();
         });        
     });
+    qDebug() << __func__ << ": finished";
 }
 
 void RPC::refreshTransactions() {    
+    qDebug() << __func__;
     if  (conn == nullptr) 
         return noConnection();
 
@@ -876,6 +890,7 @@ void RPC::refreshTransactions() {
         }
 
         // Update model data, which updates the table view
+        qDebug() << __func__ << ": updating transactionTableModel tdata";
         transactionsTableModel->addTData(txdata);        
     });
 }
@@ -974,7 +989,7 @@ void RPC::watchTxStatus() {
 
     // Make an RPC to load pending operation statues
     conn->doRPCIgnoreError(makePayload("z_getoperationstatus"), [=] (const QJsonValue& reply) {
-        qDebug() << "Got reply from z_getoperationstatus with " << reply.toArray().size() << " items";
+        qDebug() << "Got reply from z_getoperationstatus with " << reply.toArray().size() << " items:" << reply.toString();
         // conn->doRPCIgnoreError(payload, [=] (const json& reply) {
         // There's an array for each item in the status
         for (const auto& it : reply.toArray()) {
@@ -990,10 +1005,12 @@ void RPC::watchTxStatus() {
 
                 if (status == "success") {
                     auto txid = it.toObject()["result"].toObject()["txid"].toString();
+                    qDebug() << "Found opid " << id << " with status=success and txid=" << txid;
                     SentTxStore::addToSentTx(watchingOps[id].tx, txid);
 
                     auto wtx = watchingOps[id];
                     watchingOps.remove(id);
+                    qDebug() << "Removed opid " << id;
                     wtx.completed(id, txid);
 
                     qDebug() << "opid "<< id << " for " << txid << " started at "<<QString::number((unsigned int)it.toObject()["creation_time"].toInt()) << " took " << QString::number((double)it.toObject()["execution_secs"].toDouble()) << " seconds";
@@ -1001,11 +1018,12 @@ void RPC::watchTxStatus() {
                     // Refresh balances to show unconfirmed balances
                     refresh(true);
                 } else if (status == "failed") {
+                    qDebug() << "opid "<< id << " started at "<<QString::number((unsigned int)it.toObject()["creation_time"].toInt()) << " FAILED!";
                     // If it failed, then we'll actually show a warning.
                     auto errorMsg = it.toObject()["error"].toObject()["message"].toString();
-
-                    auto wtx = watchingOps[id];
+                    auto wtx      = watchingOps[id];
                     watchingOps.remove(id);
+                    qDebug() << "Removed opid " << id;
                     wtx.error(id, errorMsg);
                 } 
             }
@@ -1215,7 +1233,7 @@ void RPC::refreshPrice() {
 
 void RPC::shutdownHushd() {
     // Shutdown embedded hushd if it was started
-    if (ezcashd == nullptr || ezcashd->processId() == 0 || conn == nullptr) {
+    if (ehushd == nullptr || ehushd->processId() == 0 || conn == nullptr) {
         // No hushd running internally, just return
         return;
     }
@@ -1254,8 +1272,8 @@ void RPC::shutdownHushd() {
     QObject::connect(&waiter, &QTimer::timeout, [&] () {
         waitCount++;
 
-        if ((ezcashd->atEnd() && ezcashd->processId() == 0) ||
-            ezcashd->state() == QProcess::NotRunning ||
+        if ((ehushd->atEnd() && ehushd->processId() == 0) ||
+            ehushd->state() == QProcess::NotRunning ||
             waitCount > 30 ||
             conn->config->zcashDaemon)  {   // If hushd is daemon, then we don't have to do anything else
             qDebug() << "Ended";
