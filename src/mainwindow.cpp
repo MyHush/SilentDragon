@@ -396,9 +396,9 @@ void MainWindow::setupSettingsModal() {
         settings.port->setValidator(&validator);
 
         // If values are coming from HUSH3.conf, then disable all the fields
-        auto zcashConfLocation = Settings::getInstance()->getZcashdConfLocation();
-        if (!zcashConfLocation.isEmpty()) {
-            settings.confMsg->setText("Settings are being read from \n" + zcashConfLocation);
+        auto hushConfLocation = Settings::getInstance()->getZcashdConfLocation();
+        if (!hushConfLocation.isEmpty()) {
+            settings.confMsg->setText("Settings are being read from \n" + hushConfLocation);
             settings.hostname->setEnabled(false);
             settings.port->setEnabled(false);
             settings.rpcuser->setEnabled(false);
@@ -457,7 +457,7 @@ void MainWindow::setupSettingsModal() {
 
             if (!isUsingTor && settings.chkTor->isChecked()) {
                 // If "use tor" was previously unchecked and now checked
-                Settings::addToHushConf(zcashConfLocation, "proxy=127.0.0.1:9050");
+                Settings::addToHushConf(hushConfLocation, "proxy=127.0.0.1:9050");
                 rpc->getConnection()->config->proxy = "proxy=127.0.0.1:9050";
 
                 QMessageBox::information(this, tr("Enable Tor"),
@@ -467,7 +467,7 @@ void MainWindow::setupSettingsModal() {
 
             if (isUsingTor && !settings.chkTor->isChecked()) {
                 // If "use tor" was previously checked and now is unchecked
-                Settings::removeFromHushConf(zcashConfLocation, "proxy");
+                Settings::removeFromHushConf(hushConfLocation, "proxy");
                 rpc->getConnection()->config->proxy.clear();
 
                 QMessageBox::information(this, tr("Disable Tor"),
@@ -475,7 +475,7 @@ void MainWindow::setupSettingsModal() {
                     QMessageBox::Ok);
             }
 
-            if (zcashConfLocation.isEmpty()) {
+            if (hushConfLocation.isEmpty()) {
                 // Save settings
                 Settings::getInstance()->saveSettings(
                     settings.hostname->text(),
@@ -498,55 +498,55 @@ void MainWindow::setupSettingsModal() {
             bool showRestartInfo = false;
             bool showReindexInfo = false;
             if (settings.chkRescan->isChecked()) {
-                Settings::addToHushConf(zcashConfLocation, "rescan=1");
+                Settings::addToHushConf(hushConfLocation, "rescan=1");
                 showRestartInfo = true;
             }
 
             if (settings.chkReindex->isChecked()) {
-                Settings::addToHushConf(zcashConfLocation, "reindex=1");
+                Settings::addToHushConf(hushConfLocation, "reindex=1");
                 showRestartInfo = true;
             }
 
              if (!rpc->getConnection()->config->consolidation.isEmpty()==false) {
                  if (settings.chkConso->isChecked()) {
-                 Settings::addToHushConf(zcashConfLocation, "consolidation=1");
+                 Settings::addToHushConf(hushConfLocation, "consolidation=1");
                 showRestartInfo = true;       
                 }
             }
 
             if (!rpc->getConnection()->config->consolidation.isEmpty()) {
                  if (settings.chkConso->isChecked() == false) {
-                 Settings::removeFromHushConf(zcashConfLocation, "consolidation");
+                 Settings::removeFromHushConf(hushConfLocation, "consolidation");
                 showRestartInfo = true;       
                  }
             }
                   
              if (!rpc->getConnection()->config->deletetx.isEmpty() == false) {
                  if (settings.chkDeletetx->isChecked()) {
-                 Settings::addToHushConf(zcashConfLocation, "deletetx=1");
+                 Settings::addToHushConf(hushConfLocation, "deletetx=1");
                 showRestartInfo = true;       
                 }
             }
 
              if (!rpc->getConnection()->config->deletetx.isEmpty()) {
                  if (settings.chkDeletetx->isChecked() == false) {
-                 Settings::removeFromHushConf(zcashConfLocation, "deletetx");
+                 Settings::removeFromHushConf(hushConfLocation, "deletetx");
                 showRestartInfo = true;
                  }
             }
     
              if (!rpc->getConnection()->config->zindex.isEmpty() == false) {
                  if (settings.chkzindex->isChecked()) {
-                 Settings::addToHushConf(zcashConfLocation, "zindex=1");
-                 Settings::addToHushConf(zcashConfLocation, "reindex=1");
+                 Settings::addToHushConf(hushConfLocation, "zindex=1");
+                 Settings::addToHushConf(hushConfLocation, "reindex=1");
                 showReindexInfo = true;       
                 }
             }
 
              if (!rpc->getConnection()->config->zindex.isEmpty()) {
                  if (settings.chkzindex->isChecked() == false) {
-                 Settings::removeFromHushConf(zcashConfLocation, "zindex");
-                 Settings::addToHushConf(zcashConfLocation, "reindex=1");
+                 Settings::removeFromHushConf(hushConfLocation, "zindex");
+                 Settings::addToHushConf(hushConfLocation, "reindex=1");
                 showReindexInfo = true;       
                  }
             }

@@ -512,9 +512,9 @@ Tx MainWindow::createTxFromSendPage() {
     }
 
     if (Settings::getInstance()->getAutoShield() && sendChangeToSapling) {
+        // We're finding a sapling address that is not one of the To addresses, which adds some non-determinism
         auto saplingAddr = std::find_if(rpc->getAllZAddresses()->begin(), rpc->getAllZAddresses()->end(), [=](auto i) -> bool { 
-            // We're finding a sapling address that is not one of the To addresses, because zcash doesn't allow duplicated addresses
-	    // TODO: Should we disable this in Hush? What are the privacy and chain analysis considerations?
+	    // TODO: randomize the order we process addresses to add more non-determinism
             bool isSapling = Settings::getInstance()->isSaplingAddress(i); 
             if (!isSapling) return false;
 

@@ -82,9 +82,9 @@ void RPC::setConnection(Connection* c) {
     ui->statusBar->showMessage("Ready! Thank you for helping secure the Hush network by running a full node.");
 
     // See if we need to remove the reindex/rescan flags from the zcash.conf file
-    auto zcashConfLocation = Settings::getInstance()->getZcashdConfLocation();
-    Settings::removeFromHushConf(zcashConfLocation, "rescan");
-    Settings::removeFromHushConf(zcashConfLocation, "reindex");
+    auto hushConfLocation = Settings::getInstance()->getZcashdConfLocation();
+    Settings::removeFromHushConf(hushConfLocation, "rescan");
+    Settings::removeFromHushConf(hushConfLocation, "reindex");
 
     // Refresh the UI
     refreshPrice();
@@ -1257,7 +1257,7 @@ void RPC::shutdownHushd() {
         if ((ehushd->atEnd() && ehushd->processId() == 0) ||
             ehushd->state() == QProcess::NotRunning ||
             waitCount > 30 ||
-            conn->config->zcashDaemon)  {   // If hushd is daemon, then we don't have to do anything else
+            conn->config->hushDaemon)  {   // If hushd is daemon, then we don't have to do anything else
             qDebug() << "Ended";
             waiter.stop();
             QTimer::singleShot(1000, [&]() { d.accept(); });

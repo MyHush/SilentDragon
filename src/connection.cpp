@@ -75,7 +75,7 @@ void ConnectionLoader::doAutoConnect(bool tryEzcashdStart) {
                         main->logger->write("Embedded hushd started up, trying autoconnect in 1 sec");
                         QTimer::singleShot(1000, [=]() { doAutoConnect(); } );
                     } else {
-                        if (config->zcashDaemon) {
+                        if (config->hushDaemon) {
                             // hushd is configured to run as a daemon, so we must wait for a few seconds
                             // to let it start up. 
                             main->logger->write("hushd is daemon=1. Waiting for it to start up");
@@ -93,7 +93,7 @@ void ConnectionLoader::doAutoConnect(bool tryEzcashdStart) {
                     // We tried to start ehushd previously, and it didn't work. So, show the error. 
                     main->logger->write("Couldn't start embedded hushd for unknown reason");
                     QString explanation;
-                    if (config->zcashDaemon) {
+                    if (config->hushDaemon) {
                         explanation = QString() % QObject::tr("You have hushd set to start as a daemon, which can cause problems "
                             "with SilentDragon\n\n."
                             "Please remove the following line from your HUSH3.conf and restart SilentDragon\n"
@@ -667,12 +667,12 @@ std::shared_ptr<ConnectionConfig> ConnectionLoader::autoDetectHushConf() {
 
     QTextStream in(&file);
 
-    auto zcashconf = new ConnectionConfig();
-    zcashconf->host     = "127.0.0.1";
-    zcashconf->connType = ConnectionType::DetectedConfExternalZcashD;
-    zcashconf->usingHushConf = true;
-    zcashconf->zcashDir = QFileInfo(confLocation).absoluteDir().absolutePath();
-    zcashconf->zcashDaemon = false;
+    auto hushconf = new ConnectionConfig();
+    hushconf->host     = "127.0.0.1";
+    hushconf->connType = ConnectionType::DetectedConfExternalZcashD;
+    hushconf->usingHushConf = true;
+    hushconf->zcashDir = QFileInfo(confLocation).absoluteDir().absolutePath();
+    hushconf->hushDaemon = false;
    
     Settings::getInstance()->setUsingHushConf(confLocation);
 
@@ -683,43 +683,43 @@ std::shared_ptr<ConnectionConfig> ConnectionLoader::autoDetectHushConf() {
         QString value = line.right(line.length() - s - 1).trimmed();
 
         if (name == "rpcuser") {
-            zcashconf->rpcuser = value;
+            hushconf->rpcuser = value;
         }
         if (name == "rpcpassword") {
-            zcashconf->rpcpassword = value;
+            hushconf->rpcpassword = value;
         }
         if (name == "rpcport") {
-            zcashconf->port = value;
+            hushconf->port = value;
         }
         if (name == "daemon" && value == "1") {
-            zcashconf->zcashDaemon = true;
+            hushconf->hushDaemon = true;
         }
         if (name == "proxy") {
-            zcashconf->proxy = value;
+            hushconf->proxy = value;
         }
          if (name == "consolidation") {
-            zcashconf->consolidation = value;
+            hushconf->consolidation = value;
         }
           if (name == "deletetx") {
-            zcashconf->deletetx = value;
+            hushconf->deletetx = value;
         }
           if (name == "zindex") {
-            zcashconf->zindex = value;
+            hushconf->zindex = value;
         }
         if (name == "testnet" &&
             value == "1"  &&
-            zcashconf->port.isEmpty()) {
-                zcashconf->port = "18232";
+            hushconf->port.isEmpty()) {
+                hushconf->port = "18232";
         }
     }
 
     // If rpcport is not in the file, and it was not set by the testnet=1 flag, then go to default
-    if (zcashconf->port.isEmpty()) zcashconf->port = "18031";
+    if (hushconf->port.isEmpty()) hushconf->port = "18031";
     file.close();
 
     // In addition to the HUSH3/HUSH3.conf file, also double check the params. 
 
-    return std::shared_ptr<ConnectionConfig>(zcashconf);
+    return std::shared_ptr<ConnectionConfig>(hushconf);
 }
 
 /**
