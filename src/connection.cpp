@@ -59,7 +59,7 @@ void ConnectionLoader::doAutoConnect(bool tryEzcashdStart) {
     }
 
     // Priority 2: Try to connect to detect HUSH3.conf and connect to it.
-    auto config = autoDetectZcashConf();
+    auto config = autoDetectHushConf();
     main->logger->write(QObject::tr("Attempting autoconnect"));
 
     if (config.get() != nullptr) {
@@ -119,7 +119,7 @@ void ConnectionLoader::doAutoConnect(bool tryEzcashdStart) {
         if (Settings::getInstance()->useEmbedded()) {
             // HUSH3.conf was not found, so create one
             qDebug() << "Creating HUSH3.conf";
-            createZcashConf();
+            createHushConf();
         } else {
             // Fall back to manual connect
             doManualConnect();
@@ -147,14 +147,14 @@ QString randomPassword() {
 /**
  * This will create a new HUSH3.conf and download params if they cannot be found
  */ 
-void ConnectionLoader::createZcashConf() {
-    main->logger->write("createZcashConf");
+void ConnectionLoader::createHushConf() {
+    main->logger->write("createHushConf");
 
     auto confLocation = zcashConfWritableLocation();
     QFileInfo fi(confLocation);
 
     QDialog d(main);
-    Ui_createZcashConf ui;
+    Ui_createHushConf ui;
     ui.setupUi(&d);
 
     QPixmap logo(":/img/res/zcashdlogo.gif");
@@ -555,7 +555,7 @@ void ConnectionLoader::showError(QString explanation) {
     d->close();
 }
 
-QString ConnectionLoader::locateZcashConfFile() {
+QString ConnectionLoader::locateHushConfFile() {
 #ifdef Q_OS_LINUX
     auto confLocation = QStandardPaths::locate(QStandardPaths::HomeLocation, ".komodo/HUSH3/HUSH3.conf");
 #elif defined(Q_OS_DARWIN)
@@ -651,8 +651,8 @@ bool ConnectionLoader::verifyParams() {
 /**
  * Try to automatically detect a HUSH3/HUSH3.conf file in the correct location and load parameters
  */ 
-std::shared_ptr<ConnectionConfig> ConnectionLoader::autoDetectZcashConf() {    
-    auto confLocation = locateZcashConfFile();
+std::shared_ptr<ConnectionConfig> ConnectionLoader::autoDetectHushConf() {    
+    auto confLocation = locateHushConfFile();
 
     if (confLocation.isNull()) {
         // No Zcash file, just return with nothing
@@ -670,11 +670,11 @@ std::shared_ptr<ConnectionConfig> ConnectionLoader::autoDetectZcashConf() {
     auto zcashconf = new ConnectionConfig();
     zcashconf->host     = "127.0.0.1";
     zcashconf->connType = ConnectionType::DetectedConfExternalZcashD;
-    zcashconf->usingZcashConf = true;
+    zcashconf->usingHushConf = true;
     zcashconf->zcashDir = QFileInfo(confLocation).absoluteDir().absolutePath();
     zcashconf->zcashDaemon = false;
    
-    Settings::getInstance()->setUsingZcashConf(confLocation);
+    Settings::getInstance()->setUsingHushConf(confLocation);
 
     while (!in.atEnd()) {
         QString line = in.readLine();

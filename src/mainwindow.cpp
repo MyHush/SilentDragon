@@ -73,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Pay Hush URI
     QObject::connect(ui->actionPay_URI, &QAction::triggered, [=] () {
-        payZcashURI();
+        payHushURI();
     });
 
     // Import Private Key
@@ -341,7 +341,7 @@ void MainWindow::setupSettingsModal() {
             isUsingTor = !rpc->getConnection()->config->proxy.isEmpty();
         }
         settings.chkTor->setChecked(isUsingTor);
-        if (rpc->getEZcashD() == nullptr) {
+        if (rpc->getHushd() == nullptr) {
             settings.chkTor->setEnabled(false);
             settings.lblTor->setEnabled(false);
             QString tooltip = tr("Tor configuration is available only when running an embedded hushd.");
@@ -365,7 +365,7 @@ void MainWindow::setupSettingsModal() {
             isUsingConsolidation = !rpc->getConnection()->config->consolidation.isEmpty() == true;
         }
         settings.chkConso->setChecked(isUsingConsolidation);
-        if (rpc->getEZcashD() == nullptr) {
+        if (rpc->getHushd() == nullptr) {
             settings.chkConso->setEnabled(false);
         }
 
@@ -376,7 +376,7 @@ void MainWindow::setupSettingsModal() {
             isUsingDeletetx = !rpc->getConnection()->config->deletetx.isEmpty() == true;
         }
         settings.chkDeletetx->setChecked(isUsingDeletetx);
-        if (rpc->getEZcashD() == nullptr) {
+        if (rpc->getHushd() == nullptr) {
             settings.chkDeletetx->setEnabled(false);
         }
 
@@ -387,7 +387,7 @@ void MainWindow::setupSettingsModal() {
             isUsingZindex = !rpc->getConnection()->config->zindex.isEmpty() == true;
         }
         settings.chkzindex->setChecked(isUsingZindex);
-        if (rpc->getEZcashD() == nullptr) {
+        if (rpc->getHushd() == nullptr) {
             settings.chkzindex->setEnabled(false);      
         }
 
@@ -457,7 +457,7 @@ void MainWindow::setupSettingsModal() {
 
             if (!isUsingTor && settings.chkTor->isChecked()) {
                 // If "use tor" was previously unchecked and now checked
-                Settings::addToZcashConf(zcashConfLocation, "proxy=127.0.0.1:9050");
+                Settings::addToHushConf(zcashConfLocation, "proxy=127.0.0.1:9050");
                 rpc->getConnection()->config->proxy = "proxy=127.0.0.1:9050";
 
                 QMessageBox::information(this, tr("Enable Tor"),
@@ -467,7 +467,7 @@ void MainWindow::setupSettingsModal() {
 
             if (isUsingTor && !settings.chkTor->isChecked()) {
                 // If "use tor" was previously checked and now is unchecked
-                Settings::removeFromZcashConf(zcashConfLocation, "proxy");
+                Settings::removeFromHushConf(zcashConfLocation, "proxy");
                 rpc->getConnection()->config->proxy.clear();
 
                 QMessageBox::information(this, tr("Disable Tor"),
@@ -498,55 +498,55 @@ void MainWindow::setupSettingsModal() {
             bool showRestartInfo = false;
             bool showReindexInfo = false;
             if (settings.chkRescan->isChecked()) {
-                Settings::addToZcashConf(zcashConfLocation, "rescan=1");
+                Settings::addToHushConf(zcashConfLocation, "rescan=1");
                 showRestartInfo = true;
             }
 
             if (settings.chkReindex->isChecked()) {
-                Settings::addToZcashConf(zcashConfLocation, "reindex=1");
+                Settings::addToHushConf(zcashConfLocation, "reindex=1");
                 showRestartInfo = true;
             }
 
              if (!rpc->getConnection()->config->consolidation.isEmpty()==false) {
                  if (settings.chkConso->isChecked()) {
-                 Settings::addToZcashConf(zcashConfLocation, "consolidation=1");
+                 Settings::addToHushConf(zcashConfLocation, "consolidation=1");
                 showRestartInfo = true;       
                 }
             }
 
             if (!rpc->getConnection()->config->consolidation.isEmpty()) {
                  if (settings.chkConso->isChecked() == false) {
-                 Settings::removeFromZcashConf(zcashConfLocation, "consolidation");
+                 Settings::removeFromHushConf(zcashConfLocation, "consolidation");
                 showRestartInfo = true;       
                  }
             }
                   
              if (!rpc->getConnection()->config->deletetx.isEmpty() == false) {
                  if (settings.chkDeletetx->isChecked()) {
-                 Settings::addToZcashConf(zcashConfLocation, "deletetx=1");
+                 Settings::addToHushConf(zcashConfLocation, "deletetx=1");
                 showRestartInfo = true;       
                 }
             }
 
              if (!rpc->getConnection()->config->deletetx.isEmpty()) {
                  if (settings.chkDeletetx->isChecked() == false) {
-                 Settings::removeFromZcashConf(zcashConfLocation, "deletetx");
+                 Settings::removeFromHushConf(zcashConfLocation, "deletetx");
                 showRestartInfo = true;
                  }
             }
     
              if (!rpc->getConnection()->config->zindex.isEmpty() == false) {
                  if (settings.chkzindex->isChecked()) {
-                 Settings::addToZcashConf(zcashConfLocation, "zindex=1");
-                 Settings::addToZcashConf(zcashConfLocation, "reindex=1");
+                 Settings::addToHushConf(zcashConfLocation, "zindex=1");
+                 Settings::addToHushConf(zcashConfLocation, "reindex=1");
                 showReindexInfo = true;       
                 }
             }
 
              if (!rpc->getConnection()->config->zindex.isEmpty()) {
                  if (settings.chkzindex->isChecked() == false) {
-                 Settings::removeFromZcashConf(zcashConfLocation, "zindex");
-                 Settings::addToZcashConf(zcashConfLocation, "reindex=1");
+                 Settings::removeFromHushConf(zcashConfLocation, "zindex");
+                 Settings::addToHushConf(zcashConfLocation, "reindex=1");
                 showReindexInfo = true;       
                  }
             }
@@ -701,7 +701,7 @@ void MainWindow::balancesReady() {
     // process it.
     if (!pendingURIPayment.isEmpty()) {
         qDebug() << "Paying hush URI";
-        payZcashURI(pendingURIPayment);
+        payHushURI(pendingURIPayment);
         pendingURIPayment = "";
     }
 
@@ -712,7 +712,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event) {
     if (event->type() == QEvent::FileOpen) {
         QFileOpenEvent *fileEvent = static_cast<QFileOpenEvent*>(event);
         if (!fileEvent->url().isEmpty())
-            payZcashURI(fileEvent->url().toString());
+            payHushURI(fileEvent->url().toString());
 
         return true;
     }
@@ -724,7 +724,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event) {
 // Pay the Hush URI by showing a confirmation window. If the URI parameter is empty, the UI
 // will prompt for one. If the myAddr is empty, then the default from address is used to send
 // the transaction.
-void MainWindow::payZcashURI(QString uri, QString myAddr) {
+void MainWindow::payHushURI(QString uri, QString myAddr) {
     // If the Payments UI is not ready (i.e, all balances have not loaded), defer the payment URI
     if (!uiPaymentsReady) {
         qDebug() << "Payment UI not ready, waiting for UI to pay URI";

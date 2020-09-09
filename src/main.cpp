@@ -224,7 +224,7 @@ public:
 
         // If there was a payment URI on the command line, pay it
         if (parser.positionalArguments().length() > 0) {
-            w->payZcashURI(parser.positionalArguments()[0]);
+            w->payHushURI(parser.positionalArguments()[0]);
         }
 
         // Listen for any secondary instances telling us about a Hush payment URI
@@ -232,7 +232,7 @@ public:
             QString uri(msg);
 
             // We need to execute this async, otherwise the app seems to crash for some reason.
-            QTimer::singleShot(1, [=]() { w->payZcashURI(uri); });            
+            QTimer::singleShot(1, [=]() { w->payHushURI(uri); });            
         });   
 
         // For MacOS, we have an event filter

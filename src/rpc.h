@@ -11,8 +11,6 @@
 #include "mainwindow.h"
 #include "connection.h"
 
-class Turnstile;
-
 struct TransactionItem {
     QString         type;
     qint64            datetime;
@@ -38,7 +36,7 @@ public:
     ~RPC();
 
     void setConnection(Connection* c);
-    const QProcess* getEZcashD() { return ehushd.get(); }
+    const QProcess* getHushd() { return ehushd.get(); }
 
     void refresh(bool force = false);
 
@@ -88,7 +86,6 @@ public:
 
     void getAllPrivKeys(const std::function<void(QList<QPair<QString, QString>>)>);
 
-    Turnstile*  getTurnstile()  { return turnstile; }
     Connection* getConnection() { return conn; }
 
 private:
@@ -131,7 +128,6 @@ private:
 
     Ui::MainWindow*             ui;
     MainWindow*                 main;
-    Turnstile*                  turnstile;
 
     // Current balance in the UI. If this number updates, then refresh the UI
     QString                     currentBalance;

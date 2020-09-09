@@ -89,7 +89,7 @@ void Settings::saveRestoreTableHeader(QTableView* table, QDialog* d, QString tab
     });
 }
 
-void Settings::setUsingZcashConf(QString confLocation) {
+void Settings::setUsingHushConf(QString confLocation) {
     if (!confLocation.isEmpty())
         _confLocation = confLocation;
 }
@@ -329,7 +329,7 @@ QString Settings::getDonationAddr() {
     return "zs1aq4xnrkjlnxx0zesqye7jz3dfrf3rjh7q5z6u8l6mwyqqaam3gx3j2fkqakp33v93yavq46j83q";
 }
 
-bool Settings::addToZcashConf(QString confLocation, QString line) {
+bool Settings::addToHushConf(QString confLocation, QString line) {
     QFile file(confLocation);
     if (!file.open(QIODevice::ReadWrite | QIODevice::Append))
         return false;
@@ -352,7 +352,7 @@ void Settings::set_currency_name(QString currency_name) {
 }
 
 
-bool Settings::removeFromZcashConf(QString confLocation, QString option) {
+bool Settings::removeFromHushConf(QString confLocation, QString option) {
     if (confLocation.isEmpty())
         return false;
 

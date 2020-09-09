@@ -1,3 +1,5 @@
+// Copyright 2019-2020 The Hush developers
+// Released under the GPLv3
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
@@ -18,7 +20,7 @@ struct ConnectionConfig {
     QString port;
     QString rpcuser;
     QString rpcpassword;
-    bool    usingZcashConf;
+    bool    usingHushConf;
     bool    zcashDaemon;
     QString zcashDir;
     QString proxy;
@@ -40,7 +42,7 @@ public:
     void loadConnection();
 
 private:
-    std::shared_ptr<ConnectionConfig> autoDetectZcashConf();
+    std::shared_ptr<ConnectionConfig> autoDetectHushConf();
     std::shared_ptr<ConnectionConfig> loadFromSettings();
 
     Connection* makeConnection(std::shared_ptr<ConnectionConfig> config);
@@ -48,8 +50,8 @@ private:
     void doAutoConnect(bool tryEhushdStart = true);
     void doManualConnect();
 
-    void createZcashConf();
-    QString locateZcashConfFile();
+    void createHushConf();
+    QString locateHushConfFile();
     QString zcashConfWritableLocation();
     QString zcashParamsDir();
 
@@ -133,8 +135,7 @@ public:
             
             QJsonDocument jd_rpc_call(payload.toObject());
             QByteArray ba_rpc_call = jd_rpc_call.toJson();
-
-            QNetworkReply *reply = restclient->post(*request, ba_rpc_call);
+            QNetworkReply *reply   = restclient->post(*request, ba_rpc_call);
 
             QObject::connect(reply, &QNetworkReply::finished, [=] {
                 reply->deleteLater();
@@ -145,7 +146,6 @@ public:
                 
                 auto all = reply->readAll();            
                 auto parsed = QJsonDocument::fromJson(all);
-
 
                 if (reply->error() != QNetworkReply::NoError) {            
                     qDebug() << "Error JSON response: " << parsed.toJson();

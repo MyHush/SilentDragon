@@ -90,7 +90,7 @@ public:
     QString get_currency_name();
     void set_currency_name(QString currency_name);
 
-    void    setUsingZcashConf(QString confLocation);
+    void    setUsingHushConf(QString confLocation);
     const   QString& getZcashdConfLocation() { return _confLocation; }
 
     void    setZECPrice(double p)       { zecPrice = p;   }
@@ -137,8 +137,8 @@ public:
 
     static bool    isValidAddress(QString addr);
 
-    static bool    addToZcashConf(QString confLocation, QString line);
-    static bool    removeFromZcashConf(QString confLocation, QString option);
+    static bool    addToHushConf(QString confLocation, QString line);
+    static bool    removeFromHushConf(QString confLocation, QString option);
 
     static const QString labelRegExp;
 
