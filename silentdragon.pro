@@ -1,11 +1,12 @@
+# Copyright 2019-2020 The Hush developers
+# Released under the GPLv3
 #-------------------------------------------------
 #
 # Project created by QtCreator 2018-10-05T09:54:45
 #
 #-------------------------------------------------
 
-QT       += core gui network
-
+QT     += core gui network
 CONFIG += precompile_header
 
 PRECOMPILED_HEADER = src/precompiled.h
@@ -105,7 +106,7 @@ FORMS += \
     src/addressbook.ui \
     src/viewalladdresses.ui \
     src/mobileappconnector.ui \
-    src/createzcashconfdialog.ui \
+    src/createhushconfdialog.ui \
     src/recurringdialog.ui \
     src/newrecurring.ui \
     src/requestdialog.ui

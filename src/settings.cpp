@@ -132,11 +132,11 @@ bool Settings::isTAddress(QString addr) {
 }
 
 int Settings::getZcashdVersion() {
-    return _zcashdVersion;
+    return _hushdVersion;
 }
 
 void Settings::setZcashdVersion(int version) {
-    _zcashdVersion = version;
+    _hushdVersion = version;
 }
 
 bool Settings::isSyncing() {

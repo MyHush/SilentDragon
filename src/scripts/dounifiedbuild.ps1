@@ -28,7 +28,7 @@ Write-Host ""
 
 
 Write-Host "[Building on Mac]"
-bash src/scripts/mkmacdmg.sh --qt_path ~/Qt/5.11.1/clang_64/ --version $version --zcash_path ~/gi/hush3 --certificate "$certificate"
+bash src/scripts/mkmacdmg.sh --qt_path ~/Qt/5.11.1/clang_64/ --version $version --hush_path ~/git/hush3 --certificate "$certificate"
 if (! $?) {
     Write-Output "[Error]"
     exit 1;

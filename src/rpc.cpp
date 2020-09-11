@@ -449,18 +449,17 @@ void RPC::refreshReceivedZTrans(QList<QString> zaddrs) {
     "change": false
   }
 */
-    conn->doBatchRPC<QString>(zaddrs,
-        [=] (QString zaddr) {
-            QJsonObject payload = {
-                {"jsonrpc", "1.0"},
-                {"id", "slowasfuck"},
-                {"method", "z_listreceivedbyaddress"},
-                {"params", QJsonArray {zaddr, 0}}      // Accept 0 conf as well.
-            };
 
-            return payload;
-        },          
-        [=] (QMap<QString, QJsonValue>* zaddrTxids) {
+
+    for (auto it = zaddrs.constBegin(); it != zaddrs.constEnd(); it++) {
+        auto z = it.get();
+        QJsonObject payload = {
+            {"jsonrpc", "1.0"},
+            {"id", "yep"},
+            {"method", "z_listreceivedbyaddress"},
+            {"params", QJsonArray {z, 0}}      // Accept 0 conf as well.
+        };
+        conn->doRPC(payload, [=] (QMap<QString, QJsonValue>* zaddrTxids) {
             qint64 numTx = 0;
             qDebug() << __func__ << ": processing z_listreceivedbyaddress JSON at " << QDateTime::currentSecsSinceEpoch();
             // Process all txids, removing duplicates. This can happen if the same address
@@ -506,9 +505,10 @@ void RPC::refreshReceivedZTrans(QList<QString> zaddrs) {
                     }
                 }                        
             }
-            delete zaddrTxids;
-        }
-    );
+        }, [=](QNetworkReply* reply, const QJsonValue&) {
+                qDebug() << reply->errorString();
+        });
+    }
 } 
 
 /// This will refresh all the balance data from hushd

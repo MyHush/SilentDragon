@@ -22,7 +22,7 @@ struct ConnectionConfig {
     QString rpcpassword;
     bool    usingHushConf;
     bool    hushDaemon;
-    QString zcashDir;
+    QString hushDir;
     QString proxy;
     QString consolidation;
     QString deletetx;

@@ -353,8 +353,8 @@ void MainWindow::setupSettingsModal() {
 
         bool isUsingConsolidation = false;
         int size = 0;
-        QDir zcashdir(rpc->getConnection()->config->zcashDir);
-        QFile WalletSize(zcashdir.filePath("wallet.dat"));
+        QDir hushdir(rpc->getConnection()->config->hushDir);
+        QFile WalletSize(hushdir.filePath("wallet.dat"));
         if (WalletSize.open(QIODevice::ReadOnly)){
         size = WalletSize.size() / 1000000;  //when file does open.
         //QString size1 = QString::number(size) ;
@@ -846,15 +846,15 @@ void MainWindow::backupWalletDat() {
     if (!rpc->getConnection())
         return;
 
-    QDir zcashdir(rpc->getConnection()->config->zcashDir);
+    QDir hushdir(rpc->getConnection()->config->hushDir);
     QString backupDefaultName = "hush-wallet-backup-" + QDateTime::currentDateTime().toString("yyyyMMdd") + ".dat";
 
     if (Settings::getInstance()->isTestnet()) {
-        zcashdir.cd("testnet3");
+        hushdir.cd("testnet3");
         backupDefaultName = "testnet-" + backupDefaultName;
     }
 
-    QFile wallet(zcashdir.filePath("wallet.dat"));
+    QFile wallet(hushdir.filePath("wallet.dat"));
     if (!wallet.exists()) {
         QMessageBox::critical(this, tr("No wallet.dat"), tr("Couldn't find the wallet.dat on this computer") + "\n" +
             tr("You need to back it up from the machine hushd is running on"), QMessageBox::Ok);

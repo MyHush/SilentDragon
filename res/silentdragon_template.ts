@@ -1760,44 +1760,44 @@ Would you like to visit the releases page?</source>
     </message>
 </context>
 <context>
-    <name>createZcashConf</name>
+    <name>createHushConf</name>
     <message>
-        <location filename="../src/createzcashconfdialog.ui" line="14"/>
+        <location filename="../src/createhushconfdialog.ui" line="14"/>
         <source>Configure HUSH3.conf</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/createzcashconfdialog.ui" line="61"/>
+        <location filename="../src/createhushconfdialog.ui" line="61"/>
         <source>Show Advanced Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/createzcashconfdialog.ui" line="86"/>
+        <location filename="../src/createhushconfdialog.ui" line="86"/>
         <source>Your Hush node will be configured for you automatically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/createzcashconfdialog.ui" line="102"/>
+        <location filename="../src/createhushconfdialog.ui" line="102"/>
         <source>Use custom datadir</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/createzcashconfdialog.ui" line="109"/>
+        <location filename="../src/createhushconfdialog.ui" line="109"/>
         <source>Please choose a directory to store your wallet.dat and blockchain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/createzcashconfdialog.ui" line="118"/>
+        <location filename="../src/createhushconfdialog.ui" line="118"/>
         <source>Choose directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/createzcashconfdialog.ui" line="154"/>
+        <location filename="../src/createhushconfdialog.ui" line="154"/>
         <source>Connect over Tor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/createzcashconfdialog.ui" line="161"/>
+        <location filename="../src/createhushconfdialog.ui" line="161"/>
         <source>Please note that you&apos;ll need to already have a Tor service configured on port 9050</source>
         <translation type="unfinished"></translation>
     </message>

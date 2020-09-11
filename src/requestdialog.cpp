@@ -123,7 +123,7 @@ void RequestDialog::showRequestZcash(MainWindow* main) {
     req.txtFrom->setFocus();
 
     if (d.exec() == QDialog::Accepted) {
-        // Construct a zcash Payment URI with the data and pay it immediately.
+        // Construct a hush Payment URI with the data and pay it immediately.
         QString memoURI = "hush:" + req.cmbMyAddress->currentText()
                     + "?amt=" + Settings::getDecimalString(req.txtAmount->text().toDouble())
                     + "&memo=" + QUrl::toPercentEncoding(req.txtMemo->toPlainText());

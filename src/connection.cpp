@@ -4,7 +4,7 @@
 #include "mainwindow.h"
 #include "settings.h"
 #include "ui_connection.h"
-#include "ui_createzcashconfdialog.h"
+#include "ui_createhushconfdialog.h"
 #include "rpc.h"
 
 #include "precompiled.h"
@@ -50,7 +50,7 @@ void ConnectionLoader::loadConnection() {
         d->exec();
 }
 
-void ConnectionLoader::doAutoConnect(bool tryEzcashdStart) {
+void ConnectionLoader::doAutoConnect(bool tryEhushdStart) {
     qDebug() << __func__;
     // Priority 1: Ensure all params are present.
     if (!verifyParams()) {
@@ -66,9 +66,9 @@ void ConnectionLoader::doAutoConnect(bool tryEzcashdStart) {
         auto connection = makeConnection(config);
 
         refreshHushdState(connection, [=] () {
-            // Refused connection. So try and start embedded zcashd
+            // Refused connection. So try and start embedded hushd
             if (Settings::getInstance()->useEmbedded()) {
-                if (tryEzcashdStart) {
+                if (tryEhushdStart) {
                     this->showInformation(QObject::tr("Starting embedded hushd"));
                     if (this->startEmbeddedZcashd()) {
                         // Embedded hushd started up. Wait a second and then refresh the connection
@@ -671,7 +671,7 @@ std::shared_ptr<ConnectionConfig> ConnectionLoader::autoDetectHushConf() {
     hushconf->host     = "127.0.0.1";
     hushconf->connType = ConnectionType::DetectedConfExternalZcashD;
     hushconf->usingHushConf = true;
-    hushconf->zcashDir = QFileInfo(confLocation).absoluteDir().absolutePath();
+    hushconf->hushDir = QFileInfo(confLocation).absoluteDir().absolutePath();
     hushconf->hushDaemon = false;
    
     Settings::getInstance()->setUsingHushConf(confLocation);
@@ -723,7 +723,7 @@ std::shared_ptr<ConnectionConfig> ConnectionLoader::autoDetectHushConf() {
 }
 
 /**
- * Load connection settings from the UI, which indicates an unknown, external zcashd
+ * Load connection settings from the UI, which indicates an unknown, external hushd
  */ 
 std::shared_ptr<ConnectionConfig> ConnectionLoader::loadFromSettings() {
     // Load from the QT Settings. 
