@@ -450,7 +450,11 @@ void RPC::refreshReceivedZTrans(QList<QString> zaddrs) {
   }
 */
 
+    qDebug() << "IGNORING z_listreceivedaddress hack";
+    return;
 
+
+    /*
     for (auto it = zaddrs.constBegin(); it != zaddrs.constEnd(); it++) {
         auto z = it.get();
         QJsonObject payload = {
@@ -509,6 +513,7 @@ void RPC::refreshReceivedZTrans(QList<QString> zaddrs) {
                 qDebug() << reply->errorString();
         });
     }
+    */
 } 
 
 /// This will refresh all the balance data from hushd
